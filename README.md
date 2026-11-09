@@ -4,12 +4,27 @@
 
 界面风格参照 Nous Research 的 Hermes Agent 官网：深藏青底、电光蓝、窄体细标题、等宽小标签、蓝色网点版画。
 
-## 启动
+## 下载
 
-- 在“应用程序”里打开 **川文**，或者 `⌘ 空格` 搜“川文”。已经在运行时只打开网页，没运行时先在后台启动。
-- 也可以双击 `启动川文.command`，或在终端运行 `.venv/bin/python run.py`。
-- 网址是 http://127.0.0.1:8800 ，只在本机能访问。用完在「设置」最下面点“关闭川文”。
-- 快捷入口用 `.venv/bin/python -I scripts/build_mac_app.py --install` 生成；项目文件夹挪了位置要重新生成。
+[![下载 Mac 版](assets/btn-mac.svg)](https://github.com/georageti/chuanwen/releases/latest/download/chuanwen-mac.zip)
+[![下载 Windows 版](assets/btn-windows.svg)](https://github.com/georageti/chuanwen/releases/latest/download/chuanwen-windows.zip)
+
+**不要点 GitHub 绿色的 Code → Download ZIP**，那个是源代码，不带安装说明。用上面的按钮下载，解压后打开里面的「先看我.txt」：
+
+1. 先装 Python 3.10 以上：[python.org/downloads](https://www.python.org/downloads/)（Windows 安装时勾选 “Add python.exe to PATH”）。
+2. 双击「安装川文」（Mac 是 `.command`，Windows 是 `.bat`）。第一次会装依赖，约 1 分钟，装好自动打开。
+   - Mac 提示“无法验证开发者”：右键 → 打开 → 打开；还不行就到“系统设置 → 隐私与安全性”点“仍要打开”。
+   - Windows 提示“Windows 已保护你的电脑”：点“更多信息 → 仍要运行”。
+3. 以后：Mac 在“应用程序”或 Spotlight 里打开 **川文**；Windows 双击桌面或开始菜单里的 **川文**。
+
+所有版本见 [Releases](https://github.com/georageti/chuanwen/releases)。
+
+## 启动和关闭
+
+- 已经在运行时，再点只会打开网页；没在运行时，先在后台启动，再打开网页。网址是 http://127.0.0.1:8800 ，只在本机能访问。
+- 用完在网页「设置」最下面点“关闭川文”。
+- 也可以双击「启动川文」，或在终端运行 `.venv/bin/python run.py`（Windows：`.venv\Scripts\python.exe run.py`）。
+- 项目文件夹挪了位置，重新双击一次「安装川文」。
 
 第一次用：到「设置」里填 DeepSeek 的 API Key（platform.deepseek.com 申请），也可以选 Claude 或其他 OpenAI 兼容接口。不填也能用内置素材练回忆。
 
@@ -47,15 +62,17 @@ tests/       run_tests.py 自测；fake_ai.py 本地假 AI 接口
 
 用临时数据目录，AI 部分接本地假接口，不联网、不花钱。
 
-## 安装
+## 从源码运行（开发者）
 
 需要 Python 3.10 以上。
 
 ```bash
 git clone https://github.com/georageti/chuanwen.git
 cd chuanwen
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+bash scripts/setup.sh        # Windows：powershell -ExecutionPolicy Bypass -File scripts\setup.ps1
 .venv/bin/python run.py
 ```
+
+发新版：改完提交推送后 `python3 -I scripts/build_release.py`，再 `gh release create vX.Y.Z dist/chuanwen-*.zip`。
 
 字体：Barlow、Barlow Condensed、DM Mono、EB Garamond（SIL Open Font License）。代码使用 MIT 许可证。
