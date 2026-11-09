@@ -55,19 +55,69 @@ function loading(msg) { return `<div class="loading">${esc(msg)}</div>`; }
 
 const pad = (n, w = 2) => String(n).padStart(w, "0");
 
+// 设置（启动时从服务器读一次，改设置后更新）
+let CFG = { study: { max_tries: 3, auto_speak: true }, drill: { min_words: 20 }, translate: { length: "mix", show_hints: true },
+  voice: { name: "en-US-AriaNeural", rate: -5 }, ui: { font: "normal", motion: true, serif: true } };
+async function loadCfg() {
+  try { CFG = await api("/api/settings"); } catch { /* 用默认值 */ }
+  applyUi();
+}
+function applyUi() {
+  const d = document.documentElement.dataset;
+  d.font = CFG.ui.font || "normal";
+  d.motion = CFG.ui.motion === false ? "off" : "on";
+  d.serif = CFG.ui.serif === false ? "off" : "on";
+  pickVoice();
+}
+
+// 朗读：和川听同一套微软神经网络语音（服务器合成并缓存）；选了“浏览器自带”或者合成失败时才用浏览器的语音
 let voice = null;
 function pickVoice() {
+  if (!("speechSynthesis" in window)) return;
   const vs = speechSynthesis.getVoices().filter((v) => v.lang && v.lang.startsWith("en"));
   voice = vs.find((v) => /Samantha|Ava|Allison|Daniel|Karen|Serena/.test(v.name)) || vs.find((v) => v.lang === "en-US") || vs[0] || null;
 }
 if ("speechSynthesis" in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
-function speak(text) {
-  if (!("speechSynthesis" in window) || !text) return;
-  speechSynthesis.cancel();
+
+function browserSpeak(text, rate) {
+  if (!("speechSynthesis" in window)) return;
   const u = new SpeechSynthesisUtterance(text);
-  if (voice) u.voice = voice;
-  u.lang = "en-US"; u.rate = 0.92;
+  if (voice) { u.voice = voice; u.lang = voice.lang; } else u.lang = "en-US";
+  u.rate = Math.max(0.5, Math.min(1.5, 1 + (rate ?? -5) / 100));
   speechSynthesis.speak(u);
+}
+
+function ttsUrl(text, opts = {}) {
+  const q = new URLSearchParams({ text });
+  if (opts.voice) q.set("voice", opts.voice);
+  if (opts.rate !== undefined) q.set("rate", opts.rate);
+  return "/api/tts?" + q;
+}
+
+let playing = null;
+function stopSpeak() {
+  if (playing) { playing.pause(); playing = null; }
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+}
+
+function speak(text, opts = {}) {
+  if (!text) return;
+  stopSpeak();
+  const name = opts.voice || (CFG.voice && CFG.voice.name);
+  const rate = opts.rate ?? (CFG.voice && CFG.voice.rate);
+  if (name === "browser") { browserSpeak(text, rate); return; }
+  const a = new Audio(ttsUrl(text, opts));
+  playing = a;
+  let fell = false;
+  const fallback = () => { if (!fell && playing === a) { fell = true; browserSpeak(text, rate); } };
+  a.onerror = fallback;
+  a.play().catch((e) => { if (e && e.name !== "AbortError") fallback(); });
+}
+
+// 提前让服务器合成好，点朗读时就是秒开
+function prefetchAudio(text) {
+  if (!text || (CFG.voice && CFG.voice.name === "browser")) return;
+  fetch(ttsUrl(text)).catch(() => {});
 }
 
 // 在例句里标出答案（按顺序查找，不分大小写）
@@ -173,7 +223,7 @@ function editMaterial(cand, { title = "加入素材库", withExample = false } =
 // ---------- 路由 ----------
 
 const routes = {
-  "": home, library, docs, doc, practice, recall, rewrite, drill, settings,
+  "": home, library, docs, doc, practice, recall, rewrite, drill, translate, settings,
 };
 
 let routeToken = 0;
@@ -183,13 +233,13 @@ async function render() {
   const [name, arg] = path.split("/");
   const params = new URLSearchParams(query || "");
   const fn = routes[name] || home;
-  $$(".top [data-nav]").forEach((a) => a.classList.toggle("on", a.dataset.nav === name || (name === "doc" && a.dataset.nav === "docs") || (["recall", "rewrite", "drill"].includes(name) && a.dataset.nav === "practice")));
+  $$(".top [data-nav]").forEach((a) => a.classList.toggle("on", a.dataset.nav === name || (name === "doc" && a.dataset.nav === "docs") || (["recall", "rewrite", "drill", "translate"].includes(name) && a.dataset.nav === "practice")));
   const token = ++routeToken;
   window.onkeydown = null;
-  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  stopSpeak();
   main().innerHTML = loading("加载中…");
   try {
-    if (!TOPICS.length) await loadTopics();
+    if (!TOPICS.length) await Promise.all([loadTopics(), loadCfg()]);
     await fn(arg ? decodeURIComponent(arg) : "", params, () => token === routeToken);
     window.scrollTo({ top: 0 });
   } catch (e) {
@@ -208,6 +258,7 @@ async function home() {
     { label: "recall", text: `due ${s.due} · new ${Math.min(quota, s.new)} · library ${s.materials}`, href: "#/recall" },
     { label: "rewrite", text: s.aiReady ? "用库里的搭配升级平淡的句子" : "需要先在设置里填 AI Key", href: s.aiReady ? "#/rewrite" : "#/settings" },
     { label: "drill", text: `${s.drills} 篇 · 选一个话题写一段`, href: "#/drill" },
+    { label: "translate", text: `${s.translations} 题 · 看中文写英文，AI 给更地道的说法`, href: "#/translate" },
   ];
   const max = Math.max(1, ...s.history.map((d) => d.n));
   main().innerHTML = `
@@ -254,7 +305,7 @@ async function home() {
   </section>
 
   <section class="section">
-    <div class="section-head"><h2 class="h2">Practice<sup>3</sup></h2></div>
+    <div class="section-head"><h2 class="h2">Practice<sup>4</sup></h2></div>
     ${modesHtml(s)}
   </section>`;
   const tabs = $$(".term-tabs button");
@@ -282,6 +333,10 @@ function modesHtml(s) {
       <span class="label">#3 drill</span><div class="h3">话题演练</div>
       <p>选一个话题，系统从库里挑出相关素材，你写一段，AI 标出用上了哪些、哪里不地道，并估分。</p>
       <div class="foot"><span class="label">${s.drills} 篇</span>${ICON.arrow}</div></a>
+    <a class="mode" href="#/translate"><div class="art"><canvas data-art="glyph" data-glyph="译" data-seed="34"></canvas></div>
+      <span class="label">#4 translate</span><div class="h3">话题翻译</div>
+      <p>按话题给中文，有长句、好搭配、地道说法，你写英文；AI 评价准确和地道程度，给出改正、更地道的写法和别的选择。</p>
+      <div class="foot"><span class="label">${s.translations} 题${s.aiReady ? "" : " · 没 AI 用素材例句"}</span>${ICON.arrow}</div></a>
   </div>`;
 }
 
@@ -693,13 +748,13 @@ async function practice() {
   const s = await api("/api/stats");
   main().innerHTML = `
   <div class="fade-in">
-    <div class="section-head"><div><span class="label">#practice</span><h2 class="h2" style="margin-top:8px">Practice<sup>3</sup></h2></div>
+    <div class="section-head"><div><span class="label">#practice</span><h2 class="h2" style="margin-top:8px">Practice<sup>4</sup></h2></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <select class="field" id="ptopic" style="width:auto">${topicOptions(prState.topic)}</select>
         <select class="field" id="pkind" style="width:auto">${kindOptions(prState.kind)}</select>
       </div>
     </div>
-    <p class="muted" style="margin:-16px 0 30px">上面选的话题和类型对“回忆”和“改写”生效。每天新素材 ${s.dailyNew} 条，可以在设置里改。</p>
+    <p class="muted" style="margin:-16px 0 30px">上面选的话题对“回忆”“改写”“翻译”生效，类型对“回忆”生效。每天新素材 ${s.dailyNew} 条，可以在设置里改。</p>
     ${modesHtml(s)}
     <div class="section" style="margin-top:72px"><span class="label">演练记录</span><div id="drills" style="margin-top:12px">${loading("")}</div></div>
   </div>`;
@@ -793,6 +848,7 @@ async function recall(_arg, params, alive) {
         <div id="result"></div></div>`;
       const inputs = $$(".cloze input");
       inputs[0].focus();
+      prefetchAudio(c.sentence);
       const showResult = (ok) => {
         st.done = true;
         inputs.forEach((inp) => { inp.disabled = true; });
@@ -809,7 +865,7 @@ async function recall(_arg, params, alive) {
         $("#check").innerHTML = `下一个 <span class="kbd" style="color:inherit;border-color:currentColor">↵</span>`;
         $("#hint").textContent = "";
         $("#result").scrollIntoView({ behavior: "smooth", block: "nearest" });
-        speak(c.sentence);
+        if (CFG.study.auto_speak !== false) speak(c.sentence);
       };
       const check = () => {
         if (st.done) { idx++; show(); return; }
@@ -822,12 +878,13 @@ async function recall(_arg, params, alive) {
         });
         if (all) { showResult(true); return; }
         st.mistakes++;
-        if (st.mistakes >= 3) {
+        const maxTries = CFG.study.max_tries || 3;
+        if (st.mistakes >= maxTries) {
           st.peeked = true;
           inputs.forEach((inp) => { inp.value = inp.dataset.ans; inp.classList.remove("bad"); inp.classList.add("ok"); });
           showResult(false);
         } else {
-          $("#hint").textContent = `不对，还可以再试 ${3 - st.mistakes} 次`;
+          $("#hint").textContent = `不对，还可以再试 ${maxTries - st.mistakes} 次`;
           const bad = inputs.find((i) => i.classList.contains("bad"));
           bad && bad.select();
         }
@@ -854,6 +911,7 @@ async function recall(_arg, params, alive) {
         <div class="ctrl"><button class="btn primary" id="reveal">看答案 <span class="kbd" style="color:inherit;border-color:currentColor">↵</span></button></div>
         <div id="result"></div></div>`;
       $(".answer-box").focus();
+      prefetchAudio(c.form);
       let revealed = false;
       const rate = (g) => {
         results.push({ id: c.id, ok: g === 3 });
@@ -871,7 +929,7 @@ async function recall(_arg, params, alive) {
           ${c.sentence && c.sentence !== c.form ? `<div class="serif dim" style="font-size:17px">${esc(c.sentence)}</div>` : ""}
           <div class="grade-btns"><button class="btn line" data-g="1">忘了 <span class="kbd">1</span></button><button class="btn line" data-g="2">模糊 <span class="kbd">2</span></button><button class="btn primary" data-g="3">记得 <span class="kbd" style="color:inherit;border-color:currentColor">3</span></button></div></div>`;
         $$("[data-g]").forEach((b) => b.onclick = () => rate(+b.dataset.g));
-        speak(c.form);
+        if (CFG.study.auto_speak !== false) speak(c.form);
       };
       $("#reveal").onclick = reveal;
       window.onkeydown = (e) => {
@@ -996,7 +1054,7 @@ async function drill(slug, params, alive) {
       <div>
         <div class="prompt-box"><span class="label">题目</span><div class="en" style="margin-top:8px">${esc(d.prompt.en)}</div><div class="dim" style="font-size:14px;margin-top:6px">${esc(d.prompt.zh)}</div>
           <div style="margin-top:12px"><button class="btn line small" id="another">换一题</button></div></div>
-        <textarea class="answer-box" id="essay" placeholder="写一段（建议 120–250 词），试着用上右边的素材…">${esc(draft)}</textarea>
+        <textarea class="answer-box" id="essay" placeholder="写一段（建议 120–250 词，至少 ${d.minWords} 词），试着用上右边的素材…">${esc(draft)}</textarea>
         <div class="ctrl"><button class="btn primary" id="sub" ${d.aiReady ? "" : "disabled"}>提交批改 <span class="kbd" style="color:inherit;border-color:currentColor">⌘↵</span></button><span class="label" id="wc"></span></div>
       </div>
       <aside class="sugg"><span class="label">可以用上的素材 · 写进去会亮起</span>
@@ -1018,7 +1076,7 @@ async function drill(slug, params, alive) {
   $("#another").onclick = () => { location.hash = `#/drill/${slug}?${d.prompts.length > 1 && Math.random() < 0.6 ? "r=" + Date.now() : "fresh=1&r=" + Date.now()}`; };
   const submit = async () => {
     const text = $("#essay").value.trim();
-    if ((text.match(/[A-Za-z]+/g) || []).length < 20) { toast("至少写 20 个词再提交", true); return; }
+    if ((text.match(/[A-Za-z]+/g) || []).length < d.minWords) { toast(`至少写 ${d.minWords} 个词再提交`, true); return; }
     $("#sub").disabled = true; $("#sub").textContent = "AI 批改中…";
     try {
       const fb = await api("/api/drill/check", { body: { topic: slug, prompt: d.prompt.en, text, ids: d.suggestions.map((m) => m.id) } });
@@ -1032,16 +1090,191 @@ async function drill(slug, params, alive) {
   window.onkeydown = (e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey) && !$("#sub").disabled) { e.preventDefault(); submit(); } };
 }
 
+// ---------- 话题翻译 ----------
+
+const LEN_NAME = { mix: "混合", short: "短句", medium: "中句", long: "长句" };
+const trState = { length: "", exclude: [], excludeMaterials: [] };
+
+// 按词对比，标出改动（删掉的划线，加上的下划线）
+function wordDiff(a, b) {
+  const A = a.split(/\s+/).filter(Boolean), B = b.split(/\s+/).filter(Boolean);
+  const key = (w) => w.toLowerCase().replace(/[.,;:!?"“”]/g, "");
+  const n = A.length, m = B.length;
+  const L = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
+  for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) {
+    L[i][j] = key(A[i]) === key(B[j]) ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  }
+  const out = [];
+  let i = 0, j = 0;
+  while (i < n || j < m) {
+    if (i < n && j < m && key(A[i]) === key(B[j])) { out.push(esc(B[j])); i++; j++; }
+    else if (i < n && (j >= m || L[i + 1][j] >= L[i][j + 1])) { out.push(`<del>${esc(A[i])}</del>`); i++; }  // 先划掉旧的
+    else { out.push(`<ins>${esc(B[j])}</ins>`); j++; }  // 再给新的
+  }
+  return out.join(" ");
+}
+
+function translateFeedbackHtml(fb, answer) {
+  const stars = (n) => `${n}<span class="dim" style="font-size:.5em">/5</span>`;
+  return `<div class="feedback">
+    <div class="fb-block">
+      <div style="display:flex;gap:22px;align-items:flex-end;flex-wrap:wrap"><span class="score">${stars(fb.score)}</span>
+        <div class="dims" style="padding-bottom:12px"><span>准确<b>${fb.accuracy}</b></span><span>地道<b>${fb.naturalness}</b></span></div></div>
+      <p class="muted" style="margin:10px 0 0">${esc(fb.summary)}</p>
+    </div>
+    <div class="fb-block"><h4>你的译文 · 改正后</h4>
+      <div class="diff">${fb.corrected && fb.corrected !== answer ? wordDiff(answer, fb.corrected) : esc(answer) + ' <span class="tag blue">不用改</span>'}</div></div>
+    ${fb.better && fb.better.length ? `<div class="fb-block"><h4>更地道的写法</h4>${fb.better.map((b) => `<div class="better"><div class="serif">${esc(b)}</div>
+      <button class="iconbtn" data-say="${esc(b)}" title="朗读">${ICON.speak}</button></div>`).join("")}</div>` : ""}
+    ${fb.chunks && fb.chunks.length ? `<div class="fb-block"><h4>还可以这样说 · ${fb.chunks.length}</h4>${fb.chunks.map((c) => `<div class="chunk">
+      <div class="yours">“${esc(c.yours)}”</div><div class="opts">${c.options.map((o) => `<span>${esc(o)}</span>`).join("")}</div>
+      ${c.why ? `<div class="dim" style="font-size:14px">${esc(c.why)}</div>` : ""}</div>`).join("")}</div>` : ""}
+    ${fb.good && fb.good.length ? `<div class="fb-block"><h4>写得好的地方</h4>${fb.good.map((g) => `<div class="issue"><div><ins>${esc(g.quote)}</ins></div><div class="dim" style="font-size:14px">${esc(g.why)}</div></div>`).join("")}</div>` : ""}
+    ${fb.targetsUsed && fb.targetsUsed.length ? `<div class="fb-block"><h4>这道题考的库内素材</h4><div class="chips">${fb.targetsUsed.map((t) => `<span class="tag ${t.used && t.ok ? "blue" : ""}">${esc(t.form || "")} · ${t.used ? (t.ok ? "用对了" : "用了但不对") : "没用上"}</span>`).join("")}</div></div>` : ""}
+    ${fb.expressions && fb.expressions.length ? `<div class="fb-block"><h4>值得收藏的表达</h4>${fb.expressions.map((e, i) => `<div class="expr">
+      <div><span class="tag k-${e.kind}">${KIND[e.kind]}</span> <b>${esc(e.form)}</b> <span class="dim">${esc(e.zh)}</span>
+      ${e.examples[0] ? `<div class="serif dim" style="font-size:15px;margin-top:4px">${highlight(e.examples[0].en, e.examples[0].answer)}</div>` : ""}</div>
+      <button class="btn line small" data-save="${i}" ${e.saved ? "disabled" : ""}>${e.saved ? "已在库里" : "+ 加入素材库"}</button></div>`).join("")}</div>` : ""}
+    ${fb.ref ? `<details class="fb-block"><summary class="label" style="cursor:pointer">出题时的参考译文</summary><div class="serif" style="font-size:18px;margin-top:10px">${esc(fb.ref)}</div></details>` : ""}
+  </div>`;
+}
+
+function bindFeedback(root, fb) {
+  root.addEventListener("click", async (e) => {
+    const say = e.target.closest("[data-say]");
+    if (say) { speak(say.dataset.say); return; }
+    const b = e.target.closest("[data-save]");
+    if (!b) return;
+    const ex = fb.expressions[+b.dataset.save];
+    try {
+      const r = await api("/api/materials", { body: { source: "ai", items: [ex] } });
+      b.disabled = true; b.textContent = r.added ? "已加入" : "已在库里";
+    } catch (err) { fail(err); }
+  });
+}
+
+async function translate(_arg, params, alive) {
+  await loadTopics();
+  const length = trState.length || CFG.translate.length || "mix";
+  main().innerHTML = `<div class="stage">${loading("出题中…（AI 第一次出一批，约 15 秒）")}</div>`;
+  let item;
+  try {
+    item = await api("/api/translate/next", { body: { topic: prState.topic, length, exclude: trState.exclude.slice(-50), excludeMaterials: trState.excludeMaterials.slice(-50) } });
+  } catch (e) {
+    if (alive()) main().innerHTML = `<div class="done"><p class="muted">${esc(e.message)}</p><a class="btn line" href="#/practice">返回</a></div>`;
+    return;
+  }
+  if (!alive()) return;
+  trState.exclude.push(item.id);
+  item.targets.forEach((t) => trState.excludeMaterials.push(t.id));
+  const hinted = { v: false };
+  main().innerHTML = `<div class="stage fade-in">
+    <div class="practice-top"><span class="label">#translate · ${esc(LEN_NAME[item.length] || "")} · ${esc(item.topicZh)}</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <select class="field" id="ttopic" style="width:auto;padding:6px 10px">${topicOptions(prState.topic, "随机话题")}</select>
+        <div class="chips len-chips">${Object.entries(LEN_NAME).map(([k, v]) => `<button class="chip ${k === length ? "on" : ""}" data-len="${k}">${v}</button>`).join("")}</div>
+      </div></div>
+    ${item.aiReady ? "" : `<div class="notice">还没配置 AI：题目来自素材库的例句，写完对照参考译文自己打分。配置 AI 后会出长句、地道表达的题，并给出详细批改。<a href="#/settings">去设置</a></div>`}
+    <span class="label">把这段中文译成英文</span>
+    <div class="zh-big ${item.length === "long" ? "long" : ""}">${esc(item.zh)}</div>
+    ${item.hints.length ? `<div class="hints hidden" id="hints">${item.hints.map((h) => `<div><b>${esc(h.zh)}</b>${h.en.map(esc).join(" / ")}</div>`).join("")}</div>` : ""}
+    <textarea class="answer-box" id="ans" placeholder="写出你的英文译文…" style="min-height:${item.length === "long" ? 160 : 110}px"></textarea>
+    <div class="ctrl"><button class="btn primary" id="sub">${item.aiReady ? "提交批改" : "对照答案"} <span class="kbd" style="color:inherit;border-color:currentColor">⌘↵</span></button>
+      ${item.hints.length ? `<button class="btn line small" id="hint">提示</button>` : ""}
+      <button class="btn line small" id="skip">换一题</button><span class="spacer"></span></div>
+    <div id="result"></div>
+    <div class="section" style="margin-top:72px"><span class="label">最近的翻译</span><div id="hist" style="margin-top:12px"></div></div>
+  </div>`;
+  $("#ans").focus();
+  const next = () => { location.hash = `#/translate?r=${Date.now()}`; };
+  $("#skip").onclick = next;
+  $("#ttopic").onchange = (e) => { prState.topic = e.target.value; next(); };
+  $$("[data-len]").forEach((b) => b.onclick = () => { trState.length = b.dataset.len; next(); });
+  if ($("#hint")) $("#hint").onclick = () => { hinted.v = true; $("#hints").classList.remove("hidden"); $("#hint").remove(); };
+  let done = false;
+  const submit = async () => {
+    if (done) { next(); return; }
+    const answer = $("#ans").value.trim();
+    if ((answer.match(/[A-Za-z]+/g) || []).length < 3) { toast("先写出英文译文", true); return; }
+    $("#sub").disabled = true; $("#sub").textContent = item.aiReady ? "AI 批改中…" : "…";
+    try {
+      const fb = await api("/api/translate/check", { body: { id: item.id, answer, hinted: hinted.v } });
+      done = true;
+      $("#ans").readOnly = true;
+      if (fb.selfRate) {
+        $("#result").innerHTML = `<div class="result fade-in"><span class="label">参考译文</span>
+          <div class="serif" style="font-size:20px">${esc(fb.ref)}</div>
+          ${fb.targets.map((t) => `<div><span class="tag ${t.used ? "blue" : ""}">${esc(t.form)}</span> <span class="dim">${esc(t.zh)} · ${t.used ? "你用上了" : "你没用上"}</span></div>`).join("")}
+          <span class="label" style="margin-top:8px">和参考译文比，你觉得自己译得——</span>
+          <div class="grade-btns"><button class="btn line" data-g="1">差得远 <span class="kbd">1</span></button><button class="btn line" data-g="2">意思对、不够地道 <span class="kbd">2</span></button><button class="btn primary" data-g="3">基本一样好 <span class="kbd" style="color:inherit;border-color:currentColor">3</span></button></div></div>`;
+        const rate = async (g) => { await api("/api/translate/rate", { body: { id: item.id, grade: g } }).catch(fail); next(); };
+        $$("[data-g]").forEach((b) => b.onclick = () => rate(+b.dataset.g));
+        window.onkeydown = (e) => { if (["1", "2", "3"].includes(e.key)) rate(+e.key); };
+        $("#sub").remove();
+      } else {
+        $("#result").innerHTML = translateFeedbackHtml(fb, answer);
+        bindFeedback($("#result"), fb);
+        $("#sub").disabled = false;
+        $("#sub").innerHTML = `下一题 <span class="kbd" style="color:inherit;border-color:currentColor">⌘↵</span>`;
+        if (CFG.study.auto_speak !== false && fb.better[0]) speak(fb.better[0]);
+        if (fb.better[1]) prefetchAudio(fb.better[1]);
+      }
+      $("#result").scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (e) { fail(e); $("#sub").disabled = false; $("#sub").textContent = item.aiReady ? "提交批改" : "对照答案"; }
+  };
+  $("#sub").onclick = submit;
+  window.onkeydown = (e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); submit(); } };
+
+  const hist = await api("/api/translate/history").catch(() => []);
+  if (!alive() || !$("#hist")) return;
+  $("#hist").innerHTML = hist.length ? hist.map((h) => `<div class="docrow" style="grid-template-columns:64px minmax(0,1fr) auto">
+      <span class="score" style="font-size:36px">${h.feedback.selfRate ? "–" : h.feedback.score}</span>
+      <div style="min-width:0"><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(h.zh)}</div>
+      <span class="label">${esc(topicZh(h.topic))} · ${new Date(h.created * 1000).toLocaleString()}</span></div>
+      <button class="iconbtn" data-view="${h.id}" title="查看">${ICON.arrow}</button></div>`).join("") : `<div class="empty">还没有翻译记录</div>`;
+  $("#hist").onclick = (e) => {
+    const b = e.target.closest("[data-view]"); if (!b) return;
+    const h = hist.find((x) => x.id === +b.dataset.view);
+    modal(`<span class="label">${esc(topicZh(h.topic))} · ${new Date(h.created * 1000).toLocaleString()}</span>
+      <div class="zh-big" style="font-size:20px">${esc(h.zh)}</div>
+      ${h.feedback.selfRate ? `<div class="fb-block"><h4>你写的</h4><div class="serif" style="font-size:18px">${esc(h.answer)}</div></div>
+        <div class="fb-block" style="margin-top:12px"><h4>参考译文</h4><div class="serif" style="font-size:18px">${esc(h.feedback.ref)}</div></div>`
+        : translateFeedbackHtml(h.feedback, h.answer)}
+      <div class="foot"><button class="btn line" data-cancel>关闭</button></div>`,
+    (box, close) => { box.style.width = "min(820px,100%)"; box.querySelector("[data-cancel]").onclick = close; bindFeedback(box, h.feedback); });
+  };
+}
+
 // ---------- 设置 ----------
 
+const EXAM_NAME = { ielts: "雅思", toefl: "托福", kaoyan: "考研", cet6: "六级", cet4: "四级" };
+const EXAM_BAND = { ielts: "7", toefl: "100", kaoyan: "80", cet6: "550", cet4: "500" };
+
+function chipRow(name, options, current) {
+  return `<div class="chips" data-chips="${name}">${options.map(([v, label]) => `<button class="chip ${String(v) === String(current) ? "on" : ""}" data-v="${v}">${label}</button>`).join("")}</div>`;
+}
+function selectRow(name, values, current, suffix = "") {
+  return `<select class="field" data-sel="${name}" style="width:auto">${values.map((v) => `<option value="${v}" ${String(v) === String(current) ? "selected" : ""}>${v}${suffix}</option>`).join("")}</select>`;
+}
+function toggleRow(name, on, label) {
+  return `<label class="check" style="text-transform:none;letter-spacing:0;font-family:var(--body);font-size:14px"><input type="checkbox" data-tog="${name}" ${on ? "checked" : ""}>${label}</label>`;
+}
+// "study.daily_new" → {study: {daily_new: v}}
+function patchOf(path, value) {
+  const [a, b] = path.split(".");
+  return { [a]: { [b]: value } };
+}
+
 async function settings() {
-  const cfg = await api("/api/settings");
-  const a = cfg.ai;
+  const [cfg, info, voices] = await Promise.all([api("/api/settings"), api("/api/info"), api("/api/voices")]);
+  CFG = cfg;
+  const a = cfg.ai, st = cfg.study;
   const prov = [["deepseek", "DeepSeek（默认，国内直连）"], ["anthropic", "Claude"], ["openai", "其他兼容接口"], ["none", "不用 AI"]];
+  const row = (label, control, help = "") => `<div class="set-row"><span>${label}${help ? `<small>${help}</small>` : ""}</span><div>${control}</div></div>`;
   main().innerHTML = `<div class="fade-in">
-    <div class="section-head"><div><span class="label">#settings</span><h2 class="h2" style="margin-top:8px">Settings</h2></div></div>
+    <div class="section-head"><div><span class="label">#settings · 改了就自动保存（AI 来源和 Key 要点“保存”）</span><h2 class="h2" style="margin-top:8px">Settings</h2></div></div>
     <div class="settings">
-      <section><span class="label">AI 来源 · 拆文章、改写批改、话题演练都用它</span>
+      <section><span class="label">AI 来源 · 拆文章、改写、演练、翻译、AI 扩充都用它</span>
         <div class="chips" id="prov">${prov.map(([k, v]) => `<button class="chip ${a.provider === k ? "on" : ""}" data-p="${k}">${v}</button>`).join("")}</div>
         <div data-for="deepseek" class="form-grid">
           <label><span class="label">DeepSeek API Key（platform.deepseek.com 申请）</span><input class="field" name="deepseek.key" value="${esc(a.deepseek.key)}" placeholder="sk-…"></label>
@@ -1057,16 +1290,52 @@ async function settings() {
           <div class="two"><label><span class="label">模型名</span><input class="field" name="openai.model" value="${esc(a.openai.model)}" placeholder="moonshot-v1-8k"></label>
           <label><span class="label">接口地址（填到 /v1）</span><input class="field" name="openai.base" value="${esc(a.openai.base)}" placeholder="https://api.moonshot.cn/v1"></label></div>
         </div>
-        <div data-for="none"><p class="muted" style="margin:0">不用 AI 时：内置素材可以练回忆；导入文章只分句，划选文字手动加素材。</p></div>
+        <div data-for="none"><p class="muted" style="margin:0">不用 AI 时：内置素材可以练回忆；翻译用素材例句出题、自己对照打分；导入文章只分句，划选文字手动加素材。</p></div>
         <div class="ctrl" style="margin-top:6px"><button class="btn primary" id="save">保存</button><button class="btn line" id="test">测试连接</button><span class="label" id="testmsg"></span></div>
       </section>
-      <section><span class="label">练习</span>
-        <div class="two">
-          <label><span class="label">每天新素材</span><select class="field" id="daily">${[5, 10, 15, 20, 30, 50].map((n) => `<option ${cfg.study.daily_new === n ? "selected" : ""}>${n}</option>`).join("")}</select></label>
-          <label><span class="label">每轮最多</span><select class="field" id="size">${[10, 20, 30, 50, 100].map((n) => `<option ${cfg.study.session_size === n ? "selected" : ""}>${n}</option>`).join("")}</select></label>
-        </div>
+
+      <section><span class="label">目标与批改 · 所有 AI 出题和批改都会按这里调整难度和口径</span>
+        ${row("目标考试", chipRow("exam.target", Object.entries(EXAM_NAME), cfg.exam.target))}
+        ${row("目标分数", `<input class="field" data-text="exam.band" value="${esc(cfg.exam.band)}" placeholder="默认 ${EXAM_BAND[cfg.exam.target] || "7"}" style="width:140px">`, "留空用默认：雅思 7 / 托福 100 / 考研 80 / 六级 550 / 四级 500")}
+        ${row("批改严格程度", chipRow("ai.strictness", [["lenient", "宽松鼓励"], ["standard", "标准"], ["strict", "严格"]], a.strictness))}
+        ${row("点评语言", chipRow("ai.feedback_lang", [["zh", "中文"], ["en", "英文"]], a.feedback_lang), "英文点评也算一种输入练习")}
       </section>
+
+      <section><span class="label">每日学习</span>
+        ${row("每天新素材", selectRow("study.daily_new", [0, 5, 10, 15, 20, 30, 50, 100], st.daily_new, " 条"), "设成 0 就只复习")}
+        ${row("每轮最多", selectRow("study.session_size", [10, 20, 30, 50, 100, 200], st.session_size, " 条"))}
+        ${row("新素材顺序", chipRow("study.new_order", [["mine_first", "自己收集的先"], ["rotate", "按话题轮流"], ["random", "随机"]], st.new_order))}
+        ${row("回忆练哪几类", Object.entries(KIND).map(([k, v]) => toggleRow(`kind:${k}`, (st.kinds || []).includes(k), v)).join("&emsp;"), "练习页选了具体类型时以那里为准")}
+      </section>
+
+      <section><span class="label">回忆</span>
+        ${row("错几次给答案", selectRow("study.max_tries", [1, 2, 3, 4, 5, 6], st.max_tries, " 次"))}
+        ${row("答完自动朗读", toggleRow("study.auto_speak", st.auto_speak !== false, "回忆、翻译答完后读一遍"))}
+      </section>
+
+      <section><span class="label">话题演练 · 话题翻译</span>
+        ${row("演练建议素材", selectRow("drill.suggestions", [6, 8, 10, 12, 16, 20, 24], cfg.drill.suggestions, " 条"))}
+        ${row("演练最少词数", selectRow("drill.min_words", [10, 20, 50, 80, 120, 150, 200], cfg.drill.min_words, " 词"))}
+        ${row("翻译题默认长度", chipRow("translate.length", Object.entries(LEN_NAME), cfg.translate.length), "翻译页上也能临时切换")}
+        ${row("AI 每次出几道", selectRow("translate.batch", [3, 6, 9, 12], cfg.translate.batch, " 道"), "出一批缓存起来，后面的题不用等")}
+        ${row("翻译题提示", toggleRow("translate.show_hints", cfg.translate.show_hints !== false, "显示“提示”按钮（用了提示，考到的素材最多算模糊）"))}
+      </section>
+
+      <section><span class="label">朗读 · 和川听同一套微软语音（免费、不用 Key，连不上时自动改用电脑自带语音）</span>
+        ${row("声音", `<select class="field" id="voice" style="width:auto">${voices.map((v) => `<option value="${esc(v.name)}" ${v.name === cfg.voice.name ? "selected" : ""}>${esc(v.label)}</option>`).join("")}
+          <option value="browser" ${cfg.voice.name === "browser" ? "selected" : ""}>电脑自带语音（不联网）</option></select>`)}
+        ${row("语速", `<input type="range" min="-30" max="30" step="5" id="rate" value="${cfg.voice.rate}"> <span class="mono" id="ratev">${cfg.voice.rate > 0 ? "+" : ""}${cfg.voice.rate}%</span>`, "川听默认 -5%")}
+        ${row("", `<button class="btn line small" id="listen">${ICON.speak}试听</button>`)}
+      </section>
+
+      <section><span class="label">界面</span>
+        ${row("字号", chipRow("ui.font", [["normal", "标准"], ["large", "大"]], cfg.ui.font))}
+        ${row("动画", toggleRow("ui.motion", cfg.ui.motion !== false, "页面切换和弹窗的淡入动画"))}
+        ${row("例句字体", toggleRow("ui.serif", cfg.ui.serif !== false, "例句用衬线体（关掉改用无衬线）"))}
+      </section>
+
       <section><span class="label">数据 · 存在这台电脑上</span>
+        ${row("数据位置", `<span class="mono dim" style="font-size:12px;word-break:break-all">${esc(info.home)}</span>`)}
         <div class="ctrl" style="margin-top:0">
           <a class="btn line" href="/api/export/backup">${ICON.down}导出学习记录</a>
           <label class="btn line">导入学习记录<input type="file" id="imp" accept=".json" hidden></label>
@@ -1074,9 +1343,30 @@ async function settings() {
           <a class="btn line" href="/api/export/markdown?source=mine">${ICON.down}我的素材 Markdown</a>
         </div>
         <p class="muted" style="margin:0;font-size:14px">学习记录可以在另一台电脑的川文里导入，会合并、不覆盖。“导出到川词”只包含你自己收集的搭配和衔接。</p>
+        <div class="ctrl" style="margin-top:4px">
+          <button class="btn line small" data-mt="restore-builtin">恢复删掉的内置素材</button>
+          <button class="btn line small" data-mt="clear-ai-cache">清除 AI 出题缓存</button>
+          <button class="btn line small danger" data-mt="reset-progress">重置练习进度</button>
+        </div>
+        <p class="muted" style="margin:0;font-size:13px">改了目标考试或严格程度后，可以清除缓存，让改写题和翻译题按新设置重新出。重置进度会清空所有复习记录，素材和文章都保留。</p>
       </section>
-      <section><span class="label">关闭</span><div><button class="btn line" id="quit">关闭川文</button></div></section>
+
+      <section><span class="label">关于</span>
+        ${row("版本", `<span class="mono">v${esc(info.version)}</span> <button class="btn line small" id="upd" style="margin-left:10px">检查更新</button> <span class="label" id="updmsg"></span>`)}
+        ${row("项目主页", `<a href="${info.repo}" target="_blank" rel="noopener">${info.repo.replace("https://", "")}</a>`)}
+        ${row("关闭川文", `<button class="btn line small" id="quit">关闭川文</button>`, "关闭后网页就不能用了，下次从“川文”重新打开")}
+      </section>
     </div></div>`;
+
+  const save = async (patch, quiet) => {
+    try {
+      CFG = await api("/api/settings", { body: patch });
+      applyUi();
+      if (!quiet) toast("已保存");
+    } catch (e) { fail(e); }
+  };
+
+  // AI 来源
   let provider = a.provider;
   const showProv = () => $$("[data-for]").forEach((el) => el.classList.toggle("hidden", el.dataset.for !== provider));
   showProv();
@@ -1086,26 +1376,78 @@ async function settings() {
     $$("#prov .chip").forEach((x) => x.classList.toggle("on", x === b));
     showProv();
   };
-  const collect = () => {
-    const patch = { ai: { provider, deepseek: {}, anthropic: {}, openai: {} }, study: { daily_new: +$("#daily").value, session_size: +$("#size").value } };
+  const aiPatch = () => {
+    const patch = { ai: { provider, deepseek: {}, anthropic: {}, openai: {} } };
     $$("input[name]").forEach((i) => { const [p, k] = i.name.split("."); patch.ai[p][k] = i.value.trim(); });
     return patch;
   };
-  $("#save").onclick = async () => { try { await api("/api/settings", { body: collect() }); toast("已保存"); } catch (e) { fail(e); } };
-  $("#daily").onchange = $("#size").onchange = () => api("/api/settings", { body: { study: collect().study } }).then(() => toast("已保存")).catch(fail);
+  $("#save").onclick = () => save(aiPatch());
   $("#test").onclick = async () => {
     $("#testmsg").textContent = "测试中…";
     try {
-      await api("/api/settings", { body: collect() });
+      await save(aiPatch(), true);
       const r = await api("/api/settings/test", { method: "POST" });
       $("#testmsg").textContent = r.ok ? "连接正常" : r.error;
       if (r.ok) toast("AI 连接正常：" + r.sample.slice(0, 60)); else toast(r.error, true);
     } catch (e) { $("#testmsg").textContent = ""; fail(e); }
   };
+
+  // 其余设置：改了就存
+  $$("[data-chips]").forEach((box) => box.onclick = (e) => {
+    const b = e.target.closest("[data-v]"); if (!b) return;
+    $$(".chip", box).forEach((x) => x.classList.toggle("on", x === b));
+    save(patchOf(box.dataset.chips, b.dataset.v));
+    if (box.dataset.chips === "exam.target") $("[data-text='exam.band']").placeholder = `默认 ${EXAM_BAND[b.dataset.v]}`;
+  });
+  $$("[data-sel]").forEach((el) => el.onchange = () => save(patchOf(el.dataset.sel, +el.value)));
+  $$("[data-text]").forEach((el) => el.onchange = () => save(patchOf(el.dataset.text, el.value.trim())));
+  $$("[data-tog]").forEach((el) => el.onchange = () => {
+    if (el.dataset.tog.startsWith("kind:")) {
+      const kinds = $$("[data-tog^='kind:']").filter((x) => x.checked).map((x) => x.dataset.tog.slice(5));
+      if (!kinds.length) { el.checked = true; toast("至少留一类", true); return; }
+      save({ study: { kinds } });
+    } else save(patchOf(el.dataset.tog, el.checked));
+  });
+
+  // 朗读
+  const sample = "There is no denying that a good habit, once formed, pays off in the long run.";
+  $("#voice").onchange = (e) => { save({ voice: { name: e.target.value } }); speak(sample, { voice: e.target.value, rate: +$("#rate").value }); };
+  $("#rate").oninput = (e) => { const v = +e.target.value; $("#ratev").textContent = `${v > 0 ? "+" : ""}${v}%`; };
+  $("#rate").onchange = (e) => save({ voice: { rate: +e.target.value } });
+  $("#listen").onclick = () => speak(sample, { voice: $("#voice").value, rate: +$("#rate").value });
+
+  // 数据维护
+  const MT = {
+    "restore-builtin": ["把删掉的内置素材加回来？", (n) => `恢复了 ${n} 条`],
+    "clear-ai-cache": ["清除还没用过的改写题和翻译题？之后会按现在的设置重新出。", (n) => `清除了 ${n} 道题`],
+    "reset-progress": ["重置所有练习进度？所有素材都会变回“新”，复习记录清空。这一步不能撤销，建议先“导出学习记录”备份。", (n) => `已重置 ${n} 条素材的进度`],
+  };
+  $$("[data-mt]").forEach((b) => b.onclick = async () => {
+    const [q, done] = MT[b.dataset.mt];
+    if (!confirm(q)) return;
+    if (b.dataset.mt === "reset-progress" && !confirm("再确认一次：真的要清空所有复习进度吗？")) return;
+    try {
+      const r = await api(`/api/maintenance/${b.dataset.mt}`, { method: "POST", headers: { "X-ChuanWen": "1" } });
+      toast(done(r.n));
+      if (b.dataset.mt === "restore-builtin") await loadTopics();
+    } catch (e) { fail(e); }
+  });
   $("#imp").onchange = async (e) => {
     const f = e.target.files[0]; if (!f) return;
     const fd = new FormData(); fd.append("file", f);
     try { const r = await api("/api/import/backup", { form: fd }); toast(`导入完成：新增 ${r.added} 条，更新进度 ${r.updated} 条`); } catch (err) { fail(err); }
+  };
+
+  // 关于
+  $("#upd").onclick = async () => {
+    $("#updmsg").textContent = "检查中…";
+    try {
+      const r = await fetch("https://api.github.com/repos/georageti/chuanwen/releases/latest");
+      const j = await r.json();
+      const latest = String(j.tag_name || "").replace(/^v/, "");
+      const newer = latest && latest.localeCompare(info.version, undefined, { numeric: true }) > 0;
+      $("#updmsg").innerHTML = newer ? `有新版 v${esc(latest)}：<a href="${esc(j.html_url)}" target="_blank" rel="noopener">去下载</a>（下载后解压，重新双击“安装川文”）` : "已经是最新版";
+    } catch { $("#updmsg").textContent = "连不上 GitHub，稍后再试"; }
   };
   $("#quit").onclick = async () => {
     if (!confirm("关闭川文？关闭后这个网页就不能用了，下次从“川文”重新打开。")) return;

@@ -222,9 +222,38 @@ def _parse(text: str) -> dict:
     return data
 
 
+EXAMS = {
+    "ielts": "IELTS Academic Writing, target band {band}",
+    "toefl": "TOEFL iBT Writing, target score {band}",
+    "kaoyan": "China's postgraduate entrance exam English (考研英语), target score {band}",
+    "cet6": "CET-6 (College English Test Band 6), target score {band}",
+    "cet4": "CET-4 (College English Test Band 4), target score {band}",
+}
+DEFAULT_BAND = {"ielts": "7", "toefl": "100", "kaoyan": "80", "cet6": "550", "cet4": "500"}
+STRICTNESS = {
+    "lenient": "lenient: encourage the learner, flag only clear errors, and score generously",
+    "standard": "standard: mark like a fair, experienced examiner",
+    "strict": "strict: flag every unnatural or imprecise choice and score conservatively",
+}
+
+
+def profile(cfg: dict) -> str:
+    """学习者设定，附在每个系统提示词后面"""
+    ex = cfg.get("exam", {})
+    target = ex.get("target", "ielts")
+    band = str(ex.get("band") or DEFAULT_BAND.get(target, "7"))
+    lang = "English" if cfg.get("ai", {}).get("feedback_lang") == "en" else "Simplified Chinese"
+    strict = STRICTNESS.get(cfg.get("ai", {}).get("strictness", "standard"), STRICTNESS["standard"])
+    return ("\n\nLearner profile (adjust difficulty, word choice and marking to it):\n"
+            f"- Exam: {EXAMS.get(target, EXAMS['ielts']).format(band=band)}.\n"
+            f"- Marking: {strict}.\n"
+            f"- Write every feedback / comment / explanation field (the fields whose names end in _zh) in {lang}; "
+            "translations of English sentences stay in Simplified Chinese.")
+
+
 def ask(cfg: dict, prompt: str, system: str, schema: dict, **kw) -> dict:
     """测试里替换这个函数来模拟 AI"""
-    return _parse(_call(cfg, prompt, system, schema, **kw))
+    return _parse(_call(cfg, prompt, system + profile(cfg), schema, **kw))
 
 
 def _pieces(v) -> list[str]:
@@ -458,7 +487,7 @@ def describe(selection: str, sentence: str, topics: list[dict], cfg: dict) -> di
 
 # ---------- 改写升级 ----------
 
-REWRITE_SYSTEM = """You set rewriting exercises for a Chinese learner of English writing (target: IELTS 7).
+REWRITE_SYSTEM = """You set rewriting exercises for a Chinese learner of English writing.
 For each target expression, write {n} exercises. Each exercise is a PLAIN, rather flat English sentence (B1 level,
 10-22 words) that says something an essay might say, where using the target expression would clearly upgrade it.
 Vary the essay topics. The plain sentence must NOT already contain the target.
@@ -546,7 +575,7 @@ def check_rewrite(material: dict, task: dict, answer: str, cfg: dict) -> dict:
 
 # ---------- 话题演练 ----------
 
-PROMPT_SYSTEM = """Write {n} IELTS Task 2 style essay questions on the given topic. Each question is one or two
+PROMPT_SYSTEM = """Write {n} essay questions on the given topic, in the style of the learner's exam (IELTS Task 2 style if unsure). Each question is one or two
 sentences and ends with a clear task (agree/disagree, discuss both views, causes and solutions, advantages and
 disadvantages). Also give a Simplified Chinese translation.
 Reply with JSON only, shaped like {"prompts": [{"en": "...", "zh": "..."}]}."""
@@ -567,11 +596,11 @@ def essay_prompts(topic: dict, cfg: dict, n: int = 3) -> list[dict]:
             for p in d.get("prompts", []) if str(p.get("en", "")).strip()][:n]
 
 
-DRILL_SYSTEM = """You are an experienced IELTS writing examiner and coach for a Chinese learner.
+DRILL_SYSTEM = """You are an experienced writing examiner and coach for a Chinese learner.
 The learner wrote one paragraph (or a short essay) answering the question below, and tried to use some suggested
 expressions from their own library. Give honest, specific feedback.
 Return:
-- band: an estimated IELTS band for this writing (number, steps of 0.5, from 3 to 9). Judge Task Response too: if the
+- band: an estimated IELTS writing band for this text, used as a common yardstick whatever the learner's exam (number, steps of 0.5, from 3 to 9). Judge Task Response too: if the
   text does not actually answer the question (off-topic, or only partly addresses it), the band must reflect that.
 - summary_zh: 2-3 sentences of overall feedback in Simplified Chinese (max 140 characters). If the text drifts away
   from the question, say so first.
@@ -579,7 +608,7 @@ Return:
   learner's text), ok (true if used correctly and naturally), comment_zh (max 40 characters).
 - issues: up to 6 of the most important language problems: quote (exact words copied from the learner's text),
   fix (the corrected words), why_zh (max 40 characters).
-- improved: an improved version of the learner's text at about band 7.5. Keep their ideas and structure, and keep the
+- improved: an improved version of the learner's text, a little above the learner's target level. Keep their ideas and structure, and keep the
   expressions they used well.
 Reply with JSON only."""
 
@@ -649,7 +678,7 @@ def test_connection(cfg: dict) -> str:
 # 内置素材的批量生成（scripts/expand_builtin.py）和素材库里的“AI 扩充”按钮都用这里。
 
 EXPAND_SYSTEM = """You build a writing-material bank for Chinese learners preparing for IELTS Writing Task 2 and
-postgraduate-exam English writing (target: IELTS 7). Everything must be accurate, natural, current English that a
+postgraduate-exam English writing. Everything must be accurate, natural, current English that a
 strong essay would actually use. No rare, archaic, or overly literary expressions; no clichés like "every coin has
 two sides". Never repeat anything from the "already have" list, even with small changes.
 
@@ -675,7 +704,7 @@ Return JSON with these arrays (give exactly the requested number of each; an arr
   terms (no invented statistics). Each idea must carry its reasoning or mechanism, not just a slogan: "Sugar taxes
   push manufacturers to reformulate drinks, cutting sugar intake without banning anything" rather than "Sugar taxes
   are good". Each: en (one sentence, max 28 words), zh (max 45 characters).
-- prompts: IELTS Task 2 style questions on the topic: en, zh.
+- prompts: essay questions on the topic in the style of the learner's exam: en, zh.
 Reply with JSON only."""
 
 
@@ -771,9 +800,9 @@ def expand(topic: dict, have: list[str], cfg: dict, counts: dict) -> dict:
 
 # ---------- 审校：复核中文和近义说法，删掉低价值条目 ----------
 
-REVIEW_SYSTEM = """You are a meticulous editor checking a writing-material bank for Chinese learners (target IELTS 7).
+REVIEW_SYSTEM = """You are a meticulous editor checking a writing-material bank for Chinese learners.
 For each numbered item decide:
-- keep: false if the item is wrong, unnatural, too basic for a band-7 essay (lead to, give up, very important), a
+- keep: false if the item is wrong, unnatural, too basic for the learner's target level (lead to, give up, very important), a
   near-duplicate of another item in the list, or its example sentence is unnatural. Otherwise true.
 - zh: the correct, natural Simplified Chinese meaning (fix it if needed; keep it short).
 - alts: only alternatives that really mean the same and could replace the item in its example sentence. Remove any
@@ -826,3 +855,203 @@ def review(materials: list[dict], cfg: dict) -> tuple[list[dict], int]:
                 m["alts"] = [str(a).strip() for a in (v.get("alts") or []) if str(a).strip()][:3]
             kept.append(m)
     return kept, removed
+
+
+
+# ---------- 话题翻译 ----------
+
+TRANS_GEN_SYSTEM = """You write Chinese-to-English translation exercises for a Chinese learner of English writing.
+Each exercise is a Chinese text on the given topic that the learner will translate into English, the kind of thing a
+good essay on that topic would say. The Chinese must read like natural, well-written Chinese (not translationese),
+and should be rich in expressions that are worth learning to render idiomatically in English: elegant word
+partnerships, four-character expressions and idioms (治标不治本, 一刀切, 得不偿失, 不可同日而语), and set phrases.
+
+Lengths:
+- short: one sentence, 15-35 Chinese characters, built around one expression that has a precise, elegant English
+  equivalent (e.g. 这项政策治标不治本 → the policy only treats the symptoms; 加剧贫富分化 → widen the wealth gap).
+- medium: one or two sentences, 35-70 characters, with at least one four-character expression, idiom or set phrase.
+- long: a long, layered sentence or two linked sentences, 70-130 characters, with subordinate clauses, concession,
+  contrast or cause-and-effect, and at least two expressions that need idiomatic rendering, so that it tests sentence
+  structure as well as vocabulary.
+Avoid flat textbook Chinese such as 技术进步不仅提高了生产效率，也降低了成本; prefer the vivid, compact style of a
+good Chinese op-ed (e.g. 一味追求经济增长而忽视环境代价，无异于饮鸩止渴；短期看似红利可观，长远却得不偿失。).
+
+You are given some expressions from the learner's own library (with ids). Where it fits naturally, build an exercise so
+that one of them is the best way to translate part of it, and list its id in targets. Never force it.
+
+For each exercise return:
+- length: short | medium | long
+- zh: the Chinese text
+- ref_en: an idiomatic English translation at the learner's target level
+- targets: ids of library expressions that ref_en uses (may be empty)
+- hints: 1-3 of the trickiest chunks, each {zh: the Chinese chunk, en: [1-3 good English renderings]}
+Reply with JSON only, exactly in this shape:
+{"items": [{"length": "short", "zh": "...", "ref_en": "...", "targets": [12], "hints": [{"zh": "...", "en": ["...", "..."]}]}]}"""
+
+TRANS_GEN_SCHEMA = {
+    "type": "object",
+    "properties": {"items": {"type": "array", "items": {
+        "type": "object",
+        "properties": {
+            "length": {"type": "string", "enum": ["short", "medium", "long"]},
+            "zh": {"type": "string"}, "ref_en": {"type": "string"},
+            "targets": {"type": "array", "items": {"type": "integer"}},
+            "hints": {"type": "array", "items": {
+                "type": "object",
+                "properties": {"zh": {"type": "string"}, "en": {"type": "array", "items": {"type": "string"}}},
+                "required": ["zh", "en"], "additionalProperties": False}},
+        },
+        "required": ["length", "zh", "ref_en", "targets", "hints"], "additionalProperties": False}}},
+    "required": ["items"], "additionalProperties": False,
+}
+
+
+def _content_words(form: str) -> list[str]:
+    return [w for w in re.findall(r"[a-z]+(?:['-][a-z]+)*", form.lower().replace("’", "'"))
+            if w not in SLOT_WORDS and w not in {"a", "an", "the", "of", "to", "in", "on", "and", "be"}]
+
+
+def uses_form(form: str, text: str) -> bool:
+    """粗略判断 text 里是否用了这个素材（允许变形）"""
+    words = _content_words(form)
+    toks = re.findall(r"[A-Za-z]+(?:['’-][A-Za-z]+)*", text)
+    return bool(words) and all(any(_word_match(t, w) for t in toks) for w in words)
+
+
+def translation_items(topic: dict, candidates: list[dict], counts: dict, cfg: dict) -> list[dict]:
+    """counts: {short, medium, long} → [{length, zh, ref, targets: [id], hints}]"""
+    payload = {"topic": f"{topic['en']} ({topic['zh']})",
+               "requested": {k: int(counts.get(k, 0)) for k in ("short", "medium", "long")},
+               "library_expressions": [{"id": m["id"], "type": m["kind"], "form": m["form"], "zh": m["zh"]} for m in candidates]}
+    d = ask(cfg, json.dumps(payload, ensure_ascii=False), TRANS_GEN_SYSTEM, TRANS_GEN_SCHEMA, temperature=0.8, max_tokens=6000)
+    by_id = {m["id"]: m for m in candidates}
+    rows = d.get("items")
+    if not isinstance(rows, list):  # 有的模型不按字段名来（比如叫 exercises），取第一个列表
+        rows = next((v for v in d.values() if isinstance(v, list)), [])
+    out = []
+    for it in rows:
+        if not isinstance(it, dict):
+            continue
+        zh, ref = str(it.get("zh", "")).strip(), str(it.get("ref_en", "")).strip()
+        length = str(it.get("length", "")).strip()
+        if not re.search(r"[\u4e00-\u9fff]", zh) or not ref or length not in ("short", "medium", "long"):
+            continue
+        targets = []
+        for t in it.get("targets") or []:
+            try:
+                t = int(t)
+            except (TypeError, ValueError):
+                continue
+            if t in by_id and t not in targets and uses_form(by_id[t]["form"], ref):
+                targets.append(t)
+        hints = []
+        for h in it.get("hints") or []:
+            if isinstance(h, dict) and str(h.get("zh", "")).strip():
+                raw_en = h.get("en") or []
+                if isinstance(raw_en, str):
+                    raw_en = [x for x in re.split(r"\s*[/;；]\s*", raw_en)]
+                en = [str(x).strip() for x in raw_en if str(x).strip()][:3]
+                if en:
+                    hints.append({"zh": str(h["zh"]).strip(), "en": en})
+        out.append({"length": length, "zh": zh, "ref": ref, "targets": targets, "hints": hints[:3]})
+    return out
+
+
+TRANS_CHECK_SYSTEM = """You mark a Chinese-to-English translation by a Chinese learner of English writing.
+Judge both faithfulness (is every idea in the Chinese there, nothing added or distorted?) and naturalness (would a
+skilled native writer put it this way?). Be specific and generous with alternatives: the learner wants to see other
+good ways to say things and the more idiomatic choices.
+
+Return:
+- score: overall 1-5 (5 = accurate and idiomatic; 4 = accurate with minor awkwardness; 3 = meaning mostly there but
+  clearly unnatural or with errors; 2 = important meaning lost or serious errors; 1 = largely wrong or missing).
+- accuracy: 1-5. naturalness: 1-5.
+- summary_zh: 1-3 sentences of overall feedback (max 120 characters).
+- corrected: the learner's translation with the minimum changes needed to be correct and faithful (keep their wording
+  wherever it is acceptable).
+- better: 1-2 complete, idiomatic translations at the learner's target level, written the way a skilled native writer
+  would, possibly quite different in structure from the learner's.
+- chunks: up to 6 parts of the learner's answer worth improving or worth knowing alternatives for: yours (the exact words
+  copied from the learner's answer), options (2-4 better or alternative English renderings), why_zh (max 50
+  characters: why the options are better or how they differ).
+- good: up to 3 things the learner did well: quote (exact words copied from their answer), why_zh (max 30 characters).
+- expressions: 2-5 idiomatic expressions from your better versions that are worth saving to a writing-material library:
+  type (collocation | pattern | linker), form (dictionary form; sb / sth / one's for slots; X / Y in patterns), zh
+  (max 12 characters), example (the sentence from your better version that contains it).
+- targets_used: for every target expression listed in the request: id, used (did the learner use it or an equally good
+  equivalent?), ok (used correctly?).
+Reply with JSON only."""
+
+TRANS_CHECK_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "score": {"type": "integer"}, "accuracy": {"type": "integer"}, "naturalness": {"type": "integer"},
+        "summary_zh": {"type": "string"}, "corrected": {"type": "string"},
+        "better": {"type": "array", "items": {"type": "string"}},
+        "chunks": {"type": "array", "items": {
+            "type": "object",
+            "properties": {"yours": {"type": "string"}, "options": {"type": "array", "items": {"type": "string"}},
+                           "why_zh": {"type": "string"}},
+            "required": ["yours", "options", "why_zh"], "additionalProperties": False}},
+        "good": {"type": "array", "items": {
+            "type": "object", "properties": {"quote": {"type": "string"}, "why_zh": {"type": "string"}},
+            "required": ["quote", "why_zh"], "additionalProperties": False}},
+        "expressions": {"type": "array", "items": {
+            "type": "object",
+            "properties": {"type": {"type": "string", "enum": ["collocation", "pattern", "linker"]}, "form": {"type": "string"},
+                           "zh": {"type": "string"}, "example": {"type": "string"}},
+            "required": ["type", "form", "zh", "example"], "additionalProperties": False}},
+        "targets_used": {"type": "array", "items": {
+            "type": "object", "properties": {"id": {"type": "integer"}, "used": {"type": "boolean"}, "ok": {"type": "boolean"}},
+            "required": ["id", "used", "ok"], "additionalProperties": False}},
+    },
+    "required": ["score", "accuracy", "naturalness", "summary_zh", "corrected", "better", "chunks", "good",
+                 "expressions", "targets_used"],
+    "additionalProperties": False,
+}
+
+
+def _clamp(v, lo: int, hi: int) -> int:
+    try:
+        return max(lo, min(hi, int(v)))
+    except (TypeError, ValueError):
+        return lo
+
+
+def check_translation(item: dict, answer: str, targets: list[dict], cfg: dict) -> dict:
+    payload = {"chinese": item["zh"], "reference_translation": item.get("ref", ""),
+               "target_expressions": [{"id": m["id"], "form": m["form"], "zh": m["zh"]} for m in targets],
+               "learner_translation": answer}
+    d = ask(cfg, json.dumps(payload, ensure_ascii=False), TRANS_CHECK_SYSTEM, TRANS_CHECK_SCHEMA, temperature=0.2, max_tokens=4000)
+    chunks = []
+    for c in d.get("chunks") or []:
+        yours = str(c.get("yours", "")).strip()
+        opts = [str(o).strip() for o in (c.get("options") or []) if str(o).strip()][:4]
+        if _in_text(yours, answer) and opts:
+            chunks.append({"yours": yours, "options": opts, "why": str(c.get("why_zh", "")).strip()})
+    good = [{"quote": str(g.get("quote", "")).strip(), "why": str(g.get("why_zh", "")).strip()}
+            for g in (d.get("good") or []) if _in_text(str(g.get("quote", "")), answer)]
+    better = [str(b).strip() for b in (d.get("better") or []) if str(b).strip()][:2]
+    exprs = []
+    for e in d.get("expressions") or []:
+        kind = str(e.get("type", ""))
+        form = _form(kind, str(e.get("form", "")))
+        example = str(e.get("example", "")).strip()
+        if kind not in ("collocation", "pattern", "linker") or not form:
+            continue
+        pieces = [form] if make_cloze(example, [form]) else []
+        exprs.append({"kind": kind, "form": form, "zh": str(e.get("zh", "")).strip()[:40], "topics": [],
+                      "examples": [{"en": example, "zh": "", "answer": pieces}] if example else [], "alts": [], "note": ""})
+    ids = {m["id"] for m in targets}
+    used = []
+    for t in d.get("targets_used") or []:
+        try:
+            tid = int(t.get("id"))
+        except (TypeError, ValueError):
+            continue
+        if tid in ids:
+            used.append({"id": tid, "used": bool(t.get("used")), "ok": bool(t.get("ok"))})
+    return {"score": _clamp(d.get("score"), 1, 5), "accuracy": _clamp(d.get("accuracy"), 1, 5),
+            "naturalness": _clamp(d.get("naturalness"), 1, 5), "summary": str(d.get("summary_zh", "")).strip(),
+            "corrected": str(d.get("corrected", "")).strip() or answer, "better": better, "chunks": chunks[:6],
+            "good": good[:3], "expressions": exprs[:5], "targetsUsed": used}

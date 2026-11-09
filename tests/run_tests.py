@@ -20,6 +20,7 @@ TMP = tempfile.mkdtemp(prefix="chuanwen-test-")
 os.environ["CHUANWEN_HOME"] = TMP
 os.environ.pop("DEEPSEEK_API_KEY", None)
 os.environ.pop("ANTHROPIC_API_KEY", None)
+os.environ["CHUANWEN_OFFLINE_TTS"] = "1"  # 朗读不连微软；加 --tts 参数时连微软实测
 
 import uvicorn  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
@@ -182,6 +183,19 @@ def main() -> None:
     check("自建话题", t["slug"] == "food-safety" and t["glyph"] == "食")
     check("自建话题演练兜底题", "food safety" in c.get("/api/drill/start?topic=food-safety").json()["prompt"]["en"].lower())
 
+    section("没 AI 时的话题翻译")
+    t = c.post("/api/translate/next", json={"topic": "education"}).json()
+    check("用素材例句出题", t.get("aiReady") is False and t["source"] == "material" and t["targets"], t)
+    check("题目是中文", any("\u4e00" <= ch <= "\u9fff" for ch in t["zh"]))
+    r = c.post("/api/translate/check", json={"id": t["id"], "answer": "Some words written in English here."}).json()
+    check("自评模式给参考译文", r.get("selfRate") and r["ref"] and r["targets"])
+    check("太短不收", c.post("/api/translate/check", json={"id": t["id"], "answer": "hi"}).status_code == 400)
+    c.post("/api/translate/rate", json={"id": t["id"], "grade": 3})
+    check("自评记到素材上", store.get_material(t["targets"][0]["id"])["state"] is not None)
+    t2 = c.post("/api/translate/next", json={"topic": "education", "excludeMaterials": [t["targets"][0]["id"]]}).json()
+    check("换一题不重复", t2["targets"][0]["id"] != t["targets"][0]["id"])
+    check("翻译记录", len(c.get("/api/translate/history").json()) == 1)
+
     section("接上假 AI")
     port = start_fake_ai()
     c.post("/api/settings", json={"ai": {"provider": "openai", "openai": {"key": "test-key", "model": "fake", "base": f"http://127.0.0.1:{port}/v1"}}})
@@ -266,6 +280,35 @@ def main() -> None:
     check("按类型扩充", r["items"] and all(m["kind"] == "pattern" for m in r["items"]), r)
     check("扩充不存在的话题", c.post("/api/topics/nope/expand", json={}).status_code == 404)
 
+    section("话题翻译")
+    c.post("/api/settings", json={"translate": {"batch": 6, "length": "mix"}})
+    t = c.post("/api/translate/next", json={"topic": "environment"}).json()
+    check("AI 出题", t.get("aiReady") and t["source"] == "ai" and t["length"] in ("short", "medium", "long"), t)
+    rows = store.unused_trans("environment", {"short", "medium", "long"}, set())
+    check("一批缓存起来", len(rows) == 5, len(rows))
+    check("坏题丢掉", all(r["length"] in ("short", "medium", "long") and "no chinese" not in r["zh"] for r in rows))
+    check("不存在的目标 id 丢掉", all(999999 not in r["targets"] for r in rows))
+    check("提示", t["hints"] and t["hints"][0]["en"])
+    calls = fake_ai.CALLS.count("trans_gen")
+    t_long = c.post("/api/translate/next", json={"topic": "environment", "length": "long"}).json()
+    check("按长度取缓存", t_long["length"] == "long" and fake_ai.CALLS.count("trans_gen") == calls)
+    ans = "Many people think this problem is very big and the government should act now."
+    fb = c.post("/api/translate/check", json={"id": t["id"], "answer": ans}).json()
+    check("批改分数", fb["score"] == 4 and fb["accuracy"] == 5 and fb["naturalness"] == 3)
+    check("改正", "major" in fb["corrected"])
+    check("更地道的写法", len(fb["better"]) == 2)
+    check("对不上的片段丢掉", [x["yours"] for x in fb["chunks"]] == ["Many people"], fb["chunks"])
+    check("表达能加入素材库", [e["form"] for e in fb["expressions"]] == ["treat the symptoms"] and fb["expressions"][0]["examples"][0]["answer"] == ["treat the symptoms"])
+    check("表达带话题", fb["expressions"][0]["topics"] == ["environment"])
+    check("假的目标 id 丢掉", all(u["id"] != 999999 for u in fb["targetsUsed"]))
+    if t["targets"]:
+        check("用上的目标记复习", store.get_material(t["targets"][0]["id"])["state"] is not None)
+    r = c.post("/api/materials", json={"source": "ai", "items": fb["expressions"]}).json()
+    check("收藏表达", r["added"] == 1)
+    check("提示后也能批改", c.post("/api/translate/check", json={"id": t_long["id"], "answer": ans, "hinted": True}).status_code == 200)
+    t_any = c.post("/api/translate/next", json={}).json()
+    check("随机话题", t_any["topic"] != "general" and t_any["aiReady"])
+
     section("导出导入")
     md = c.get("/api/export/markdown?topic=education").text
     check("Markdown 导出", md.startswith("# 川文素材 · 教育") and "rote learning" in md)
@@ -276,6 +319,67 @@ def main() -> None:
     r = c.post("/api/import/backup", files={"file": ("b.json", io.BytesIO(json.dumps(backup).encode()), "application/json")}).json()
     check("导入自己的备份不新增", r["added"] == 0, r)
     check("坏文件", c.post("/api/import/backup", files={"file": ("b.json", io.BytesIO(b"{}"), "application/json")}).status_code == 400)
+
+    section("设置")
+    c.post("/api/settings", json={"study": {"daily_new": 999, "max_tries": 0, "new_order": "weird", "kinds": ["bogus"]},
+                                  "exam": {"target": "mars"}, "ai": {"strictness": "harsh", "feedback_lang": "fr"},
+                                  "voice": {"rate": 9}, "ui": {"font": "huge"}, "drill": {"min_words": 3}})
+    cfg = store.load_config()
+    check("数值夹到范围内", cfg["study"]["daily_new"] == 200 and cfg["study"]["max_tries"] == 1 and cfg["voice"]["rate"] == 9
+          and cfg["drill"]["min_words"] == 10, cfg["study"])
+    check("不合法的选项不收", cfg["study"]["new_order"] == "mine_first" and cfg["exam"]["target"] == "ielts"
+          and cfg["ai"]["strictness"] == "standard" and cfg["ai"]["feedback_lang"] == "zh" and cfg["ui"]["font"] == "normal")
+    check("类型全不合法时恢复全部", set(cfg["study"]["kinds"]) == set(store.KINDS))
+    c.post("/api/settings", json={"exam": {"target": "kaoyan", "band": "75"}, "ai": {"strictness": "strict", "feedback_lang": "en"}})
+    prof = ai.profile(store.load_config())
+    check("学习者设定进提示词", "考研" in prof and "75" in prof and "strict" in prof and "in English" in prof, prof)
+    c.post("/api/settings", json={"study": {"kinds": ["idea"], "daily_new": 5}})
+    ids = c.post("/api/recall/plan", json={"scope": "new"}).json()["ids"]
+    check("回忆只练勾选的类型", ids and all(store.get_material(i)["kind"] == "idea" for i in ids))
+    c.post("/api/settings", json={"study": {"new_order": "random", "kinds": list(store.KINDS)}})
+    a1 = [m["id"] for m in store.new_materials()][:20]
+    a2 = [m["id"] for m in store.new_materials()][:20]
+    check("随机顺序", a1 != a2)
+    c.post("/api/settings", json={"drill": {"min_words": 40, "suggestions": 8}})
+    st = c.get("/api/drill/start?topic=education").json()
+    check("演练建议数量", len(st["suggestions"]) == 8 and st["minWords"] == 40, len(st["suggestions"]))
+    check("演练最少词数", c.post("/api/drill/check", json={"topic": "education", "prompt": "x", "text": "word " * 30, "ids": []}).status_code == 400)
+    info = c.get("/api/info").json()
+    check("版本和数据位置", info["version"] and info["home"] == str(store.HOME))
+    check("维护要请求头", c.post("/api/maintenance/reset-progress").status_code == 403)
+    H = {"X-ChuanWen": "1"}
+    n = c.post("/api/maintenance/clear-ai-cache", headers=H).json()["n"]
+    check("清除出题缓存", n > 0 and not store.unused_trans("environment", {"short", "medium", "long"}, set()))
+    gone = store.list_materials(source="builtin")[0]
+    c.delete(f"/api/materials/{gone['id']}")
+    c.post("/api/maintenance/restore-builtin", headers=H)
+    check("恢复删掉的内置素材", store.norm(gone["kind"], gone["form"]) in store.norms_in_library())
+    n = c.post("/api/maintenance/reset-progress", headers=H).json()["n"]
+    check("重置进度", n > 0 and not store.list_materials() or all(m["state"] is None for m in store.list_materials()))
+    check("未知维护操作", c.post("/api/maintenance/nope", headers=H).status_code == 404)
+
+    section("朗读")
+    if "--tts" in sys.argv:
+        os.environ.pop("CHUANWEN_OFFLINE_TTS", None)
+    voices = c.get("/api/voices").json()
+    check("声音列表", voices[0]["name"] == "en-US-AriaNeural" and len(voices) >= 6)
+    c.post("/api/settings", json={"voice": {"name": "zh-CN-Bogus", "rate": 99}})
+    vcfg = store.load_config()["voice"]
+    check("不认识的声音不收、语速夹到范围", vcfg["name"] == "en-US-AriaNeural" and vcfg["rate"] == 50, vcfg)
+    c.post("/api/settings", json={"voice": {"name": "browser", "rate": -5}})
+    check("可以选浏览器语音", store.load_config()["voice"]["name"] == "browser")
+    if sys.platform in ("darwin", "win32"):
+        t0 = time.time()
+        r = c.get("/api/tts", params={"text": "Strike a balance between work and life."})
+        check("合成音频", r.status_code == 200 and r.headers["content-type"].startswith("audio/") and len(r.content) > 1000, r.status_code)
+        first = time.time() - t0
+        t0 = time.time()
+        r2 = c.get("/api/tts", params={"text": "Strike a balance between work and life."})
+        check("第二次走缓存", r2.content == r.content and time.time() - t0 < max(0.5, first), (first, time.time() - t0))
+        r3 = c.get("/api/tts", params={"text": "Hello there, friend.", "voice": "en-GB-RyanNeural", "rate": -20})
+        check("试听可以指定声音和语速", r3.status_code == 200)
+    check("空文字不读", c.get("/api/tts", params={"text": " . "}).status_code == 400)
+    check("太长不读", c.get("/api/tts", params={"text": "word " * 300}).status_code == 400)
 
     section("网页文件")
     check("首页", "川文" in c.get("/").text)

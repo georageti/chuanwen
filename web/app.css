@@ -122,7 +122,7 @@ main { padding: 0 var(--gutter) 120px; max-width: 1360px; margin: 0 auto; }
 /* 仿官网的“终端安装块”：蓝色标签页 + 一行等宽文字 */
 .term { margin-top: 44px; max-width: 520px; }
 .term .label { margin-bottom: 10px; display: block; }
-.term-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; background: var(--blue-2); padding: 3px 3px 0; border-radius: 3px 3px 0 0; }
+.term-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; background: var(--blue-2); padding: 3px 3px 0; border-radius: 3px 3px 0 0; }
 .term-tabs button {
   border: 0; background: transparent; color: var(--ink-2); padding: 9px 8px; font: 400 13px/1 var(--mono); cursor: pointer;
   text-decoration: underline; text-underline-offset: 3px; display: flex; justify-content: space-between;
@@ -152,7 +152,7 @@ main { padding: 0 var(--gutter) 120px; max-width: 1360px; margin: 0 auto; }
 .topic .h3 { font-size: 26px; }
 .topic p { margin: 6px 0 0; color: var(--ink-2); font-size: 14px; }
 
-.modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
 .mode { background: var(--panel); border-radius: 3px; padding: 22px; display: flex; flex-direction: column; gap: 10px; text-decoration: none; border: 1px solid transparent; transition: border-color .2s; }
 .mode:hover { border-color: var(--line-2); }
 .mode .art { aspect-ratio: 16 / 9; background: var(--blue); border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
@@ -376,3 +376,42 @@ textarea.field { min-height: 180px; resize: vertical; font: 400 14px/1.6 var(--b
 }
 .mode .foot svg { width: 18px; height: 18px; color: var(--ink-2); transition: transform .2s; }
 .mode:hover .foot svg { transform: translateX(4px); color: var(--ink); }
+
+/* ---------- 设置生效：字号、动画、例句字体 ---------- */
+html[data-font="large"] { zoom: 1.12; }
+html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+html[data-serif="off"] { --serif: "Barlow", var(--zh); }
+
+/* ---------- 话题翻译 ---------- */
+.zh-big { font: 400 clamp(20px, 2.4vw, 26px)/1.75 var(--zh); margin: 14px 0 22px; letter-spacing: .01em; }
+.zh-big.long { font-size: clamp(18px, 2vw, 22px); }
+.hints { display: grid; gap: 6px; margin: -8px 0 18px; }
+.hints div { font-size: 14px; color: var(--ink-2); }
+.hints b { color: var(--ink); font-weight: 500; margin-right: 8px; }
+.dims { display: flex; gap: 18px; flex-wrap: wrap; font: 400 12px/1 var(--mono); color: var(--ink-3); text-transform: uppercase; letter-spacing: .08em; }
+.dims b { color: var(--ink); font: 300 22px/1 var(--display); margin-left: 6px; letter-spacing: 0; }
+.diff { font: 400 18px/1.7 var(--serif); }
+.diff del { color: var(--bad); text-decoration: line-through; text-decoration-thickness: 1px; }
+.diff ins { color: var(--ok); text-decoration: none; border-bottom: 1px solid var(--ok); }
+.better { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-top: 1px solid var(--line); }
+.better:first-of-type { border-top: 0; }
+.better .serif { font-size: 19px; line-height: 1.6; flex: 1; }
+.chunk { display: grid; gap: 6px; padding: 12px 0; border-top: 1px solid var(--line); }
+.chunk:first-of-type { border-top: 0; }
+.chunk .yours { color: var(--ink-2); font: 400 italic 17px/1.5 var(--serif); }
+.chunk .opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.chunk .opts span { background: rgba(169, 180, 255, .12); color: var(--ink); padding: 4px 9px; border-radius: 2px; font-size: 14px; }
+.expr { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+.expr:first-of-type { border-top: 0; }
+.len-chips .chip { font-size: 12px; }
+
+/* ---------- 设置页 ---------- */
+.settings section > .label:first-child { color: var(--ink-2); font-size: 12px; }
+.set-row { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 16px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
+.set-row:first-of-type { border-top: 0; }
+.set-row > span { font-size: 14px; color: var(--ink-2); }
+.set-row small { display: block; color: var(--ink-3); font-size: 12px; margin-top: 2px; }
+.set-row input[type=range] { width: min(260px, 100%); accent-color: var(--blue); }
+.set-row .field { max-width: 360px; }
+.danger { border-color: rgba(255, 138, 122, .5) !important; color: var(--bad) !important; }
+@media (max-width: 720px) { .set-row { grid-template-columns: 1fr; gap: 6px; } }

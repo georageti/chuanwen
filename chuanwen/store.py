@@ -28,6 +28,7 @@ def _default_home() -> Path:
 HOME = Path(os.environ.get("CHUANWEN_HOME") or _default_home())
 DB_PATH = HOME / "chuanwen.db"
 CONFIG_PATH = HOME / "config.json"
+AUDIO_DIR = HOME / "audio"  # 朗读缓存
 
 KINDS = {
     "collocation": "搭配",
@@ -43,8 +44,21 @@ DEFAULT_CONFIG = {
         "deepseek": {"key": "", "model": "deepseek-chat", "base": "https://api.deepseek.com"},
         "anthropic": {"key": "", "model": "claude-opus-5-5"},
         "openai": {"key": "", "model": "", "base": ""},
+        "feedback_lang": "zh",     # 点评语言：zh 中文 / en 英文
+        "strictness": "standard",  # 批改严格程度：lenient / standard / strict
     },
-    "study": {"daily_new": 10, "session_size": 30, "level": "ielts"},  # level：素材难度参考（cet / kaoyan / ielts）
+    "exam": {"target": "ielts", "band": ""},  # 目标考试：ielts / toefl / kaoyan / cet6 / cet4；band 留空用默认分数
+    "study": {
+        "daily_new": 10, "session_size": 30,
+        "new_order": "mine_first",  # 新素材顺序：mine_first 自己收集的先 / rotate 按话题轮流 / random 随机
+        "kinds": ["collocation", "pattern", "linker", "idea"],  # 回忆练哪几类
+        "max_tries": 3,             # 回忆：错几次显示答案
+        "auto_speak": True,         # 回忆：答完自动朗读
+    },
+    "drill": {"suggestions": 12, "min_words": 20},
+    "translate": {"length": "mix", "batch": 6, "show_hints": True},  # length：mix / short / medium / long
+    "voice": {"name": "en-US-AriaNeural", "rate": -5},  # 朗读：微软语音名（browser = 用浏览器自带语音）；语速 -50..+50（%）
+    "ui": {"font": "normal", "motion": True, "serif": True},  # 字号 normal / large；动画；例句用衬线体
 }
 
 SCHEMA = """
@@ -63,6 +77,12 @@ CREATE INDEX IF NOT EXISTS tasks_mid ON tasks(mid, mode);
 CREATE TABLE IF NOT EXISTS drills(
   id INTEGER PRIMARY KEY, topic TEXT, prompt TEXT, text TEXT, feedback TEXT, created REAL);
 CREATE TABLE IF NOT EXISTS kv(k TEXT PRIMARY KEY, v TEXT);
+CREATE TABLE IF NOT EXISTS trans(
+  id INTEGER PRIMARY KEY, topic TEXT, length TEXT, zh TEXT, ref TEXT, hints TEXT, targets TEXT, source TEXT,
+  used INT DEFAULT 0, created REAL);
+CREATE INDEX IF NOT EXISTS trans_topic ON trans(topic, used);
+CREATE TABLE IF NOT EXISTS trans_log(
+  id INTEGER PRIMARY KEY, item INT, topic TEXT, zh TEXT, answer TEXT, feedback TEXT, created REAL);
 """
 
 _lock = threading.RLock()
@@ -396,8 +416,14 @@ def due_materials(topic: str | None = None, kind: str | None = None) -> list[dic
 
 def new_materials(topic: str | None = None, kind: str | None = None) -> list[dict]:
     rows = _filtered([_row(r) for r in q("SELECT * FROM materials WHERE state IS NULL")], topic, kind)
-    # 自己收集的在前，收藏的在前，内置的按原顺序
-    rows.sort(key=lambda r: (r["source"] == "builtin", -r["starred"], r["added"] if r["source"] == "builtin" else -r["added"]))
+    order = load_config()["study"].get("new_order", "mine_first")
+    if order == "random":
+        import random
+        random.shuffle(rows)
+    elif order == "rotate":  # 不分来源，按话题轮流（内置素材本来就是轮流排的）
+        rows.sort(key=lambda r: (-r["starred"], r["added"] if r["source"] == "builtin" else 0))
+    else:  # 自己收集的在前，收藏的在前，内置的按原顺序
+        rows.sort(key=lambda r: (r["source"] == "builtin", -r["starred"], r["added"] if r["source"] == "builtin" else -r["added"]))
     return rows
 
 
@@ -442,6 +468,7 @@ def stats() -> dict:
         "dailyNew": load_config()["study"]["daily_new"],
         "docs": q("SELECT COUNT(*) n FROM docs")[0]["n"],
         "drills": q("SELECT COUNT(*) n FROM drills")[0]["n"],
+        "translations": q("SELECT COUNT(*) n FROM trans_log")[0]["n"],
         "history": history(14),
     }
 
@@ -495,6 +522,75 @@ def list_drills(limit: int = 50) -> list[dict]:
 
 def delete_drill(did: int) -> None:
     tx("DELETE FROM drills WHERE id=?", (did,))
+
+
+# ---------- 话题翻译 ----------
+# trans：题目（AI 出的长短句缓存，或者从素材例句来的）；trans_log：每次作答和批改
+
+def _trans_row(r: dict) -> dict:
+    for k in ("hints", "targets"):
+        r[k] = json.loads(r.get(k) or "[]")
+    return r
+
+
+def add_trans(topic: str, item: dict, source: str) -> int:
+    return tx("INSERT INTO trans(topic, length, zh, ref, hints, targets, source, created) VALUES(?,?,?,?,?,?,?,?)",
+              (topic, item["length"], item["zh"], item.get("ref", ""), json.dumps(item.get("hints", []), ensure_ascii=False),
+               json.dumps(item.get("targets", [])), source, time.time())).lastrowid
+
+
+def get_trans(tid: int) -> dict | None:
+    rows = q("SELECT * FROM trans WHERE id=?", (tid,))
+    return _trans_row(rows[0]) if rows else None
+
+
+def unused_trans(topic: str, lengths: set[str], exclude: set[int]) -> list[dict]:
+    rows = [_trans_row(r) for r in q("SELECT * FROM trans WHERE topic=? AND source='ai' AND used=0 ORDER BY id", (topic,))]
+    return [r for r in rows if r["length"] in lengths and r["id"] not in exclude]
+
+
+def use_trans(tid: int) -> None:
+    tx("UPDATE trans SET used = used + 1 WHERE id=?", (tid,))
+
+
+def add_trans_log(item: dict, answer: str, feedback: dict) -> int:
+    return tx("INSERT INTO trans_log(item, topic, zh, answer, feedback, created) VALUES(?,?,?,?,?,?)",
+              (item["id"], item["topic"], item["zh"], answer, json.dumps(feedback, ensure_ascii=False), time.time())).lastrowid
+
+
+def list_trans_log(limit: int = 30) -> list[dict]:
+    rows = q("SELECT * FROM trans_log ORDER BY created DESC LIMIT ?", (limit,))
+    for r in rows:
+        r["feedback"] = json.loads(r["feedback"] or "{}")
+    return rows
+
+
+# ---------- 数据维护（设置页） ----------
+
+def restore_builtin() -> int:
+    """把删掉的内置素材加回来"""
+    n = q("SELECT COUNT(*) n FROM removed")[0]["n"]
+    tx("DELETE FROM removed")
+    kv_set("builtin_version", 0)
+    with _lock:
+        _seed(db())
+    return n
+
+
+def clear_ai_cache() -> int:
+    """删掉还没用过的 AI 出题缓存（改写题、翻译题），之后会按新设置重新出"""
+    n = q("SELECT COUNT(*) n FROM tasks")[0]["n"] + q("SELECT COUNT(*) n FROM trans WHERE used=0")[0]["n"]
+    tx("DELETE FROM tasks")
+    tx("DELETE FROM trans WHERE used=0")
+    return n
+
+
+def reset_progress() -> int:
+    """清空复习进度和练习记录，素材本身保留"""
+    n = q("SELECT COUNT(*) n FROM materials WHERE state IS NOT NULL")[0]["n"]
+    tx("UPDATE materials SET state=NULL")
+    tx("DELETE FROM log")
+    return n
 
 
 # ---------- 学习记录导出 / 导入 ----------

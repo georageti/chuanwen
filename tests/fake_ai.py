@@ -79,10 +79,39 @@ def reply(system: str, prompt: str) -> dict:
         CALLS.append("review")
         rows = [json.loads(line) for line in prompt.splitlines()]
         return {"items": [{"i": r["i"], "keep": r["i"] != 1, "zh": r["zh"] + "（复核）", "alts": [], "example_ok": True} for r in rows]}
+    if "Chinese-to-English translation exercises" in system:
+        CALLS.append("trans_gen")
+        d = json.loads(prompt)
+        lib = d["library_expressions"]
+        items = []
+        for length, n in d["requested"].items():
+            for i in range(n):
+                t = lib[i % len(lib)] if lib else None
+                items.append({"length": length, "zh": f"这是一道{length}模拟翻译题，第{i}道，治标不治本。",
+                              "ref_en": f"This is a mock sentence that uses {t['form'] if t else 'nothing'} wisely.",
+                              "targets": [t["id"], 999999] if t else [],
+                              "hints": [{"zh": "治标不治本", "en": ["treat the symptoms, not the cause"]}]})
+        items.append({"length": "huge", "zh": "坏题", "ref_en": "x", "targets": [], "hints": []})  # 长度不对，应丢掉
+        items.append({"length": "short", "zh": "no chinese here", "ref_en": "x", "targets": [], "hints": []})  # 没中文，应丢掉
+        return {"items": items}
+    if "You mark a Chinese-to-English translation" in system:
+        CALLS.append("trans_check")
+        d = json.loads(prompt)
+        ans = d["learner_translation"]
+        first = " ".join(ans.split()[:2])
+        return {"score": 4, "accuracy": 5, "naturalness": 3, "summary_zh": "模拟总评",
+                "corrected": ans.replace("very big", "major"), "better": ["A more idiomatic version.", "Another way to say it."],
+                "chunks": [{"yours": first, "options": ["Option A", "Option B"], "why_zh": "模拟理由"},
+                           {"yours": "not in answer", "options": ["x"], "why_zh": "应该被丢掉"}],
+                "good": [{"quote": first, "why_zh": "好"}],
+                "expressions": [{"type": "collocation", "form": "treat the symptoms", "zh": "治标",
+                                 "example": "Such policies only treat the symptoms."},
+                                {"type": "bogus", "form": "x", "zh": "", "example": ""}],
+                "targets_used": [{"id": t["id"], "used": True, "ok": True} for t in d["target_expressions"]] + [{"id": 999999, "used": True, "ok": True}]}
     if "essay questions" in system:
         CALLS.append("prompts")
         return {"prompts": [{"en": "Some say X is good. Discuss both views.", "zh": "模拟题目"}]}
-    if "IELTS writing examiner" in system:
+    if "writing examiner and coach" in system:
         CALLS.append("drill")
         d = json.loads(prompt)
         text = d["learner_text"]

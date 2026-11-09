@@ -16,7 +16,7 @@ from fastapi import Body, FastAPI, File, Form, HTTPException, Request, UploadFil
 from fastapi.responses import FileResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
-from . import ai, docs, srs, store
+from . import __version__, ai, docs, srs, store, tts
 
 WEB = Path(__file__).resolve().parent.parent / "web"
 app = FastAPI(title="川文", docs_url=None, redoc_url=None)
@@ -52,6 +52,7 @@ def api_stats():
     s = store.stats()
     s["aiReady"] = ai_reason() is None
     s["aiReason"] = ai_reason()
+    s["version"] = __version__
     return s
 
 
@@ -67,13 +68,101 @@ def api_save_settings(patch: dict = Body(...)):
         k = ai_patch.get(p, {}).get("key")
         if k is not None and k.startswith("••••"):
             ai_patch[p].pop("key")
-    study = patch.get("study", {})
-    if "daily_new" in study:
-        study["daily_new"] = max(0, min(200, int(study["daily_new"])))
-    if "session_size" in study:
-        study["session_size"] = max(5, min(200, int(study["session_size"])))
+    clean_settings(patch)
     store.save_config(patch)
     return store.public_config()
+
+
+def _pick(d: dict, key: str, allowed) -> None:
+    if key in d and d[key] not in allowed:
+        d.pop(key)
+
+
+def _int(d: dict, key: str, lo: int, hi: int) -> None:
+    if key in d:
+        try:
+            d[key] = max(lo, min(hi, int(d[key])))
+        except (TypeError, ValueError):
+            d.pop(key)
+
+
+def clean_settings(patch: dict) -> None:
+    """只收下合法的设置值，其余丢掉（保持原值）"""
+    a = patch.get("ai", {})
+    _pick(a, "provider", {"deepseek", "anthropic", "openai", "none"})
+    _pick(a, "feedback_lang", {"zh", "en"})
+    _pick(a, "strictness", {"lenient", "standard", "strict"})
+    ex = patch.get("exam", {})
+    _pick(ex, "target", set(ai.EXAMS))
+    if "band" in ex:
+        ex["band"] = str(ex["band"]).strip()[:8]
+    st = patch.get("study", {})
+    _int(st, "daily_new", 0, 200)
+    _int(st, "session_size", 5, 200)
+    _int(st, "max_tries", 1, 6)
+    _pick(st, "new_order", {"mine_first", "rotate", "random"})
+    if "kinds" in st:
+        st["kinds"] = [k for k in st["kinds"] if k in store.KINDS] or list(store.KINDS)
+    if "auto_speak" in st:
+        st["auto_speak"] = bool(st["auto_speak"])
+    dr = patch.get("drill", {})
+    _int(dr, "suggestions", 4, 24)
+    _int(dr, "min_words", 10, 200)
+    tr = patch.get("translate", {})
+    _pick(tr, "length", {"mix", "short", "medium", "long"})
+    _int(tr, "batch", 3, 12)
+    if "show_hints" in tr:
+        tr["show_hints"] = bool(tr["show_hints"])
+    vo = patch.get("voice", {})
+    _int(vo, "rate", -50, 50)
+    _pick(vo, "name", set(tts.VOICES) | {"browser"})
+    ui = patch.get("ui", {})
+    _pick(ui, "font", {"normal", "large"})
+    for k in ("motion", "serif"):
+        if k in ui:
+            ui[k] = bool(ui[k])
+
+
+@app.get("/api/tts")
+async def api_tts(text: str, voice: str = "", rate: int | None = None):
+    """朗读一句英文（和川听同一套微软语音，按文本缓存）。voice / rate 不传就用设置里的，试听时才传"""
+    text = re.sub(r"\s+", " ", text).strip()
+    if not tts.speakable(text) or len(text) > 800:
+        err("没有可朗读的文字，或者太长")
+    cfg = store.load_config()["voice"]
+    v = voice if voice in tts.VOICES else (cfg.get("name") if cfg.get("name") in tts.VOICES else tts.DEFAULT_VOICE)
+    r = tts.rate_str(max(-50, min(50, rate if rate is not None else int(cfg.get("rate", -5)))))
+    try:
+        path = await tts.synth(text, v, r)
+    except tts.TTSError as e:
+        err(str(e), 503)
+    media = "audio/mpeg" if path.suffix == ".mp3" else "audio/wav"
+    return FileResponse(path, media_type=media, headers={"Cache-Control": "max-age=31536000"})
+
+
+@app.get("/api/voices")
+def api_voices():
+    return [{"name": k, "label": v} for k, v in tts.VOICES.items()]
+
+
+@app.get("/api/info")
+def api_info():
+    return {"version": __version__, "home": str(store.HOME), "db": str(store.DB_PATH),
+            "repo": "https://github.com/georageti/chuanwen"}
+
+
+@app.post("/api/maintenance/{action}")
+def api_maintenance(action: str, request: Request):
+    """设置页的数据维护。要求自定义请求头，别的网页没法偷偷触发。"""
+    if request.headers.get("x-chuanwen") != "1":
+        err("不允许", 403)
+    if action == "restore-builtin":
+        return {"n": store.restore_builtin()}
+    if action == "clear-ai-cache":
+        return {"n": store.clear_ai_cache()}
+    if action == "reset-progress":
+        return {"n": store.reset_progress()}
+    err("未知操作", 404)
 
 
 @app.post("/api/settings/test")
@@ -343,6 +432,10 @@ def api_recall_plan(body: dict = Body(default={})):
     size = int(body.get("size") or cfg["session_size"])
     due = store.due_materials(topic, kind)
     fresh = store.new_materials(topic, kind)
+    if not kind:
+        kinds = set(cfg.get("kinds") or store.KINDS)
+        due = [m for m in due if m["kind"] in kinds]
+        fresh = [m for m in fresh if m["kind"] in kinds]
     quota = max(0, cfg["daily_new"] - store.learned_today())
     if scope == "review":
         picked = due
@@ -456,7 +549,12 @@ def api_rewrite_check(body: dict = Body(...)):
 
 # ---------- 话题演练 ----------
 
-def suggestions_for(topic: str, n_col: int = 5, n_idea: int = 3, n_pat: int = 2, n_link: int = 2) -> list[dict]:
+def suggestions_for(topic: str, total: int | None = None) -> list[dict]:
+    total = total or store.load_config()["drill"]["suggestions"]
+    n_col = max(1, round(total * 5 / 12))
+    n_idea = max(1, round(total * 3 / 12))
+    n_pat = max(1, round(total * 2 / 12))
+    n_link = max(0, total - n_col - n_idea - n_pat)
     def pick(rows, n):
         rows = sorted(rows, key=lambda m: (m["state"] is None, not m["starred"], m["source"] == "builtin", random.random()))
         return rows[:n]
@@ -488,7 +586,7 @@ def api_drill_start(topic: str, fresh: bool = False):
                     "zh": f"讨论当今与“{t['zh']}”相关的最重要问题，并给出你的观点。"}]
     prompt = prompts[-1] if fresh else random.choice(prompts)
     return {"topic": t, "prompt": prompt, "prompts": prompts, "suggestions": suggestions_for(topic),
-            "aiReady": ai_reason() is None, "aiReason": ai_reason()}
+            "minWords": store.load_config()["drill"]["min_words"], "aiReady": ai_reason() is None, "aiReason": ai_reason()}
 
 
 def library_hits(text: str, skip: set[int]) -> list[dict]:
@@ -511,8 +609,9 @@ def api_drill_check(body: dict = Body(...)):
     text = str(body.get("text", "")).strip()
     prompt = str(body.get("prompt", "")).strip()
     topic = str(body.get("topic", ""))
-    if len(text.split()) < 20:
-        err("至少写 20 个词再提交")
+    min_words = store.load_config()["drill"]["min_words"]
+    if len(text.split()) < min_words:
+        err(f"至少写 {min_words} 个词再提交（可以在设置里改）")
     if len(text) > 6000:
         err("太长了，一次最多约 1000 词")
     reason = ai_reason()
@@ -543,6 +642,150 @@ def api_drills():
 def api_delete_drill(did: int):
     store.delete_drill(did)
     return {"ok": True}
+
+
+# ---------- 话题翻译 ----------
+# 有 AI：按话题出长短句（缓存，一批几道），批改后给评价、改正、更地道的说法和可替换表达。
+# 没 AI：拿素材库里的例句（有中文翻译）出题，写完看参考译文自己打分。
+
+LENGTHS = {"mix": {"short", "medium", "long"}, "short": {"short"}, "medium": {"medium"}, "long": {"long"}}
+
+
+def trans_candidates(topic: str) -> list[dict]:
+    """出题时交给 AI 的库内素材：学过的、到期的、收藏的、自己收集的优先"""
+    rows = [m for m in store.list_materials(topic) if m["kind"] in ("collocation", "pattern", "linker")]
+    general = [m for m in store.list_materials("general") if m["kind"] in ("pattern", "linker")] if topic != "general" else []
+    day = srs.today()
+
+    def rank(m):
+        st = m["state"]
+        return (0 if st and st["due"] <= day else 1 if st else 2, not m["starred"], m["source"] == "builtin", random.random())
+    return sorted(rows, key=rank)[:10] + sorted(general, key=rank)[:4]
+
+
+def trans_out(item: dict, show_hints: bool) -> dict:
+    targets = [m for m in (store.get_material(i) for i in item["targets"]) if m]
+    return {"id": item["id"], "topic": item["topic"], "topicZh": (store.get_topic(item["topic"]) or {}).get("zh", ""),
+            "length": item["length"], "zh": item["zh"], "source": item["source"],
+            "hints": item["hints"] if show_hints else [],
+            "targets": [{"id": m["id"], "form": m["form"], "zh": m["zh"], "kind": m["kind"]} for m in targets]}
+
+
+def material_item(topic: str | None, exclude: set[int]) -> dict | None:
+    """没 AI 时：拿一条有中文例句的素材出题"""
+    rows = [m for m in store.list_materials(topic) if m["kind"] in store.CLOZE_KINDS
+            and any(e.get("zh") and e.get("answer") for e in m["examples"])]
+    day = srs.today()
+    rows.sort(key=lambda m: (0 if m["state"] and m["state"]["due"] <= day else 1 if m["state"] else 2, random.random()))
+    for m in rows[:40]:
+        e = next(e for e in m["examples"] if e.get("zh") and e.get("answer"))
+        if m["id"] in exclude:
+            continue
+        item = {"length": "short", "zh": e["zh"], "ref": e["en"], "targets": [m["id"]],
+                "hints": [{"zh": m["zh"], "en": [m["form"]]}]}
+        tid = store.add_trans(m["topics"][0] if m["topics"] else (topic or "general"), item, "material")
+        return store.get_trans(tid)
+    return None
+
+
+@app.post("/api/translate/next")
+def api_translate_next(body: dict = Body(default={})):
+    cfg = store.load_config()
+    tcfg = cfg["translate"]
+    length = body.get("length") or tcfg["length"]
+    lengths = LENGTHS.get(length, LENGTHS["mix"])
+    exclude = {int(x) for x in body.get("exclude") or [] if str(x).isdigit()}
+    topic = body.get("topic") or ""
+    if topic and not store.get_topic(topic):
+        err("没有这个话题", 404)
+    if ai_reason():
+        exclude_m = {int(x) for x in body.get("excludeMaterials") or [] if str(x).isdigit()}
+        item = material_item(topic or None, exclude_m)
+        if not item:
+            err("这个范围里没有带中文例句的素材")
+        store.use_trans(item["id"])
+        out = trans_out(item, True)
+        out["aiReady"] = False
+        return out
+    if not topic:  # 全部话题：随机挑一个（不挑“通用”）
+        topic = random.choice([t["slug"] for t in store.list_topics() if t["slug"] != "general"])
+    t = store.get_topic(topic)
+    pool = store.unused_trans(topic, lengths, exclude)
+    if not pool:
+        n = tcfg["batch"]
+        if length == "mix":
+            counts = {"short": n // 3, "long": n // 3}
+            counts["medium"] = n - counts["short"] - counts["long"]
+        else:
+            counts = {length: n}
+        try:
+            made = ai.translation_items(t, trans_candidates(topic), counts, cfg)
+        except ai.AIError as e:
+            err(str(e))
+        for it in made:
+            store.add_trans(topic, it, "ai")
+        pool = store.unused_trans(topic, lengths, exclude)
+        if not pool:
+            err("AI 这次没出好题，再试一次")
+    item = random.choice(pool) if length == "mix" else pool[0]
+    store.use_trans(item["id"])
+    out = trans_out(item, tcfg["show_hints"])
+    out["aiReady"] = True
+    return out
+
+
+@app.post("/api/translate/check")
+def api_translate_check(body: dict = Body(...)):
+    item = store.get_trans(int(body.get("id", 0)))
+    answer = re.sub(r"[ \t]+", " ", str(body.get("answer", ""))).strip()
+    if not item:
+        err("题目不存在了，换一题")
+    if len(re.findall(r"[A-Za-z]+", answer)) < 3:
+        err("先写出英文翻译")
+    targets = [m for m in (store.get_material(i) for i in item["targets"]) if m]
+    hinted = bool(body.get("hinted"))
+    if ai_reason():  # 没 AI：给参考译文，让用户自己打分
+        fb = {"selfRate": True, "ref": item["ref"], "targets": [{"id": m["id"], "form": m["form"], "zh": m["zh"],
+              "used": ai.uses_form(m["form"], answer)} for m in targets]}
+        store.add_trans_log(item, answer, fb)
+        return fb
+    try:
+        fb = ai.check_translation(item, answer, targets, store.load_config())
+    except ai.AIError as e:
+        err(str(e))
+    fb["ref"] = item["ref"]
+    # 用上的目标素材记一次复习；看过提示的最多算“模糊”
+    names = {m["id"]: m for m in targets}
+    for u in fb["targetsUsed"]:
+        m = names.get(u["id"])
+        if m:
+            u.update(form=m["form"], zh=m["zh"], kind=m["kind"])
+        if u["used"]:
+            g = srs.GOOD if u["ok"] and fb["score"] >= 4 and not hinted else srs.HARD if u["ok"] else srs.AGAIN
+            store.record(u["id"], g, "translate")
+    lib = store.norms_in_library()
+    for e in fb["expressions"]:
+        e["topics"] = [item["topic"]] if item["topic"] in store.topic_slugs() else []
+        e["saved"] = store.norm(e["kind"], e["form"]) in lib
+    fb["id"] = store.add_trans_log(item, answer, fb)
+    return fb
+
+
+@app.post("/api/translate/rate")
+def api_translate_rate(body: dict = Body(...)):
+    """没 AI 时自己打分：记到这道题的目标素材上"""
+    item = store.get_trans(int(body.get("id", 0)))
+    if not item:
+        err("题目不存在了")
+    g = max(1, min(3, int(body.get("grade", 2))))
+    for mid in item["targets"]:
+        store.record(mid, g, "translate")
+    return {"ok": True}
+
+
+@app.get("/api/translate/history")
+def api_translate_history():
+    return store.list_trans_log()
 
 
 # ---------- 导出 / 导入 ----------
