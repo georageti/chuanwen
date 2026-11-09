@@ -445,3 +445,9 @@ select.field option { background: var(--panel); color: var(--ink); }
 .cloze input { font-style: normal; color: var(--input-ink); background: rgba(255, 255, 255, .06); border-radius: 2px 2px 0 0; caret-color: var(--blue-hi); }
 .cloze input::placeholder { color: var(--input-ph); }
 .cloze input:focus { background: rgba(0, 0, 242, .28); }
+/* 所有能输入的地方都用同一套输入字体（防止哪个框漏了 class） */
+input:not([type]), input[type="text"], input[type="search"], input[type="number"], input[type="password"], textarea, select {
+  font-family: var(--input-font);
+}
+textarea, input:not([type]), input[type="text"] { color: var(--input-ink); }
+.cloze input { font-family: var(--serif); }
