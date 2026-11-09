@@ -105,6 +105,9 @@ def clean_settings(patch: dict) -> None:
         st["kinds"] = [k for k in st["kinds"] if k in store.KINDS] or list(store.KINDS)
     if "auto_speak" in st:
         st["auto_speak"] = bool(st["auto_speak"])
+    if "auto_generate" in st:
+        st["auto_generate"] = bool(st["auto_generate"])
+    _int(st, "generate_count", 4, 30)
     dr = patch.get("drill", {})
     _int(dr, "suggestions", 4, 24)
     _int(dr, "min_words", 10, 200)
@@ -274,6 +277,29 @@ def api_add_materials(body: dict = Body(...)):
         ids.append(mid)
         added += new
     return {"added": added, "ids": ids, "stats": store.stats()}
+
+
+@app.post("/api/materials/recognize")
+def api_recognize(body: dict = Body(...)):
+    """粘贴一个表达、一句话或一段文字（中文描述也行），AI 识别出可用的素材，交给网页确认"""
+    text = str(body.get("text", "")).strip()
+    if not text:
+        err("先粘贴一点内容")
+    if len(text) > 4000:
+        err("一次最多 4000 字；更长的文章请到「文章」里导入")
+    reason = ai_reason()
+    if reason:
+        err(f"AI 识别需要先配置 AI：{reason}。也可以点“手动填写”。")
+    try:
+        items = ai.recognize(text, store.list_topics(), store.load_config(), str(body.get("topic") or ""))
+    except ai.AIError as e:
+        err(str(e))
+    if not items:
+        err("AI 没从这段文字里认出可用的素材，换一段试试，或者手动填写")
+    lib = store.norms_in_library()
+    for it in items:
+        it["saved"] = store.norm(it["kind"], it["form"]) in lib
+    return {"items": items}
 
 
 @app.patch("/api/materials/{mid}")
@@ -448,6 +474,57 @@ def api_practice_scope():
     return out
 
 
+# ---------- 没有新素材时让 AI 生成 ----------
+
+def auto_generate(topic: str | None, kind: str | None = None, corpus: str = "all", force: bool = False) -> dict:
+    """生成一批素材加进自建语料库（来源记为 AI）。返回 {added, topic, error}。
+    只在“全部”和“自建”语料库里生成（内置和收藏不会因此变多）；设置里关掉了就不生成。"""
+    cfg = store.load_config()
+    if corpus not in ("all", "mine"):
+        return {"added": 0, "topic": topic, "error": None}
+    if not force and not cfg["study"].get("auto_generate", True):
+        return {"added": 0, "topic": topic, "error": None}
+    reason = ai_reason()
+    if reason:
+        return {"added": 0, "topic": topic, "error": reason}
+    n = cfg["study"].get("generate_count", 10)
+    slugs = [t["slug"] for t in store.list_topics() if t["slug"] != "general"]
+    slug = topic or ("general" if kind in ("pattern", "linker") else random.choice(slugs))
+    t = store.get_topic(slug)
+    if not t:
+        return {"added": 0, "topic": topic, "error": "没有这个话题"}
+    if kind in store.KINDS:
+        counts = {kind: n}
+    elif slug == "general":
+        counts = {"pattern": n // 2, "linker": n - n // 2}
+    else:
+        counts = {"collocation": round(n * 0.7), "idea": n - round(n * 0.7)}
+    added = 0
+    for attempt in range(2):  # 和库里重复的会被丢掉；加进来的不到六成就再补一次
+        try:
+            r = ai.expand(t, [m["form"] for m in store.list_materials(slug)], cfg, counts)
+            mats, _ = ai.review(r["materials"], cfg)
+        except ai.AIError as e:
+            if added:
+                break
+            return {"added": 0, "topic": slug, "error": str(e)}
+        for m in mats:
+            _, new = store.add_material(clean_material(m), "ai")
+            added += new
+        if added >= n * 0.6:
+            break
+    return {"added": added, "topic": slug, "error": None}
+
+
+@app.post("/api/generate")
+def api_generate(body: dict = Body(default={})):
+    """手动让 AI 生成一批（自建语料库页的按钮）"""
+    r = auto_generate(body.get("topic") or None, body.get("kind") or None, "mine", force=True)
+    if r["error"]:
+        err(r["error"])
+    return r
+
+
 # ---------- 回忆练习 ----------
 
 def make_card(m: dict) -> dict:
@@ -482,6 +559,13 @@ def api_recall_plan(body: dict = Body(default={})):
         due = [m for m in due if m["kind"] in kinds]
         fresh = [m for m in fresh if m["kind"] in kinds]
     quota = max(0, cfg["daily_new"] - store.learned_today())
+    gen = {"added": 0, "topic": topic, "error": None}
+    if scope in ("auto", "new") and not fresh and (quota > 0 or scope == "new"):
+        gen = auto_generate(topic, kind, corpus)
+        if gen["added"]:
+            fresh = scoped(store.new_materials(topic, kind), corpus)
+            if not kind:
+                fresh = [m for m in fresh if m["kind"] in set(cfg.get("kinds") or store.KINDS)]
     if scope == "review":
         picked = due
     elif scope == "new":
@@ -491,7 +575,8 @@ def api_recall_plan(body: dict = Body(default={})):
     picked = picked[:size]
     ids = [m["id"] for m in picked]
     random.shuffle(ids)
-    return {"ids": ids, "due": len(due), "new": len(fresh), "quota": quota}
+    return {"ids": ids, "due": len(due), "new": len(fresh), "quota": quota, "generated": gen["added"],
+            "generatedTopic": gen["topic"], "generateError": gen["error"]}
 
 
 @app.post("/api/recall/cards")
@@ -551,6 +636,10 @@ def api_rewrite_next(body: dict = Body(default={})):
         corpus = corpus_of(body.get("corpus"))
         pool = [m for m in rewrite_pool(body.get("topic") or None, corpus, body.get("kind") or None) if m["id"] not in exclude]
         if not pool:
+            kind = body.get("kind") if body.get("kind") in REWRITE_KINDS else "collocation"
+            generated = auto_generate(body.get("topic") or None, kind, corpus)["added"]
+            pool = [m for m in rewrite_pool(body.get("topic") or None, corpus, body.get("kind") or None) if m["id"] not in exclude]
+        if not pool:
             err(f"这个范围里没有可以改写的素材（{CORPORA[corpus]}语料库 · 搭配、句型、衔接）")
         head = pool[:12]
         random.shuffle(head)
@@ -571,7 +660,8 @@ def api_rewrite_next(body: dict = Body(default={})):
         if not task:
             err("AI 没能出题，换一条试试")
     store.use_task(task["id"])
-    return {"taskId": task["id"], "material": target, "plain": task["data"]["plain"], "zh": task["data"]["zh"]}
+    return {"taskId": task["id"], "material": target, "plain": task["data"]["plain"], "zh": task["data"]["zh"],
+            "generated": locals().get("generated", 0)}
 
 
 @app.post("/api/rewrite/check")
@@ -635,7 +725,14 @@ def api_drill_start(topic: str, fresh: bool = False, corpus: str = "all"):
         prompts = [{"en": f"Discuss the most important issues related to {t['en'].lower()} today, and give your own opinion.",
                     "zh": f"讨论当今与“{t['zh']}”相关的最重要问题，并给出你的观点。"}]
     prompt = prompts[-1] if fresh else random.choice(prompts)
-    return {"topic": t, "prompt": prompt, "prompts": prompts, "suggestions": suggestions_for(topic, corpus=corpus_of(corpus)),
+    corpus = corpus_of(corpus)
+    sugg = suggestions_for(topic, corpus=corpus)
+    generated = 0
+    if len([m for m in sugg if m["kind"] in ("collocation", "idea")]) < 4:
+        generated = auto_generate(topic, None, corpus)["added"]
+        if generated:
+            sugg = suggestions_for(topic, corpus=corpus)
+    return {"topic": t, "prompt": prompt, "prompts": prompts, "suggestions": sugg, "generated": generated,
             "minWords": store.load_config()["drill"]["min_words"], "aiReady": ai_reason() is None, "aiReason": ai_reason()}
 
 
@@ -764,9 +861,13 @@ def api_translate_next(body: dict = Body(default={})):
         out = trans_out(item, True)
         out["aiReady"] = False
         return out
+    generated = 0
     if corpus in ("mine", "starred"):
         # 自建 / 收藏：题目围绕这个语料库里的素材出；没选话题就混合话题
         cands = trans_candidates(topic or None, corpus)
+        if not cands and corpus == "mine":
+            generated = auto_generate(topic or None, "collocation", corpus)["added"]
+            cands = trans_candidates(topic or None, corpus)
         if not cands:
             err(f"{CORPORA[corpus]}语料库里还没有可以出题的素材（搭配、句型、衔接）。"
                 + ("去「文章」导入范文、在素材库里添加，或者用“AI 扩充”。" if corpus == "mine" else "去素材库里点星标收藏几条。"))
@@ -800,6 +901,7 @@ def api_translate_next(body: dict = Body(default={})):
     store.use_trans(item["id"])
     out = trans_out(item, tcfg["show_hints"])
     out["aiReady"] = True
+    out["generated"] = generated
     return out
 
 

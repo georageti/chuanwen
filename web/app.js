@@ -224,7 +224,8 @@ function editMaterial(cand, { title = "加入素材库", withExample = false } =
 // ---------- 路由 ----------
 
 const routes = {
-  "": home, library, docs, doc, practice, recall, rewrite, drill, translate, settings,
+  "": home, library, mine: (_a, params, alive) => library("", new URLSearchParams("corpus=mine&mine=1"), alive),
+  docs, doc, practice, recall, rewrite, drill, translate, settings,
 };
 
 let routeToken = 0;
@@ -285,7 +286,7 @@ async function home() {
   <section class="section">
     <div class="stats">
       <div class="stat"><span class="label">素材 · library</span><span class="num">${s.materials}</span></div>
-      <div class="stat"><span class="label">我收集的 · mine</span><span class="num">${s.mine}</span></div>
+      <a class="stat" href="#/mine" style="text-decoration:none"><span class="label">自建语料 · mine →</span><span class="num">${s.mine}</span></a>
       <div class="stat"><span class="label">到期 · due</span><span class="num">${s.due}</span></div>
       <div class="stat"><span class="label">已掌握 · mastered</span><span class="num">${s.mastered}<small>/ ${s.materials - s.new}</small></span></div>
     </div>
@@ -343,28 +344,41 @@ function modesHtml(s) {
 
 // ---------- 素材库 ----------
 
-const libState = { kind: "", q: "", starred: false, mine: false };
+const libState = { kind: "", q: "", corpus: "all" };
+const inCorpus = (m, c) => c === "mine" ? m.source !== "builtin" : c === "builtin" ? m.source === "builtin" : c === "starred" ? !!m.starred : true;
 
-async function library(slug) {
+async function library(slug, params) {
   await loadTopics();
-  const all = await api("/api/materials" + (slug ? `?topic=${encodeURIComponent(slug)}` : ""));
+  libState.corpus = params && CORPUS_NAME[params.get("corpus")] ? params.get("corpus") : "all";
+  const mineView = !!(params && params.get("mine"));
+  const [all, sc, stats] = await Promise.all([api("/api/materials" + (slug ? `?topic=${encodeURIComponent(slug)}` : "")),
+    api("/api/practice/scope"), api("/api/stats")]);
   const t = topicOf(slug);
+  const c = libState.corpus;
+  const tcount = (x) => (sc.topics.find((y) => y.slug === x.slug) || {})[c] ?? x.count;
+  const libHref = (topic, corpus) => `#/library${topic ? "/" + topic : ""}?corpus=${corpus}`;
   main().innerHTML = `
   <div class="lib fade-in">
     <aside class="side">
+      <span class="label">语料库 · corpus</span>
+      ${Object.keys(CORPUS_NAME).map((k) => `<a href="${k === "mine" && !slug ? "#/mine" : libHref(slug, k)}" class="${k === c ? "on" : ""}"><span>${CORPUS_NAME[k]}</span><span>${sc.corpora[k].n}</span></a>`).join("")}
       <span class="label">话题 · topics</span>
-      <a href="#/library" class="${slug ? "" : "on"}"><span>全部</span><span></span></a>
-      ${TOPICS.map((x) => `<a href="#/library/${x.slug}" class="${x.slug === slug ? "on" : ""}"><span>${esc(x.zh)}</span><span>${x.count}</span></a>`).join("")}
+      <a href="${c === "mine" ? "#/mine" : libHref("", c)}" class="${slug ? "" : "on-soft"}"><span>全部话题</span><span></span></a>
+      ${TOPICS.map((x) => `<a href="${libHref(x.slug, c)}" class="${x.slug === slug ? "on-soft" : ""}"><span>${esc(x.zh)}</span><span>${tcount(x)}</span></a>`).join("")}
       <span class="label">自建 · custom</span>
       <a href="#" data-addtopic><span>+ 新话题</span><span></span></a>
     </aside>
     <div>
       <div class="section-head" style="margin-bottom:0">
-        <div><span class="label">${t ? `#${esc(t.en)}` : "#library"}</span><h2 class="h2" style="margin-top:8px">${t ? esc(t.zh) : "Library"}</h2></div>
+        <div><span class="label">${t ? `#${esc(t.en)}` : c === "mine" ? "#my corpus" : "#library"} · ${CORPUS_NAME[c]}语料库</span>
+          <h2 class="h2" style="margin-top:8px">${t ? esc(t.zh) : c === "mine" ? "自建语料库" : "Library"}</h2>
+          ${c === "mine" && !t ? `<p class="muted" style="margin:10px 0 0;max-width:44em">你从文章里拆的、自己添加的、AI 生成加入的素材都在这里。四种练习开始前选“自建”就只练这些；没有新素材时 AI 会自动再生成一批。</p>` : ""}</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           ${t ? `<a class="btn blue small" href="#/drill/${t.slug}">话题演练 ${ICON.arrow}</a>` : ""}
+          <button class="btn ${c === "mine" ? "primary" : "line"} small" data-add>✦ AI 识别添加</button>
+          ${c === "mine" || t ? `<button class="btn line small" data-gen>AI 生成一批</button>` : ""}
           ${t ? `<button class="btn line small" data-expand>✦ AI 扩充</button>` : ""}
-          <button class="btn line small" data-add>${ICON.plus}添加素材</button>
+          ${c === "mine" ? `<a class="btn line small" href="#/docs">导入文章</a>` : ""}
           <a class="btn line small" data-export href="#">${ICON.down}导出 Markdown</a>
           <button class="btn line small" data-print>打印</button>
           ${t && !t.builtin ? `<button class="btn line small" data-deltopic>删除话题</button>` : ""}
@@ -372,34 +386,35 @@ async function library(slug) {
       </div>
       <div class="toolbar">
         <div class="tabs" data-kinds>
-          <button data-k="" class="${libState.kind ? "" : "on"}">全部<small>${all.length}</small></button>
-          ${Object.entries(KIND).map(([k, v]) => `<button data-k="${k}" class="${libState.kind === k ? "on" : ""}">${v}<small>${all.filter((m) => m.kind === k).length}</small></button>`).join("")}
+          <button data-k="" class="${libState.kind ? "" : "on"}">全部<small>${all.filter((m) => inCorpus(m, c)).length}</small></button>
+          ${Object.entries(KIND).map(([k, v]) => `<button data-k="${k}" class="${libState.kind === k ? "on" : ""}">${v}<small>${all.filter((m) => m.kind === k && inCorpus(m, c)).length}</small></button>`).join("")}
         </div>
+        <div class="tabs" data-corpus>${Object.keys(CORPUS_NAME).map((k) => `<button data-c="${k}" class="${k === c ? "on" : ""}">${CORPUS_NAME[k]}</button>`).join("")}</div>
         <input class="search" placeholder="搜索英文、中文或批注" value="${esc(libState.q)}">
-        <label class="check"><input type="checkbox" data-starred ${libState.starred ? "checked" : ""}>收藏</label>
-        <label class="check"><input type="checkbox" data-mine ${libState.mine ? "checked" : ""}>我收集的</label>
       </div>
       <div class="cards" id="cards"></div>
     </div>
   </div>`;
 
-  const list = () => all.filter((m) => (!libState.kind || m.kind === libState.kind)
-    && (!libState.starred || m.starred) && (!libState.mine || m.source !== "builtin")
+  const list = () => all.filter((m) => (!libState.kind || m.kind === libState.kind) && inCorpus(m, c)
     && (!libState.q || [m.form, m.zh, m.user_note, ...(m.examples || []).map((e) => e.en)].join(" ").toLowerCase().includes(libState.q.toLowerCase())));
 
   const exportHref = () => {
     const p = new URLSearchParams();
     if (slug) p.set("topic", slug);
     if (libState.kind) p.set("kind", libState.kind);
-    if (libState.starred) p.set("starred", "true");
-    if (libState.mine) p.set("source", "mine");
+    if (c === "starred") p.set("starred", "true");
+    if (c === "mine") p.set("source", "mine");
+    if (c === "builtin") p.set("source", "builtin");
     return "/api/export/markdown?" + p;
   };
 
   const draw = () => {
     const rows = list();
     $("[data-export]").href = exportHref();
-    $("#cards").innerHTML = rows.length ? rows.map(cardHtml).join("") : `<div class="empty">这里还没有素材。<br>去“文章”导入一篇范文，或点“添加素材”。</div>`;
+    $("#cards").innerHTML = rows.length ? rows.map(cardHtml).join("") : c === "mine"
+      ? `<div class="empty">自建语料库还没有素材。<br>点上面的“AI 识别添加”粘贴一个表达或一段文字，或者“AI 生成一批”，或者去“文章”导入范文。${stats.aiReady ? "" : `<br>（这几样都需要先在 <a href="#/settings">设置</a> 里配置 AI；也可以手动填写。）`}</div>`
+      : `<div class="empty">这里还没有素材。<br>去“文章”导入一篇范文，或点“AI 识别添加”。</div>`;
   };
   draw();
 
@@ -410,8 +425,11 @@ async function library(slug) {
     draw();
   };
   $(".search").oninput = (e) => { libState.q = e.target.value; draw(); };
-  $("[data-starred]").onchange = (e) => { libState.starred = e.target.checked; draw(); };
-  $("[data-mine]").onchange = (e) => { libState.mine = e.target.checked; draw(); };
+  $("[data-corpus]").onclick = (e) => {
+    const b = e.target.closest("[data-c]"); if (!b) return;
+    location.hash = b.dataset.c === "mine" && !slug ? "#/mine" : libHref(slug, b.dataset.c);
+  };
+  if ($("[data-gen]")) $("[data-gen]").onclick = () => generateBatch(slug);
   $("[data-print]").onclick = () => window.print();
   $("[data-addtopic]").onclick = (e) => { e.preventDefault(); addTopic(); };
   if ($("[data-deltopic]")) $("[data-deltopic]").onclick = async () => {
@@ -420,15 +438,7 @@ async function library(slug) {
     await loadTopics(); location.hash = "#/library";
   };
   if ($("[data-expand]")) $("[data-expand]").onclick = () => expandTopic(t, libState.kind);
-  $("[data-add]").onclick = async () => {
-    const m = await editMaterial({ kind: libState.kind || "collocation", topics: slug ? [slug] : [] }, { title: "添加素材", withExample: true });
-    if (!m) return;
-    try {
-      const r = await api("/api/materials", { body: { items: [m] } });
-      toast(r.added ? "已加入素材库" : "库里已有这条，例句已合并");
-      render();
-    } catch (e) { fail(e); }
-  };
+  $("[data-add]").onclick = () => addByAI(slug, stats.aiReady);
 
   $("#cards").onclick = async (e) => {
     const card = e.target.closest(".card"); if (!card) return;
@@ -483,10 +493,109 @@ function cardHtml(m) {
       <button class="iconbtn" data-act="note" title="批注">${ICON.note}</button>
       ${CLOZE.has(m.kind) ? `<button class="iconbtn" data-act="rewrite" title="用它做改写练习">${ICON.pen}</button>` : ""}
       <span class="spacer"></span>
-      <span class="label">${{ builtin: "内置", doc: "来自文章", ai: "AI 扩充" }[m.source] || "手动"}</span>
+      <span class="label">${{ builtin: "内置", doc: "来自文章", ai: "AI 生成" }[m.source] || "自己添加"}</span>
       <button class="iconbtn" data-act="del" title="删除">${ICON.trash}</button>
     </div>
   </article>`;
+}
+
+// 添加素材：粘贴任意文字，AI 识别出可用的素材，勾选后加入（没 AI 时手动填写）
+async function manualAdd(slug) {
+  const m = await editMaterial({ kind: libState.kind || "collocation", topics: slug ? [slug] : [] }, { title: "手动添加素材", withExample: true });
+  if (!m) return;
+  try {
+    const r = await api("/api/materials", { body: { items: [m] } });
+    toast(r.added ? "已加入自建语料库" : "库里已有这条，例句已合并");
+    render();
+  } catch (e) { fail(e); }
+}
+
+function pickList(items) {
+  return `<div style="display:grid;gap:8px">${items.map((m, i) => {
+    const ex = m.examples[0];
+    return `<button class="item ${m.saved ? "saved" : ""}" data-i="${i}" style="align-items:flex-start;width:100%">
+      <span class="box" style="margin-top:4px"></span>
+      <span style="display:grid;gap:3px"><span><span class="tag k-${m.kind}">${KIND[m.kind]}</span> <span class="f">${esc(m.form)}</span> <span class="z">${esc(m.zh)}</span>${m.saved ? ' <span class="tag">库里已有</span>' : ""}</span>
+      ${ex && m.kind !== "idea" ? `<span class="serif dim" style="font-size:15px">${highlight(ex.en, ex.answer)}</span>` : ""}
+      ${m.topics && m.topics.length ? `<span class="mono dim" style="font-size:11px">${m.topics.map(topicZh).join(" · ")}</span>` : ""}</span></button>`;
+  }).join("")}</div>`;
+}
+
+function addByAI(slug, aiReady) {
+  modal(`<span class="label">添加素材 · AI 识别</span>
+    <h3 class="h3" style="margin:6px 0 6px">粘贴进来，交给 AI 认</h3>
+    <p class="muted" style="margin:0 0 12px;font-size:14px">可以是一个表达（mitigate the impact of）、一句话、一段范文，也可以用中文描述你想要的说法（比如“治标不治本”怎么说）。AI 会判断类型、补上中文、话题和例句。</p>
+    ${aiReady ? "" : `<div class="notice">还没配置 AI，暂时只能手动填写。<a href="#/settings">去设置</a></div>`}
+    <textarea class="field" id="rec-text" style="min-height:120px" placeholder="粘贴或输入…" ${aiReady ? "" : "disabled"}></textarea>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap">
+      <select class="field" id="rec-topic" style="width:auto">${topicOptions(slug, "让 AI 判断话题")}</select>
+      <button class="btn primary small" id="rec-go" ${aiReady ? "" : "disabled"}>识别</button>
+      <button class="btn line small" id="rec-manual">手动填写</button>
+    </div>
+    <div id="rec-out" style="margin-top:16px"></div>
+    <div class="foot"><button class="btn line" data-cancel>关闭</button><button class="btn primary" data-ok disabled>加入自建语料库</button></div>`,
+  (box, close) => {
+    box.style.width = "min(760px,100%)";
+    box.querySelector("[data-cancel]").onclick = close;
+    box.querySelector("#rec-manual").onclick = () => { close(); manualAdd(slug); };
+    let items = [];
+    const sel = new Set();
+    const ok = box.querySelector("[data-ok]");
+    const sync = () => {
+      $$(".item", box).forEach((b) => b.classList.toggle("sel", sel.has(+b.dataset.i)));
+      ok.disabled = !sel.size;
+      ok.textContent = sel.size ? `加入 ${sel.size} 条` : "加入自建语料库";
+    };
+    const go = async () => {
+      const text = box.querySelector("#rec-text").value.trim();
+      if (!text) { toast("先粘贴一点内容", true); return; }
+      const out = box.querySelector("#rec-out");
+      out.innerHTML = loading("AI 正在识别…");
+      try {
+        items = (await api("/api/materials/recognize", { body: { text, topic: box.querySelector("#rec-topic").value } })).items;
+      } catch (e) { out.innerHTML = `<div class="notice">${esc(e.message)}</div>`; return; }
+      sel.clear();
+      items.forEach((m, i) => { if (!m.saved) sel.add(i); });
+      out.innerHTML = `<span class="label">认出 ${items.length} 条，勾掉不想要的</span><div style="margin-top:8px">${pickList(items)}</div>`;
+      sync();
+    };
+    box.querySelector("#rec-go").onclick = go;
+    box.querySelector("#rec-text").addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) go(); });
+    box.querySelector("#rec-out").onclick = (e) => {
+      const b = e.target.closest(".item"); if (!b || b.classList.contains("saved")) return;
+      const i = +b.dataset.i;
+      sel.has(i) ? sel.delete(i) : sel.add(i);
+      sync();
+    };
+    ok.onclick = async () => {
+      try {
+        const r = await api("/api/materials", { body: { items: items.filter((_, i) => sel.has(i)) } });
+        close(); toast(`加入了 ${r.added} 条`); render();
+      } catch (e) { fail(e); }
+    };
+    setTimeout(() => box.querySelector("#rec-text").focus(), 30);
+  });
+}
+
+function generateBatch(slug) {
+  modal(`<span class="label">AI 生成一批</span><h3 class="h3" style="margin:6px 0 14px">生成素材加进自建语料库</h3>
+    <div class="form-grid">
+      <label><span class="label">话题</span><select class="field" id="gen-topic">${topicOptions(slug, "随机挑一个话题")}</select></label>
+      <label><span class="label">类型</span><select class="field" id="gen-kind">${kindOptions("")}</select></label>
+    </div>
+    <p class="muted" style="font-size:13px;margin:12px 0 0">生成后会再复核一遍中文和近义说法，不会和库里已有的重复。数量在设置里改（现在每次 ${CFG.study.generate_count || 10} 条）。</p>
+    <div id="gen-msg"></div>
+    <div class="foot"><button class="btn line" data-cancel>取消</button><button class="btn primary" data-ok>生成</button></div>`,
+  (box, close) => {
+    box.querySelector("[data-cancel]").onclick = close;
+    box.querySelector("[data-ok]").onclick = async (e) => {
+      e.target.disabled = true; e.target.textContent = "生成中…（约 20 秒）";
+      try {
+        const r = await api("/api/generate", { body: { topic: box.querySelector("#gen-topic").value, kind: box.querySelector("#gen-kind").value } });
+        close(); toast(`AI 生成了 ${r.added} 条（${topicZh(r.topic)}），已加进自建语料库`); render();
+      } catch (err) { box.querySelector("#gen-msg").innerHTML = `<div class="notice">${esc(err.message)}</div>`; e.target.disabled = false; e.target.textContent = "生成"; }
+    };
+  });
 }
 
 // AI 给话题再出一批素材：先看、再挑、再加入
@@ -793,7 +902,8 @@ function setupBar(mode, st, extra = "") {
 }
 
 async function setupPage(mode) {
-  const sc = await api("/api/practice/scope");
+  const [sc, stats] = await Promise.all([api("/api/practice/scope"), api("/api/stats")]);
+  const canGen = stats.aiReady && CFG.study.auto_generate !== false;
   await loadTopics();
   const meta = PRACTICE[mode];
   const st = getSetup(mode);
@@ -806,7 +916,8 @@ async function setupPage(mode) {
       <div class="corpus-cards">${Object.keys(CORPUS_NAME).map((c) => `<button class="corpus" data-corpus="${c}">
         <span class="corpus-name">${CORPUS_NAME[c]}</span><span class="mono">${sc.corpora[c].n} 条${mode === "recall" ? ` · 到期 ${sc.corpora[c].due}` : ""}</span>
         <small>${CORPUS_HELP[c]}</small></button>`).join("")}</div>
-      <p class="dim" id="corpus-note" style="font-size:13px;margin:10px 0 0"></p></div></section>
+      <p class="dim" id="corpus-note" style="font-size:13px;margin:10px 0 0"></p>
+      <a class="label" href="#/mine" style="display:inline-block;margin-top:8px">查看和添加自建语料 →</a></div></section>
     <section class="setup-step"><span class="step">02</span><div><h3 class="h3">话题</h3>
       <div class="chips" id="topic-chips"></div>
       <p class="dim" id="topic-note" style="font-size:13px;margin:10px 0 0"></p></div></section>
@@ -817,17 +928,20 @@ async function setupPage(mode) {
 
   const drawTopics = () => {
     const c = st.corpus;
-    if (st.topic && !topics.some((t) => t.slug === st.topic && t[c] > 0)) st.topic = "";
+    const genOk = canGen && (c === "all" || c === "mine");  // 能自动生成时，空的话题也可以选
+    if (st.topic && !topics.some((t) => t.slug === st.topic && (t[c] > 0 || genOk))) st.topic = "";
     $("#topic-chips").innerHTML = `<button class="chip ${st.topic ? "" : "on"}" data-topic="">${mode === "drill" ? "随机一个话题" : "不限话题"} <small class="mono">${sc.corpora[c].n}</small></button>`
-      + topics.map((t) => `<button class="chip ${t.slug === st.topic ? "on" : ""}" data-topic="${t.slug}" ${t[c] ? "" : "disabled"}>${esc(t.zh)} <small class="mono">${t[c]}</small></button>`).join("");
+      + topics.map((t) => `<button class="chip ${t.slug === st.topic ? "on" : ""}" data-topic="${t.slug}" ${t[c] || genOk ? "" : "disabled"}>${esc(t.zh)} <small class="mono">${t[c]}</small></button>`).join("");
     $("#topic-note").textContent = (c === "mine" || c === "starred") && sc.untagged[c]
       ? `另有 ${sc.untagged[c]} 条${CORPUS_NAME[c]}素材没有标话题，选“不限话题”时会用到。` : "";
     $$("[data-corpus]").forEach((b) => b.classList.toggle("on", b.dataset.corpus === c));
     const empty = sc.corpora[c].n === 0;
-    $("#corpus-note").innerHTML = empty ? (c === "mine"
-      ? `自建语料库还是空的：去 <a href="#/docs">文章</a> 导入范文拆素材，或者在 <a href="#/library">素材库</a> 里添加、用“AI 扩充”。`
-      : c === "starred" ? `还没有收藏：在 <a href="#/library">素材库</a> 里点卡片上的星标。` : "") : "";
-    $("#go").disabled = empty;
+    $("#corpus-note").innerHTML = c === "mine" && empty ? (genOk
+      ? `自建语料库还是空的：开始后 AI 会先生成一批素材加进来（约 20 秒）。也可以先去 <a href="#/mine">自建语料库</a> 粘贴添加。`
+      : `自建语料库还是空的：去 <a href="#/mine">自建语料库</a> 添加，或者到 <a href="#/docs">文章</a> 导入范文拆素材。${stats.aiReady ? "" : "配置 AI 后，没有素材时会自动生成。"}`)
+      : c === "mine" && genOk ? "没有新素材时，AI 会自动再生成一批加进来。"
+      : c === "starred" && empty ? `还没有收藏：在 <a href="#/library">素材库</a> 里点卡片上的星标。` : "";
+    $("#go").disabled = empty && !(c === "mine" && genOk);
   };
   drawTopics();
   meta.options.forEach((o) => {
@@ -892,13 +1006,16 @@ async function recall(_arg, params, alive) {
   if (!params.get("go")) return setupPage("recall");
   const st = getSetup("recall");
   const scope = params.get("scope") || st.mode || "auto";
+  main().innerHTML = loading("准备这一轮…（范围里没有新素材时，AI 会先生成一批，约 20 秒）");
   const plan = await api("/api/recall/plan", { body: { topic: st.topic, kind: st.kind, scope, corpus: st.corpus } });
   if (!alive()) return;
+  if (plan.generated) toast(`这个范围没有新素材了，AI 生成了 ${plan.generated} 条（${topicZh(plan.generatedTopic)}），已加进自建语料库`);
   const filt = [CORPUS_NAME[st.corpus] !== "全部" && CORPUS_NAME[st.corpus], st.topic && topicZh(st.topic), st.kind && KIND[st.kind]].filter(Boolean).join(" · ");
   if (!plan.ids.length) {
     main().innerHTML = `<div class="done fade-in"><span class="label">#recall ${filt ? "· " + esc(filt) : ""}</span>
       <h2 class="h2" style="margin:14px 0">All Caught Up</h2>
       <p class="muted">${plan.new && !plan.quota ? "今天的新素材额度用完了，到期的也复习完了。" : "这个范围里没有要复习的素材。"}</p>
+      ${plan.generateError ? `<p class="dim" style="font-size:14px">AI 没能生成新素材：${esc(plan.generateError)}</p>` : ""}
       <div class="ctrl" style="justify-content:center">
         ${plan.new ? `<a class="btn primary" href="#/recall?go=1&scope=new&r=${Date.now()}">再学一组新素材</a>` : ""}
         <a class="btn ghost" href="#/rewrite">去做改写</a><a class="btn line" href="#/recall">换个范围</a></div></div>`;
@@ -1072,6 +1189,7 @@ async function rewrite(_arg, params, alive) {
   }
   if (!alive()) return;
   rwState.exclude.push(t.material.id);
+  if (t.generated) toast(`这个范围没有可改写的素材，AI 生成了 ${t.generated} 条，已加进自建语料库`);
   const m = t.material;
   main().innerHTML = `<div class="stage fade-in">
     ${fixedId ? `<div class="setup-bar"><span class="label">#rewrite · 指定素材</span><a class="label" href="#/rewrite" style="margin-left:auto">选范围随机出题 →</a></div>` : setupBar("rewrite", st)}
@@ -1145,6 +1263,7 @@ async function drill(slug, params, alive) {
   const fresh = params.get("fresh") === "1";
   const d = await api(`/api/drill/start?topic=${encodeURIComponent(slug)}&corpus=${st.corpus}${fresh ? "&fresh=true" : ""}`);
   if (!alive()) return;
+  if (d.generated) toast(`这个范围素材太少，AI 生成了 ${d.generated} 条，已加进自建语料库`);
   const draftKey = `cw-draft-${slug}`;
   let draft = "";
   try { draft = localStorage.getItem(draftKey) || ""; } catch { /* 无痕模式 */ }
@@ -1270,6 +1389,7 @@ async function translate(_arg, params, alive) {
   }
   if (!alive()) return;
   trState.exclude.push(item.id);
+  if (item.generated) toast(`自建语料库里没有可出题的素材，AI 先生成了 ${item.generated} 条`);
   item.targets.forEach((t) => trState.excludeMaterials.push(t.id));
   const hinted = { v: false };
   main().innerHTML = `<div class="stage fade-in">
@@ -1421,6 +1541,8 @@ async function settings() {
         ${row("每轮最多", selectRow("study.session_size", [10, 20, 30, 50, 100, 200], st.session_size, " 条"))}
         ${row("新素材顺序", chipRow("study.new_order", [["mine_first", "自己收集的先"], ["rotate", "按话题轮流"], ["random", "随机"]], st.new_order))}
         ${row("回忆练哪几类", Object.entries(KIND).map(([k, v]) => toggleRow(`kind:${k}`, (st.kinds || []).includes(k), v)).join("&emsp;"), "练习页选了具体类型时以那里为准")}
+        ${row("没新素材时", toggleRow("study.auto_generate", st.auto_generate !== false, "让 AI 生成一批加进自建语料库再继续"), "只在“全部”和“自建”语料库里生成；需要配置 AI")}
+        ${row("每次生成", selectRow("study.generate_count", [5, 8, 10, 15, 20, 30], st.generate_count || 10, " 条"))}
       </section>
 
       <section><span class="label">回忆</span>

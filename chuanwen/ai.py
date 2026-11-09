@@ -1086,3 +1086,82 @@ def check_translation(item: dict, answer: str, targets: list[dict], cfg: dict) -
             "naturalness": _clamp(d.get("naturalness"), 1, 5), "summary": str(d.get("summary_zh", "")).strip(),
             "corrected": str(d.get("corrected", "")).strip() or answer, "better": better, "chunks": chunks[:6],
             "good": good[:3], "expressions": exprs[:5], "targetsUsed": used}
+
+
+
+# ---------- 添加素材：AI 识别粘贴的文字 ----------
+
+RECOGNIZE_SYSTEM = """A Chinese learner of English writing pasted something they want to add to their writing-material
+library. It may be a single expression (a collocation, a sentence pattern, a linker), a sentence, a paragraph, or even
+a Chinese description of an expression they want.
+
+Return the reusable writing material in it:
+- If it is a single English expression, return exactly that one item (fix its form if needed).
+- If it is a sentence or passage, return the expressions worth reusing in essays (usually 1-6), plus at most one idea
+  (an argument stated in general terms) if the text contains a good one.
+- If it is Chinese, return the best English expression(s) for what they describe.
+
+For each item:
+- type: collocation | pattern | linker | idea
+- form: dictionary form (base verb; sb / sth / one's for open slots; X / Y in patterns). For an idea: one general English
+  sentence, max 25 words.
+- zh: short Simplified Chinese meaning (max 16 characters; idea max 40)
+- topics: 0-2 slugs from: {topics}
+- register: formal | neutral | informal
+- alts: 0-3 English alternatives with the same meaning (empty for ideas)
+- note: optional Chinese usage tip (max 24 characters)
+- example: one natural essay-style sentence (10-24 words) using the item. If the learner's text contains a good sentence
+  with the item, use that sentence. Wrap ONLY the item's own words in [square brackets]; for patterns only the fixed frame
+  words; for ideas no brackets.
+- example_zh: Simplified Chinese translation of the example.
+Reply with JSON only, shaped like {"items": [{"type": "...", "form": "...", ...}]}."""
+
+RECOGNIZE_SCHEMA = {
+    "type": "object",
+    "properties": {"items": {"type": "array", "items": {
+        "type": "object",
+        "properties": {
+            "type": {"type": "string", "enum": ["collocation", "pattern", "linker", "idea"]},
+            "form": {"type": "string"}, "zh": {"type": "string"},
+            "topics": {"type": "array", "items": {"type": "string"}},
+            "register": {"type": "string", "enum": ["formal", "neutral", "informal"]},
+            "alts": {"type": "array", "items": {"type": "string"}}, "note": {"type": "string"},
+            "example": {"type": "string"}, "example_zh": {"type": "string"},
+        },
+        "required": ["type", "form", "zh", "topics", "register", "alts", "note", "example", "example_zh"],
+        "additionalProperties": False}}},
+    "required": ["items"], "additionalProperties": False,
+}
+
+
+def recognize(text: str, topics: list[dict], cfg: dict, default_topic: str = "") -> list[dict]:
+    """返回和内置素材同一结构的素材列表；例句里的方括号对不上时，就当作没有挖空（回忆时改成看中文想英文）"""
+    slugs = {t["slug"] for t in topics}
+    d = ask(cfg, text[:4000], RECOGNIZE_SYSTEM.replace("{topics}", _topic_lines(topics)), RECOGNIZE_SCHEMA,
+            temperature=0.3, max_tokens=4000)
+    rows = d.get("items")
+    if not isinstance(rows, list):
+        rows = next((v for v in d.values() if isinstance(v, list)), [])
+    out, seen = [], set()
+    for u in rows:
+        if not isinstance(u, dict):
+            continue
+        it = _clean_item(u, slugs)
+        if it["kind"] not in KIND_SET or not it["form"] or _norm_form(it["form"]) in seen:
+            continue
+        seen.add(_norm_form(it["form"]))
+        if default_topic in slugs and default_topic not in it["topics"]:
+            it["topics"] = [default_topic] + it["topics"][:1]
+        raw = str(u.get("example", "")).strip()
+        pieces = [p.strip() for p in re.findall(r"\[([^\]]+)\]", raw) if p.strip()]
+        en = re.sub(r"\s+", " ", re.sub(r"\[([^\]]+)\]", r"\1", raw)).strip()
+        if it["kind"] == "idea":
+            en, pieces = en or it["form"], []
+        segs = make_cloze(en, pieces) if en and pieces else None
+        if segs and it["kind"] == "collocation":
+            segs = trim_to_form(en, segs, it["form"]) or segs
+        answer = [x["blank"] for x in segs if "blank" in x] if segs else []
+        zh_ex = re.sub(r"[\[\]【】]", "", str(u.get("example_zh", ""))).strip()
+        it["examples"] = [{"en": en, "zh": zh_ex, "answer": answer}] if en else []
+        out.append(it)
+    return out

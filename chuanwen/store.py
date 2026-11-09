@@ -56,6 +56,8 @@ DEFAULT_CONFIG = {
         "kinds": ["collocation", "pattern", "linker", "idea"],  # 回忆练哪几类
         "max_tries": 3,             # 回忆：错几次显示答案
         "auto_speak": True,         # 回忆：答完自动朗读
+        "auto_generate": True,      # 没有新素材时让 AI 生成一批（加进自建语料库）
+        "generate_count": 10,       # 每次生成多少条
     },
     "drill": {"suggestions": 12, "min_words": 20},
     "translate": {"length": "mix", "batch": 6, "show_hints": True},  # length：mix / short / medium / long

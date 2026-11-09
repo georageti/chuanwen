@@ -471,3 +471,8 @@ textarea, input:not([type]), input[type="text"] { color: var(--input-ink); }
   background: rgba(242, 242, 242, .04); border: 1px solid var(--line); border-radius: 3px; }
 .setup-bar .label { text-decoration: none; }
 @media (max-width: 860px) { .corpus-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .setup-step { grid-template-columns: 1fr; gap: 6px; } }
+
+.side a.on-soft { background: rgba(242, 242, 242, .1); color: var(--ink); }
+a.stat:hover .num { color: var(--blue-hi); }
+/* 所有高亮（弹窗、翻译批改里的例句等）统一成蓝色下划线，不用浏览器默认的黄底 */
+mark { background: none; color: var(--ink); border-bottom: 2px solid var(--blue-hi); padding: 0 1px; }

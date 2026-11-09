@@ -11,6 +11,7 @@ from fastapi import Body, FastAPI
 
 app = FastAPI()
 CALLS: list[str] = []  # 测试里看调用了哪些
+EXPAND_N = 0  # 生成素材的编号，每次不重复
 
 
 def words(s: str) -> list[str]:
@@ -67,13 +68,17 @@ def reply(system: str, prompt: str) -> dict:
         CALLS.append("expand")
         d = json.loads(prompt)
         n = d["requested"]
-        cols = [{"form": f"mitigate the risk number {i}", "zh": "降低风险", "example": f"We must [mitigate the risk number {i}] soon.",
+        global EXPAND_N
+        base_n = EXPAND_N
+        EXPAND_N += n["collocations"] + n["ideas"] + n["patterns"] + n["linkers"]
+        cols = [{"form": f"mitigate the risk number {base_n + i}", "zh": "降低风险", "example": f"We must [mitigate the risk number {base_n + i}] soon.",
                  "example_zh": "我们必须[尽快]降低风险。", "alts": ["reduce the risk"]} for i in range(n["collocations"])]
         cols.append({"form": "puts pressure on", "zh": "施压", "example": "It puts [pressure on] us.", "example_zh": "", "alts": []})  # 漏了动词，应丢掉
         cols.append({"form": "not in example", "zh": "x", "example": "The [missing words] here.", "example_zh": "", "alts": []})  # 对不上，应丢掉
-        ideas = [{"en": f"Idea number {i} explains why policy works.", "zh": "模拟论点"} for i in range(n["ideas"])]
-        pats = [{"form": f"Pattern {i} X, Y", "zh": "句型", "example": f"[Pattern {i}] cities, people.", "example_zh": "", "note": ""} for i in range(n["patterns"])]
-        return {"collocations": cols, "patterns": pats, "linkers": [], "ideas": ideas,
+        ideas = [{"en": f"Idea number {base_n + i} explains why policy works.", "zh": "模拟论点"} for i in range(n["ideas"])]
+        pats = [{"form": f"Pattern {base_n + i} X, Y", "zh": "句型", "example": f"[Pattern {base_n + i}] cities, people.", "example_zh": "", "note": ""} for i in range(n["patterns"])]
+        links = [{"form": f"Linker number {base_n + i}", "zh": "衔接", "example": f"[Linker number {base_n + i}], it works.", "example_zh": "", "alts": []} for i in range(n["linkers"])]
+        return {"collocations": cols, "patterns": pats, "linkers": links, "ideas": ideas,
                 "prompts": [{"en": "Extra prompt?", "zh": "题"}][: n["prompts"]]}
     if "meticulous editor" in system:
         CALLS.append("review")
@@ -108,6 +113,22 @@ def reply(system: str, prompt: str) -> dict:
                                  "example": "Such policies only treat the symptoms."},
                                 {"type": "bogus", "form": "x", "zh": "", "example": ""}],
                 "targets_used": [{"id": t["id"], "used": True, "ok": True} for t in d["target_expressions"]] + [{"id": 999999, "used": True, "ok": True}]}
+    if "pasted something they want to add" in system:
+        CALLS.append("recognize")
+        text = prompt.strip()
+        if len(text.split()) <= 6:
+            return {"items": [{"type": "collocation", "form": text.lower(), "zh": "识别出的搭配", "topics": ["health", "bogus"],
+                               "register": "neutral", "alts": ["alt"], "note": "",
+                               "example": f"Governments should [{text}] as soon as possible.", "example_zh": "政府应尽快[这样做]。"}]}
+        return {"items": [
+            {"type": "collocation", "form": "pose a threat to sth", "zh": "构成威胁", "topics": [], "register": "formal", "alts": [], "note": "",
+             "example": "Plastic waste [poses a threat to] marine life.", "example_zh": "塑料垃圾威胁海洋生物。"},
+            {"type": "pattern", "form": "Far from being X, Y", "zh": "远非", "topics": ["general"], "register": "formal", "alts": [], "note": "",
+             "example": "Far from being cheap, it is costly.", "example_zh": ""},
+            {"type": "idea", "form": "Plastic pollution harms marine ecosystems.", "zh": "塑料污染危害海洋生态", "topics": ["environment"],
+             "register": "neutral", "alts": [], "note": "", "example": "", "example_zh": ""},
+            {"type": "collocation", "form": "pose a threat to sth", "zh": "重复", "topics": [], "register": "formal", "alts": [], "note": "",
+             "example": "x", "example_zh": ""}]}
     if "essay questions" in system:
         CALLS.append("prompts")
         return {"prompts": [{"en": "Some say X is good. Discuss both views.", "zh": "模拟题目"}]}
