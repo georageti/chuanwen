@@ -131,8 +131,18 @@ def reply(system: str, prompt: str) -> dict:
     return {}
 
 
+BODIES: list[dict] = []  # 测试里看请求体
+
+
 @app.post("/v1/chat/completions")
 def chat(body: dict = Body(...)):
+    BODIES.append(body)
+    if body.get("model") == "strict-model" and ("response_format" in body or "reasoning_effort" in body):
+        from fastapi.responses import JSONResponse
+        return JSONResponse({"error": {"message": "Unknown field: response_format"}}, status_code=400)
+    if body.get("model") == "missing-model":
+        from fastapi.responses import JSONResponse
+        return JSONResponse({"error": {"message": "model not found"}}, status_code=404)
     msgs = body["messages"]
     system = next((m["content"] for m in msgs if m["role"] == "system"), "")
     prompt = next((m["content"] for m in msgs if m["role"] == "user"), "")

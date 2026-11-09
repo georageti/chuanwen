@@ -64,7 +64,7 @@ def api_settings():
 @app.post("/api/settings")
 def api_save_settings(patch: dict = Body(...)):
     ai_patch = patch.get("ai", {})
-    for p in ("deepseek", "anthropic", "openai"):  # 网页显示的是打码的 Key，没改就别存回去
+    for p in ("deepseek", "gemini", "anthropic", "openai"):  # 网页显示的是打码的 Key，没改就别存回去
         k = ai_patch.get(p, {}).get("key")
         if k is not None and k.startswith("••••"):
             ai_patch[p].pop("key")
@@ -89,7 +89,7 @@ def _int(d: dict, key: str, lo: int, hi: int) -> None:
 def clean_settings(patch: dict) -> None:
     """只收下合法的设置值，其余丢掉（保持原值）"""
     a = patch.get("ai", {})
-    _pick(a, "provider", {"deepseek", "anthropic", "openai", "none"})
+    _pick(a, "provider", {"deepseek", "gemini", "anthropic", "openai", "none"})
     _pick(a, "feedback_lang", {"zh", "en"})
     _pick(a, "strictness", {"lenient", "standard", "strict"})
     ex = patch.get("exam", {})

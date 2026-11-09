@@ -40,9 +40,10 @@ CLOZE_KINDS = {"collocation", "pattern", "linker"}  # 这几类按挖空拼写�
 
 DEFAULT_CONFIG = {
     "ai": {
-        "provider": "deepseek",  # deepseek | anthropic | openai | none（不用 AI）
+        "provider": "deepseek",  # deepseek | gemini | anthropic | openai | none（不用 AI）
         "deepseek": {"key": "", "model": "deepseek-chat", "base": "https://api.deepseek.com"},
         "anthropic": {"key": "", "model": "claude-opus-5-5"},
+        "gemini": {"key": "", "model": "gemini-flash-latest", "base": "https://generativelanguage.googleapis.com/v1beta/openai"},
         "openai": {"key": "", "model": "", "base": ""},
         "feedback_lang": "zh",     # 点评语言：zh 中文 / en 英文
         "strictness": "standard",  # 批改严格程度：lenient / standard / strict
@@ -190,6 +191,7 @@ def load_config() -> dict:
             pass
     cfg = json.loads(json.dumps(cfg))
     cfg["ai"]["deepseek"]["key"] = cfg["ai"]["deepseek"]["key"] or os.environ.get("DEEPSEEK_API_KEY", "")
+    cfg["ai"]["gemini"]["key"] = cfg["ai"]["gemini"]["key"] or os.environ.get("GEMINI_API_KEY", "")
     cfg["ai"]["anthropic"]["key"] = cfg["ai"]["anthropic"]["key"] or os.environ.get("ANTHROPIC_API_KEY", "")
     return cfg
 
@@ -210,7 +212,7 @@ def save_config(patch: dict) -> dict:
 
 def public_config() -> dict:
     cfg = load_config()
-    for p in ("deepseek", "anthropic", "openai"):
+    for p in ("deepseek", "gemini", "anthropic", "openai"):
         k = cfg["ai"][p]["key"]
         cfg["ai"][p]["key"] = ("••••" + k[-4:]) if k else ""
         cfg["ai"][p]["hasKey"] = bool(k)

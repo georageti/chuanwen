@@ -1368,7 +1368,7 @@ async function settings() {
   const [cfg, info, voices] = await Promise.all([api("/api/settings"), api("/api/info"), api("/api/voices")]);
   CFG = cfg;
   const a = cfg.ai, st = cfg.study;
-  const prov = [["deepseek", "DeepSeek（默认，国内直连）"], ["anthropic", "Claude"], ["openai", "其他兼容接口"], ["none", "不用 AI"]];
+  const prov = [["deepseek", "DeepSeek（默认，国内直连）"], ["gemini", "Gemini"], ["anthropic", "Claude"], ["openai", "其他兼容接口"], ["none", "不用 AI"]];
   const row = (label, control, help = "") => `<div class="set-row"><span>${label}${help ? `<small>${help}</small>` : ""}</span><div>${control}</div></div>`;
   main().innerHTML = `<div class="fade-in">
     <div class="section-head"><div><span class="label">#settings · 改了就自动保存（AI 来源和 Key 要点“保存”）</span><h2 class="h2" style="margin-top:8px">Settings</h2></div></div>
@@ -1379,6 +1379,12 @@ async function settings() {
           <label><span class="label">DeepSeek API Key（platform.deepseek.com 申请）</span><input class="field" name="deepseek.key" value="${esc(a.deepseek.key)}" placeholder="sk-…"></label>
           <div class="two"><label><span class="label">模型</span><input class="field" name="deepseek.model" value="${esc(a.deepseek.model)}"></label>
           <label><span class="label">接口地址</span><input class="field" name="deepseek.base" value="${esc(a.deepseek.base)}"></label></div>
+        </div>
+        <div data-for="gemini" class="form-grid">
+          <label><span class="label">Gemini API Key（在 aistudio.google.com 登录后点 Get API key；国内需要代理）</span><input class="field" name="gemini.key" value="${esc(a.gemini.key)}" placeholder="AIza…"></label>
+          <div class="two"><label><span class="label">模型（默认跟着最新的 Flash 走）</span><input class="field" name="gemini.model" value="${esc(a.gemini.model)}" placeholder="gemini-flash-latest"></label>
+          <label><span class="label">接口地址（一般不用改）</span><input class="field" name="gemini.base" value="${esc(a.gemini.base)}"></label></div>
+          <p class="muted" style="margin:0;font-size:13px">Gemini 网页版的订阅（Google AI Pro / Ultra）本身不带 API Key。可以在 AI Studio 免费建 Key（有免费额度）；订阅附送的 Google Cloud 额度领取后，也能抵 API 费用。</p>
         </div>
         <div data-for="anthropic" class="form-grid">
           <label><span class="label">Claude API Key（国内需要代理）</span><input class="field" name="anthropic.key" value="${esc(a.anthropic.key)}" placeholder="sk-ant-…"></label>
@@ -1477,7 +1483,7 @@ async function settings() {
     showProv();
   };
   const aiPatch = () => {
-    const patch = { ai: { provider, deepseek: {}, anthropic: {}, openai: {} } };
+    const patch = { ai: { provider, deepseek: {}, gemini: {}, anthropic: {}, openai: {} } };
     $$("input[name]").forEach((i) => { const [p, k] = i.name.split("."); patch.ai[p][k] = i.value.trim(); });
     return patch;
   };

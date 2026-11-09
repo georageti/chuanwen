@@ -205,6 +205,24 @@ def main() -> None:
     check("测试连接", c.post("/api/settings/test").json()["ok"] is True)
     check("AI 可用", c.get("/api/stats").json()["aiReady"] is True)
 
+    section("Gemini")
+    base = f"http://127.0.0.1:{port}/v1"
+    c.post("/api/settings", json={"ai": {"provider": "gemini", "gemini": {"key": "AIza-test-1234", "model": "fake", "base": base}}})
+    check("Gemini Key 打码", c.get("/api/settings").json()["ai"]["gemini"]["key"] == "••••1234")
+    check("Gemini 默认地址", store.DEFAULT_CONFIG["ai"]["gemini"]["base"].startswith("https://generativelanguage.googleapis.com"))
+    check("Gemini 连接", c.post("/api/settings/test").json()["ok"] is True)
+    check("Gemini 请求带低思考强度", fake_ai.BODIES[-1].get("reasoning_effort") == "low")
+    c.post("/api/settings", json={"ai": {"gemini": {"model": "strict-model"}}})
+    r = c.post("/api/settings/test").json()
+    check("不认参数时去掉重试", r["ok"] is True and "response_format" not in fake_ai.BODIES[-1], r)
+    c.post("/api/settings", json={"ai": {"gemini": {"model": "missing-model"}}})
+    r = c.post("/api/settings/test").json()
+    check("模型名错误的提示", r["ok"] is False and "missing-model" in r["error"], r)
+    c.post("/api/settings", json={"ai": {"gemini": {"key": ""}}})
+    check("没填 Gemini Key 的提示", "Gemini" in (c.get("/api/stats").json()["aiReason"] or ""))
+    c.post("/api/settings", json={"ai": {"provider": "openai"}})
+    check("切回兼容接口", c.get("/api/stats").json()["aiReady"] is True)
+
     section("AI 拆素材")
     text = "There is no denying that remote work reshapes cities.\n\nYoung workers increasingly leave expensive centres. Rents fall slowly."
     r = c.post("/api/docs", data={"text": text, "title": "测试文章"}).json()

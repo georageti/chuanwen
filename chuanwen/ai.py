@@ -1,7 +1,8 @@
 """AI：从文章里拆写作素材、出改写题并批改、批改话题演练。
 
 支持三种来源（和川听同一套）：
-  deepseek / openai：OpenAI 兼容的 /chat/completions 接口（DeepSeek 国内直连；也能接 Kimi、通义等）
+  deepseek / gemini / openai：OpenAI 兼容的 /chat/completions 接口（DeepSeek 国内直连；Gemini 走 Google 的兼容接口；
+                               也能接 Kimi、通义等）
   anthropic：Claude，用官方 anthropic SDK，JSON Schema 结构化输出
   none：不用 AI（只能手动划选加素材、练回忆）
 AI 给出的每一处原文片段都要核对：必须按顺序出现在原句里，对不上的丢掉。
@@ -128,25 +129,43 @@ def split_sentences(text: str) -> list[str]:
 # ---------- 调 AI ----------
 
 def _call_openai_compatible(base: str, key: str, model: str, prompt: str, system: str,
-                            temperature: float = 0.4, max_tokens: int = 6000) -> str:
+                            temperature: float = 0.4, max_tokens: int = 6000, extra: dict | None = None) -> str:
     url = base.rstrip("/") + "/chat/completions"  # 接口地址填到 /v1 为止（DeepSeek 可以不带 /v1）
-    try:
-        r = httpx.post(url, timeout=180, headers={"Authorization": f"Bearer {key}"}, json={
-            "model": model,
-            "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}],
-            "response_format": {"type": "json_object"},
-            "temperature": temperature,
-            "max_tokens": max_tokens,
-        })
-    except httpx.HTTPError as e:
-        raise AIError(f"连不上 {base}：{e.__class__.__name__}") from e
-    if r.status_code == 401:
-        raise AIError("API Key 不对，或者已失效")
+    body = {
+        "model": model,
+        "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}],
+        "response_format": {"type": "json_object"},
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+        **(extra or {}),
+    }
+    # 有的接口不认 response_format 或额外参数：报 400 时去掉它们再试一次（JSON 靠提示词和解析容错）
+    for attempt in range(2):
+        try:
+            r = httpx.post(url, timeout=180, headers={"Authorization": f"Bearer {key}"}, json=body)
+        except httpx.HTTPError as e:
+            raise AIError(f"连不上 {base}：{e.__class__.__name__}（Gemini、Claude 国内需要开代理）") from e
+        if r.status_code == 400 and attempt == 0 and ("response_format" in body or extra):
+            body = {k: v for k, v in body.items() if k != "response_format" and k not in (extra or {})}
+            continue
+        break
+    if r.status_code in (401, 403):
+        raise AIError("API Key 不对、已失效，或者没有这个模型的权限")
     if r.status_code == 402:
         raise AIError("账户余额不足")
+    if r.status_code == 404:
+        raise AIError(f"找不到模型 {model}，请在设置里检查模型名")
+    if r.status_code == 429:
+        raise AIError("请求太频繁或额度用完了，稍后再试（Gemini 免费额度每分钟有次数限制）")
     if r.status_code >= 400:
         raise AIError(f"AI 接口报错 {r.status_code}：{r.text[:200]}")
-    return r.json()["choices"][0]["message"]["content"]
+    try:
+        content = r.json()["choices"][0]["message"]["content"]
+    except (ValueError, KeyError, IndexError, TypeError) as e:
+        raise AIError("AI 接口返回的格式不对") from e
+    if not content:
+        raise AIError("AI 没有返回内容（可能被安全过滤拦下了），换一下再试")
+    return content
 
 
 def _call_anthropic(key: str, model: str, prompt: str, system: str, schema: dict) -> str:
@@ -180,6 +199,9 @@ def _call_anthropic(key: str, model: str, prompt: str, system: str, schema: dict
     return next((b.text for b in resp.content if b.type == "text"), "")
 
 
+PROVIDER_NAMES = {"deepseek": "DeepSeek", "gemini": "Gemini", "openai": "接口", "anthropic": "Claude"}
+
+
 def unavailable_reason(cfg: dict) -> str | None:
     ai = cfg["ai"]
     provider = ai["provider"]
@@ -187,10 +209,10 @@ def unavailable_reason(cfg: dict) -> str | None:
         return "设置里选的是“不用 AI”"
     if provider == "anthropic":
         return None if ai["anthropic"]["key"] else "还没有填 Claude 的 API Key"
-    if provider in ("deepseek", "openai"):
+    if provider in ("deepseek", "gemini", "openai"):
         p = ai[provider]
         if not p["key"]:
-            return f"还没有填 {'DeepSeek' if provider == 'deepseek' else '接口'} 的 API Key"
+            return f"还没有填 {PROVIDER_NAMES[provider]} 的 API Key"
         if not p.get("base") or not p.get("model"):
             return "请在设置里填写接口地址和模型名"
         return None
@@ -206,7 +228,10 @@ def _call(cfg: dict, prompt: str, system: str, schema: dict, temperature: float 
         p = ai["anthropic"]
         return _call_anthropic(p["key"], p["model"] or "claude-opus-5-5", prompt, system, schema)
     p = ai[ai["provider"]]
-    return _call_openai_compatible(p["base"], p["key"], p["model"], prompt, system, temperature, max_tokens)
+    # Gemini 的思考型模型会把思考也算进 max_tokens，调低思考强度，免得 JSON 写到一半被截断
+    extra = {"reasoning_effort": "low"} if ai["provider"] == "gemini" else None
+    return _call_openai_compatible(p["base"], p["key"], p["model"], prompt, system, temperature,
+                                   max_tokens + (4000 if extra else 0), extra)
 
 
 def _parse(text: str) -> dict:
