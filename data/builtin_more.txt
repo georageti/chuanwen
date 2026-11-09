@@ -1,0 +1,1198 @@
+# 川文内置素材扩充：AI 生成（scripts/expand_builtin.py），经自动校验、AI 审校和人工抽查。格式同 builtin.txt。
+
+@topic general | General | 通用 | 通
+s | It is widely believed that X, but Y | 人们普遍认为X，但Y | [It is widely believed that] technology isolates people, but it actually connects them. | 人们普遍认为科技使人孤立，但实际上它连接了人们。 | 用于引出普遍观点并转折
+s | X is not without its drawbacks | X并非没有缺点 | Online learning [is not without its drawbacks], such as the lack of face-to-face interaction. | 在线学习并非没有缺点，比如缺乏面对面互动。 | 委婉指出缺点
+s | X can be attributed to Y | X可以归因于Y | The rise in obesity [can be attributed to] unhealthy diets and sedentary lifestyles. | 肥胖率上升可以归因于不健康饮食和久坐生活方式。 | 用于分析原因
+s | X is a case in point | X就是一个例子 | Many countries face aging populations; Japan [is a case in point]. | 许多国家面临人口老龄化；日本就是一个例子。 | 举例时使用
+s | X gives rise to Y | X导致Y | Poverty [gives rise to] crime and social unrest. | 贫困导致犯罪和社会动荡。 | 表示因果关系
+s | X is instrumental in Y | X在Y中起重要作用 | Education [is instrumental in] reducing poverty. | 教育在减少贫困中起重要作用。 | 强调重要性
+s | X paves the way for Y | X为Y铺平道路 | Technological innovation [paves the way for] economic growth. | 技术创新为经济增长铺平道路。 | 表示促进
+s | X is a prerequisite for Y | X是Y的先决条件 | Good governance [is a prerequisite for] sustainable development. | 良好治理是可持续发展的先决条件。 | 强调必要条件
+s | X is conducive to Y | X有助于Y | A supportive environment [is conducive to] learning. | 支持性环境有助于学习。 | 表示促进
+s | X is detrimental to Y | X对Y有害 | Air pollution [is detrimental to] public health. | 空气污染对公共健康有害。 | 表示负面影响
+s | X is inextricably linked to Y | X与Y密不可分 | Economic development [is inextricably linked to] environmental protection. | 经济发展与环境保护密不可分。 | 强调紧密联系
+s | X is a matter of Y | X是Y的问题 | Success [is a matter of] hard work and perseverance. | 成功是努力和坚持的问题。 | 表示关键
+s | X is by no means Y | X绝不是Y | Globalization [is by no means] a panacea for all problems. | 全球化绝不是解决所有问题的灵丹妙药。 | 强调否定
+s | X is characterized by Y | X以Y为特征 | Modern society [is characterized by] rapid technological change. | 现代社会的特征是技术快速变革。 | 描述特点
+s | X is synonymous with Y | X是Y的代名词 | For many, success [is synonymous with] wealth. | 对许多人来说，成功是财富的代名词。 | 表示等同
+s | X is a key factor in Y | X是Y的关键因素 | Education [is a key factor in] social mobility. | 教育是社会流动的关键因素。 | 强调重要性
+s | X is a major cause of Y | X是Y的主要原因 | Deforestation [is a major cause of] climate change. | 森林砍伐是气候变化的主要原因。 | 表示原因
+s | X is a significant contributor to Y | X是Y的重要成因 | Transport [is a significant contributor to] air pollution. | 交通是空气污染的重要贡献者。 | 表示原因
+s | X is a vital component of Y | X是Y的重要组成部分 | Physical activity [is a vital component of] a healthy lifestyle. | 体育活动是健康生活方式的重要组成部分。 | 强调必要性
+s | X is a fundamental aspect of Y | X是Y的基本方面 | Trust [is a fundamental aspect of] any relationship. | 信任是任何关系的基本方面。 | 强调基础性
+s | X is a controversial issue | X是一个有争议的问题 | Genetic engineering [is a controversial issue] with ethical implications. | 基因工程是一个有伦理争议的问题。 | 引出争议
+s | X is a pressing concern | X是一个紧迫的问题 | Climate change [is a pressing concern] that requires immediate action. | 气候变化是一个需要立即行动的紧迫问题。 | 强调紧迫性
+s | X is a growing trend | X是一个日益增长的趋势 | Remote work [is a growing trend] in many industries. | 远程工作是许多行业的一个增长趋势。 | 描述趋势
+s | X is a common phenomenon | X是一个普遍现象 | Online shopping [is a common phenomenon] in urban areas. | 网上购物是城市地区的普遍现象。 | 描述普遍性
+s | X is a widespread problem | X是一个普遍问题 | Unemployment [is a widespread problem] in developing countries. | 失业是发展中国家的一个普遍问题。 | 描述问题
+s | X is a complex issue | X是一个复杂问题 | Immigration [is a complex issue] with no easy solutions. | 移民是一个没有简单解决方案的复杂问题。 | 强调复杂性
+s | X is a multifaceted problem | X是一个多层面的问题 | Poverty [is a multifaceted problem] requiring integrated approaches. | 贫困是一个需要综合方法的多层面问题。 | 强调多面性
+s | It is worth noting that ... | 值得注意的是…… | [It is worth noting that] the benefits outweigh the drawbacks. | 值得注意的是，好处大于坏处。 | 用于引出重要观点，使论述更客观。
+s | One cannot help but ... | 不禁…… | [One cannot help but] wonder why so many people ignore this issue. | 不禁想知道为什么这么多人忽视这个问题。 | 表达强烈感受，常用于引入个人观点。
+s | It is no exaggeration to say that ... | 毫不夸张地说…… | [It is no exaggeration to say that] education shapes our future. | 毫不夸张地说，教育塑造我们的未来。 | 强调某观点的重要性或真实性。
+s | There is a tendency for X to Y | X倾向于Y | [There is a tendency for] people to rely on technology too much. | 人们有过度依赖技术的倾向。 | 描述普遍趋势，语气客观。
+s | X is bound to Y | X必然会Y | Excessive screen time [is bound to] harm children's eyesight. | 过多的屏幕时间必然损害孩子的视力。 | 表示必然性，语气较强。
+s | X is likely to Y | X可能Y | Regular exercise [is likely to] improve mental health. | 定期锻炼可能改善心理健康。 | 表示可能性，常用于预测结果。
+s | X tends to Y | X往往Y | People [tend to] underestimate the importance of sleep. | 人们往往低估睡眠的重要性。 | 描述一般倾向，语气委婉。
+s | X stems from Y | X源于Y | Many health issues [stem from] poor lifestyle choices. | 许多健康问题源于不良的生活方式选择。 | 表示根源，用于分析原因。
+s | X is essential for Y | X对Y至关重要 | Clean water [is essential for] good health. | 清洁的水对健康至关重要。 | 强调必要性，后接名词或动名词。
+s | X is indispensable to Y | X对Y不可或缺 | The internet [is indispensable to] modern life. | 互联网对现代生活不可或缺。 | 表示绝对必要，语气较强。
+s | X is a catalyst for Y | X是Y的催化剂 | Technological innovation [is a catalyst for] social change. | 技术创新是社会变革的催化剂。 | 表示促进因素，形象生动。
+s | X is a barrier to Y | X是Y的障碍 | Language differences [are a barrier to] effective communication. | 语言差异是有效沟通的障碍。 | 表示阻碍因素，后接名词或动名词。
+s | X is a remedy for Y | X是Y的补救方法 | Education [is a remedy for] poverty. | 教育是贫困的补救方法。 | 表示解决办法，较正式。
+s | X is a substitute for Y | X是Y的替代品 | Online learning [is not a substitute for] face-to-face interaction. | 在线学习不能替代面对面互动。 | 常用于否定句，表示无法替代。
+s | X is a complement to Y | X是Y的补充 | Practical training [is a complement to] theoretical study. | 实践培训是理论学习的补充。 | 表示互补关系。
+s | X is an alternative to Y | X是Y的替代选择 | Renewable energy [is an alternative to] fossil fuels. | 可再生能源是化石燃料的替代选择。 | 表示可替代的方案。
+s | X is a major contributor to Y | X是Y的主要因素 | Air pollution [is a major contributor to] respiratory diseases. | 空气污染是呼吸系统疾病的主要因素。 | 表示主要原因，后接名词。
+s | X is a significant factor in Y | X是Y的重要因素 | Diet [is a significant factor in] overall health. | 饮食是整体健康的重要因素。 | 强调重要性，后接名词。
+s | X is a crucial element of Y | X是Y的关键要素 | Trust [is a crucial element of] any relationship. | 信任是任何关系的关键要素。 | 强调必要性，后接名词。
+s | X is an integral part of Y | X是Y不可或缺的一部分 | Physical activity [is an integral part of] a healthy lifestyle. | 体育活动是健康生活方式不可或缺的一部分。 | 强调组成部分，后接名词。
+l | In other words | 换句话说 | [In other words], the benefits outweigh the drawbacks. | 换句话说，好处大于坏处。 | That is to say; To put it differently
+l | In the meantime | 与此同时 | [In the meantime], the government should invest in public transport. | 与此同时，政府应投资公共交通。 | Meanwhile; At the same time
+l | By contrast | 相比之下 | [By contrast], rural areas often lack such amenities. | 相比之下，农村地区往往缺乏此类设施。 | In contrast; Conversely
+l | As such | 因此 | The policy is flawed; [as such], it needs revision. | 该政策有缺陷，因此需要修改。 | Therefore; Consequently
+l | In particular | 尤其 | Some groups, [in particular] the elderly, are more vulnerable. | 一些群体，尤其是老年人，更加脆弱。 | Especially; Particularly
+l | Notably | 值得注意的是 | [Notably], the number of cyclists has risen sharply. | 值得注意的是，骑自行车的人数急剧上升。 | In particular; Especially
+l | Indeed | 确实 | [Indeed], the evidence supports this view. | 确实，证据支持这一观点。 | In fact; Truly
+l | In fact | 事实上 | [In fact], the opposite is often true. | 事实上，情况往往相反。 | Actually; As a matter of fact
+l | Above all | 最重要的是 | [Above all], we must consider the long-term effects. | 最重要的是，我们必须考虑长期影响。 | Most importantly; Chiefly
+l | In addition | 此外 | [In addition], the cost of living has risen. | 此外，生活成本已经上升。 | Furthermore; Moreover
+l | Similarly | 同样地 | [Similarly], other countries have adopted this approach. | 同样地，其他国家也采用了这种方法。 | Likewise; In the same way
+l | In contrast | 相反 | [In contrast], the older generation tends to be more cautious. | 相反，年长一代往往更谨慎。 | By contrast; Conversely
+l | Nevertheless | 然而 | [Nevertheless], the project went ahead as planned. | 然而，项目还是按计划进行了。 | Nonetheless; Even so
+l | On the contrary | 恰恰相反 | [On the contrary], it may even worsen the situation. | 恰恰相反，它甚至可能使情况恶化。 | Quite the opposite
+l | In conclusion | 总之 | [In conclusion], both sides have valid points. | 总之，双方都有合理的观点。 | To conclude; To sum up
+l | Specifically | 具体来说 | The policy targets unhealthy foods, [specifically] those high in sugar and fat. | 该政策针对不健康食品，具体来说是高糖高脂食品。 | Particularly; Namely
+l | That is to say | 也就是说 | The project was a success; [that is to say], it achieved all its goals. | 该项目很成功；也就是说，它实现了所有目标。 | In other words; Namely
+l | For instance | 例如 | Many countries face aging populations; [for instance], Japan has seen a sharp decline in birth rates. | 许多国家面临人口老龄化；例如，日本的出生率急剧下降。 | For example
+l | To illustrate | 举例说明 | Renewable energy is becoming cheaper; [to illustrate], solar power costs have fallen dramatically. | 可再生能源越来越便宜；举例来说，太阳能成本已大幅下降。 | For example; As an illustration
+l | On the whole | 总的来说 | [On the whole], the advantages of remote work outweigh the disadvantages. | 总的来说，远程工作的优点大于缺点。 | Overall; Generally
+l | To sum up | 总结 | [To sum up], education and enforcement must work together to reduce traffic accidents. | 总结来说，教育和执法必须共同作用以减少交通事故。 | In conclusion; To conclude
+l | In short | 简而言之 | [In short], the solution requires both individual action and government intervention. | 简而言之，解决方案需要个人行动和政府干预。 | In brief; Briefly
+
+@topic technology | Technology | 科技与生活 | 科
+p | Some people believe that technology has made our lives more complex, while others think it has simplified them. Discuss both views and give your own opinion. | 有些人认为科技使我们的生活更加复杂，而另一些人则认为它使生活更简单。讨论这两种观点并给出你自己的意见。
+p | Many people today spend a significant amount of time using digital devices. What are the advantages and disadvantages of this trend? | 如今许多人花大量时间使用数字设备。这一趋势的优缺点是什么？
+c | curb consumption | 抑制消费 | Governments can [curb consumption] of single-use plastics by imposing small levies. | 政府可以通过征收小额税费来抑制一次性塑料的消费。 | reduce consumption; limit consumption
+c | exacerbate inequality | 加剧不平等 | Unequal access to fast internet may [exacerbate inequality] between urban and rural students. | 快速互联网接入的不平等可能会加剧城乡学生之间的不平等。 | worsen inequality; deepen inequality
+c | a detrimental effect | 有害影响 | Excessive screen time can have [a detrimental effect] on children's sleep patterns. | 过多的屏幕时间可能对儿童的睡眠模式产生有害影响。 | a harmful effect; an adverse effect
+c | a pressing concern | 紧迫的问题 | Data security has become [a pressing concern] for users of social media platforms. | 数据安全已成为社交媒体平台用户紧迫的问题。 | an urgent concern; a pressing issue
+c | heavily reliant on | 严重依赖 | Modern agriculture is [heavily reliant on] technology to monitor crops and predict yields. | 现代农业严重依赖技术来监测作物和预测产量。 | heavily dependent on; overly reliant on
+c | pose a threat to | 对…构成威胁 | Automation may [pose a threat to] jobs in routine manufacturing and clerical work. | 自动化可能对常规制造业和文书工作的就业构成威胁。 | present a threat to; constitute a threat to
+c | mitigate the risk | 降低风险 | Firms can [mitigate the risk] of cyberattacks by training staff to spot phishing emails. | 企业可以通过培训员工识别网络钓鱼邮件来降低网络攻击的风险。 | reduce the risk; minimise the risk
+c | harness the potential | 利用潜力 | Schools should [harness the potential] of online resources to personalise learning. | 学校应该利用在线资源的潜力来个性化学习。 | exploit the potential; tap the potential
+c | digital literacy | 数字素养 | Teaching [digital literacy] from primary school helps children navigate the internet safely. | 从小学开始教授数字素养有助于儿童安全上网。 | digital competence; digital skills
+c | screen time | 屏幕时间 | Parents should set limits on [screen time] to ensure children get enough physical exercise. | 家长应该限制屏幕时间以确保孩子得到足够的体育锻炼。 | device time; screen use
+c | automate routine tasks | 自动化常规任务 | Companies can [automate routine tasks] to free employees for more strategic work. | 公司可以自动化常规任务以解放员工从事更具战略性的工作。 | automate repetitive tasks; automate mundane tasks
+c | data privacy | 数据隐私 | [Data privacy] laws are essential to protect users from unauthorised surveillance. | 数据隐私法律对于保护用户免受未经授权的监控至关重要。 | information privacy; digital privacy
+c | technological advancement | 技术进步 | Rapid [technological advancement] has transformed the way people communicate and work. | 快速的技术进步改变了人们沟通和工作的方式。 | technological progress; technological development
+c | social media platforms | 社交媒体平台 | [Social media platforms] should be held accountable for the spread of misinformation. | 社交媒体平台应该对错误信息的传播负责。 | social networking sites; social media sites
+c | online safety | 网络安全 | Schools must teach [online safety] to protect students from cyberbullying and scams. | 学校必须教授网络安全知识，以保护学生免受网络欺凌和诈骗。 | internet safety; cyber safety
+c | artificial intelligence | 人工智能 | [Artificial intelligence] is being used to diagnose diseases more accurately than ever before. | 人工智能正被用于比以往更准确地诊断疾病。 | AI; machine intelligence
+c | remote working | 远程办公 | [Remote working] has become common, allowing employees to avoid long commutes. | 远程办公已变得普遍，使员工能够避免长途通勤。 | telecommuting; working from home
+c | a double-edged sword | 双刃剑 | Technology is [a double-edged sword], offering convenience but also creating new risks. | 技术是一把双刃剑，既提供便利又带来新的风险。 | a mixed blessing; a two-edged sword
+c | stay connected | 保持联系 | Social media allows people to [stay connected] with friends and family across the world. | 社交媒体让人们能够与世界各地的朋友和家人保持联系。 | keep in touch; remain connected
+c | access information | 获取信息 | The internet enables users to [access information] on almost any topic instantly. | 互联网使用户能够即时获取几乎任何主题的信息。 | obtain information; retrieve information
+c | enhance efficiency | 提高效率 | Automation can [enhance efficiency] by performing repetitive tasks without error. | 自动化可以通过无差错地执行重复任务来提高效率。 | improve efficiency; boost efficiency
+c | reduce costs | 降低成本 | Cloud computing can [reduce costs] for small businesses by eliminating the need for servers. | 云计算可以通过消除对服务器的需求来为小企业降低成本。 | cut costs; lower costs
+c | foster innovation | 促进创新 | Governments can [foster innovation] by funding research and development in technology. | 政府可以通过资助技术研发来促进创新。 | encourage innovation; stimulate innovation
+i | Automation replaces repetitive jobs but creates demand for technicians who maintain and program machines, shifting the skills required. | 自动化取代重复性工作，但创造了对维护和编程机器的技术人员的需求，改变了所需技能。
+i | Online platforms collect vast personal data, which can be sold or leaked, making users vulnerable to identity theft and targeted scams. | 在线平台收集大量个人数据，这些数据可能被出售或泄露，使用户容易遭受身份盗窃和针对性诈骗。
+i | Constant notifications fragment attention, reducing deep work and increasing stress as people feel pressured to respond immediately. | 持续的通知分散注意力，减少深度工作并增加压力，因为人们感到有压力要立即回应。
+i | Telecommuting cuts commuting time and costs, but may weaken team cohesion and blur boundaries between work and rest. | 远程办公减少了通勤时间和成本，但可能削弱团队凝聚力并模糊工作与休息的界限。
+i | Digital divide limits access to online education and jobs for rural and low-income groups, perpetuating social inequality. | 数字鸿沟限制了农村和低收入群体获得在线教育和工作的机会，使社会不平等持续存在。
+i | AI in healthcare can analyse medical images faster and more accurately than humans, enabling earlier diagnosis and treatment. | 医疗保健中的人工智能可以比人类更快、更准确地分析医学图像，从而实现更早的诊断和治疗。
+i | Social media algorithms prioritize engaging content, which can spread misinformation and polarize public opinion. | 社交媒体算法优先考虑引人入胜的内容，这可能传播错误信息并使公众舆论两极分化。
+i | Governments can subsidize broadband in rural areas to bridge the digital divide and ensure equal access to online services. | 政府可以补贴农村地区的宽带，以弥合数字鸿沟，确保平等获得在线服务。
+i | Schools should teach digital literacy, including how to evaluate online sources and protect personal data, to prepare students for the digital age. | 学校应该教授数字素养，包括如何评估在线来源和保护个人数据，为学生迎接数字时代做好准备。
+i | Companies can use encryption and regular security audits to protect customer data and comply with privacy regulations. | 公司可以使用加密和定期安全审计来保护客户数据并遵守隐私法规。
+
+@topic education | Education | 教育 | 教
+p | Some people believe that the main purpose of education is to prepare students for employment, while others think it should focus on personal development. Discuss both views and give your own opinion. | 有些人认为教育的主要目的是为学生就业做准备，而另一些人则认为教育应侧重于个人发展。讨论这两种观点并给出你自己的看法。
+p | In many countries, students in rural areas have less access to quality education than those in cities. What problems does this cause, and what measures can be taken to address them? | 在许多国家，农村地区的学生获得优质教育的机会少于城市学生。这会导致什么问题，可以采取什么措施来解决？
+c | curb dropout rates | 降低辍学率 | Vocational programmes can [curb dropout rates] by offering courses that students find directly relevant to their future jobs. | 职业课程可以提供与学生未来工作直接相关的课程，从而降低辍学率。 | reduce dropout rates
+c | foster a love of learning | 培养学习热情 | Teachers who encourage curiosity rather than memorisation are more likely to [foster a love of learning] in their students. | 鼓励好奇心而非死记硬背的教师更有可能培养学生的学习热情。 | instil a love of learning
+c | bridge the attainment gap | 缩小成绩差距 | Targeted funding for disadvantaged schools can [bridge the attainment gap] between rich and poor pupils. | 对弱势学校的定向资助可以缩小贫富学生之间的成绩差距。 | close the attainment gap
+c | raise educational standards | 提高教育标准 | Regular teacher training is essential to [raise educational standards] across the country. | 定期的教师培训对于提高全国的教育标准至关重要。
+c | a stimulating learning environment | 激发兴趣的学习环境 | Small class sizes help create [a stimulating learning environment] where every child can participate actively. | 小班额有助于创造激发兴趣的学习环境，让每个孩子都能积极参与。 | an engaging learning environment
+c | impart knowledge | 传授知识 | The role of a teacher is not simply to [impart knowledge] but to inspire intellectual curiosity. | 教师的作用不仅仅是传授知识，而是激发求知欲。 | convey knowledge
+c | disruptive behaviour | 扰乱行为 | Persistent [disruptive behaviour] in class can hinder the progress of other students. | 课堂上持续的扰乱行为会妨碍其他学生的进步。
+c | instil discipline | 培养纪律性 | Structured extracurricular activities can [instil discipline] and time-management skills in young people. | 有组织的课外活动可以培养年轻人的纪律性和时间管理技能。 | cultivate discipline
+c | meet the needs of students | 满足学生需求 | A rigid curriculum often fails to [meet the needs of students] with different learning styles. | 僵化的课程往往无法满足不同学习风格学生的需求。 | address the needs of students
+c | place emphasis on | 强调 | Many schools now [place emphasis on] teamwork and communication rather than individual competition. | 现在许多学校强调团队合作和沟通，而不是个人竞争。 | put emphasis on
+c | a heavy workload | 繁重的课业负担 | A [heavy workload] can leave students exhausted and unable to enjoy their studies. | 繁重的课业负担会让学生筋疲力尽，无法享受学习。 | an excessive workload
+c | develop transferable skills | 培养可迁移技能 | Group projects help students [develop transferable skills] such as leadership and conflict resolution. | 小组项目帮助学生培养可迁移技能，如领导力和冲突解决能力。
+c | a competitive edge | 竞争优势 | Fluency in a second language can give graduates [a competitive edge] in the job market. | 流利掌握第二语言可以让毕业生在就业市场中获得竞争优势。 | an edge
+c | narrow the digital divide | 缩小数字鸿沟 | Providing laptops to low-income families can help [narrow the digital divide] in education. | 向低收入家庭提供笔记本电脑有助于缩小教育中的数字鸿沟。 | bridge the digital divide
+c | vocational training | 职业培训 | [Vocational training] offers a practical alternative for students who are not academically inclined. | 职业培训为不擅长学术的学生提供了一个实用的选择。
+c | promote social mobility | 促进社会流动 | Equal access to quality education is one of the most effective ways to [promote social mobility]. | 平等获得优质教育是促进社会流动的最有效方式之一。 | enhance social mobility
+c | tailor teaching to individual needs | 因材施教 | Technology allows teachers to [tailor teaching to individual needs] more easily than in the past. | 技术使教师比过去更容易因材施教。 | customise teaching to individual needs
+c | a positive learning atmosphere | 积极的学习氛围 | Mutual respect between teachers and students creates [a positive learning atmosphere]. | 师生之间的相互尊重创造了积极的学习氛围。
+c | encourage independent thinking | 鼓励独立思考 | Debates and open-ended projects [encourage independent thinking] rather than passive reception of facts. | 辩论和开放式项目鼓励独立思考，而不是被动接受事实。 | promote independent thinking
+c | a rigorous curriculum | 严格的课程体系 | A [rigorous curriculum] prepares students for the demands of university and beyond. | 严格的课程体系为学生应对大学及以后的要求做好准备。 | a demanding curriculum
+c | foster a sense of belonging | 培养归属感 | Extracurricular clubs can [foster a sense of belonging] among students from diverse backgrounds. | 课外俱乐部可以培养来自不同背景学生的归属感。 | create a sense of belonging
+c | address learning gaps | 弥补学习差距 | Extra tutoring sessions were introduced to [address learning gaps] caused by school closures. | 引入额外辅导课程以弥补学校停课造成的学习差距。 | close learning gaps
+c | reduce academic pressure | 减轻学业压力 | Some schools have cut homework to [reduce academic pressure] on young children. | 一些学校减少了家庭作业以减轻幼儿的学业压力。 | relieve academic pressure
+i | Standardised tests encourage teaching to the test, narrowing the curriculum and squeezing out creativity and critical thinking. | 标准化考试鼓励应试教学，窄化课程，挤占创造力和批判性思维的培养空间。
+i | When teachers tailor tasks to different ability levels, weaker students catch up without stronger ones being held back. | 当教师根据学生不同能力水平调整任务时，较弱的学生能赶上进度，而较强的学生也不会被拖累。
+i | Vocational courses give students who dislike academic study a practical route to skilled employment and self-respect. | 职业课程为不喜欢学术学习的学生提供了一条通往技能就业和自尊的实用途径。
+i | Excessive homework reduces time for sleep, exercise and family, which can harm both mental health and learning efficiency. | 过多的家庭作业减少了睡眠、锻炼和家庭时间，这可能损害心理健康和学习效率。
+i | Scholarships based on merit or need widen access to elite universities, breaking the link between family wealth and educational opportunity. | 基于成绩或需求的奖学金扩大了精英大学的机会，打破了家庭财富与教育机会之间的联系。
+i | Digital devices in class can distract students, but when used for interactive exercises they increase engagement and provide instant feedback. | 课堂上的数字设备可能分散学生注意力，但用于互动练习时能提高参与度并提供即时反馈。
+i | Teacher shortages in rural areas lower education quality, which encourages families to migrate to cities, further draining those regions. | 农村地区教师短缺降低了教育质量，促使家庭迁往城市，进一步加剧这些地区的人才流失。
+i | Group work teaches negotiation and compromise, but without individual accountability some students free-ride on others' efforts. | 小组合作教会谈判和妥协，但如果没有个人问责，一些学生会搭便车。
+i | A curriculum that includes financial literacy and digital safety prepares students for real-life challenges better than purely academic subjects. | 包含金融素养和数字安全的课程比纯学术科目更能让学生为现实生活挑战做好准备。
+i | Free school meals reduce hunger among low-income pupils, improving concentration and attendance, which in turn raises attainment. | 免费校餐减少了低收入学生的饥饿，提高了注意力和出勤率，进而提高了学业成绩。
+
+@topic environment | Environment | 环境 | 环
+p | Some people believe that individuals can do little to improve the environment, and that only government action can make a difference. To what extent do you agree or disagree? | 有些人认为个人对改善环境作用甚微，只有政府行动才能起作用。你在多大程度上同意或不同意？
+p | Climate change is one of the most pressing global issues. Some argue that rich countries should take more responsibility than developing nations. Discuss both views and give your opinion. | 气候变化是最紧迫的全球问题之一。有人认为富国应比发展中国家承担更多责任。讨论双方观点并给出你的意见。
+c | mitigate the impact of sth | 减轻影响 | Planting trees along riverbanks can [mitigate the impact of] flooding. | 沿河岸植树可以减轻洪水的影响。 | lessen the impact of; reduce the impact of
+c | avert an ecological crisis | 避免生态危机 | Only immediate cooperation can [avert an ecological crisis] in the region. | 只有立即合作才能避免该地区的生态危机。 | prevent an ecological crisis
+c | deplete natural resources | 耗尽自然资源 | Rapid industrialization continues to [deplete natural resources] at an alarming rate. | 快速工业化继续以惊人的速度耗尽自然资源。 | exhaust natural resources
+c | preserve biodiversity | 保护生物多样性 | Establishing marine reserves helps [preserve biodiversity] in coastal waters. | 建立海洋保护区有助于保护沿海水域的生物多样性。 | protect biodiversity; maintain biodiversity
+c | adopt sustainable practices | 采用可持续做法 | Farmers who [adopt sustainable practices] can reduce soil erosion significantly. | 采用可持续做法的农民可以显著减少土壤侵蚀。 | implement sustainable practices
+c | enforce environmental regulations | 执行环境法规 | Governments must [enforce environmental regulations] strictly to deter polluters. | 政府必须严格执行环境法规以威慑污染者。 | implement environmental regulations
+c | impose a levy on sth | 对某物征税 | Many countries now [impose a levy on] single-use plastics. | 许多国家现在对一次性塑料征税。 | impose a tax on
+c | phase out fossil fuels | 逐步淘汰化石燃料 | To meet climate goals, nations must [phase out fossil fuels] by mid-century. | 为实现气候目标，各国必须在本世纪中叶前逐步淘汰化石燃料。 | gradually eliminate fossil fuels
+c | a detrimental effect on sth | 对某物有害的影响 | Air pollution has [a detrimental effect on] children's lung development. | 空气污染对儿童肺部发育有有害影响。 | a harmful effect on; an adverse effect on
+c | an unprecedented rate | 前所未有的速度 | Species are disappearing at [an unprecedented rate] due to habitat loss. | 由于栖息地丧失，物种正以前所未有的速度消失。
+c | a viable alternative to sth | 某物的可行替代品 | Electric vehicles are now [a viable alternative to] petrol cars for many commuters. | 电动汽车现在是许多通勤者替代汽油车的可行选择。 | a practical alternative to
+c | environmentally friendly | 环保的 | Consumers are increasingly choosing [environmentally friendly] products despite higher prices. | 消费者越来越多地选择环保产品，尽管价格较高。 | eco-friendly
+c | carbon footprint | 碳足迹 | Reducing your [carbon footprint] can start with simple changes like cycling to work. | 减少碳足迹可以从骑自行车上班等简单改变开始。
+c | exacerbate climate change | 加剧气候变化 | Deforestation for agriculture continues to [exacerbate climate change]. | 为农业砍伐森林继续加剧气候变化。 | worsen climate change
+c | combat deforestation | 对抗森林砍伐 | International cooperation is essential to [combat deforestation] in tropical regions. | 国际合作对于对抗热带地区的森林砍伐至关重要。 | fight deforestation
+c | promote recycling | 促进回收 | Municipalities can [promote recycling] by providing separate bins for different materials. | 市政当局可以通过提供不同材料的分类垃圾桶来促进回收。 | encourage recycling
+c | reduce waste | 减少浪费 | Supermarkets can [reduce waste] by selling imperfect-looking produce at a discount. | 超市可以通过打折销售外观不佳的农产品来减少浪费。 | cut waste
+c | conserve water | 节约用水 | Households can [conserve water] by fixing leaky taps and taking shorter showers. | 家庭可以通过修理漏水的水龙头和缩短淋浴时间来节约用水。 | save water
+c | harness solar energy | 利用太阳能 | Countries with abundant sunshine can [harness solar energy] to power homes. | 阳光充足的国家可以利用太阳能为家庭供电。 | utilize solar energy
+c | offset carbon emissions | 抵消碳排放 | Airlines allow passengers to [offset carbon emissions] by funding tree-planting projects. | 航空公司允许乘客通过资助植树项目来抵消碳排放。 | compensate for carbon emissions
+c | a carbon-neutral future | 碳中和的未来 | Investing in green technology is a step towards [a carbon-neutral future]. | 投资绿色技术是迈向碳中和未来的一步。
+c | stringent emission standards | 严格的排放标准 | Governments should set [stringent emission standards] for factories and vehicles. | 政府应为工厂和车辆设定严格的排放标准。 | strict emission standards; tough emission standards
+c | a paradigm shift in sth | 某方面的范式转变 | We need [a paradigm shift in] how we produce and consume goods. | 我们需要在商品生产和消费方式上实现范式转变。 | a fundamental shift in
+i | Carbon taxes make polluting expensive, so companies invest in cleaner technologies to cut costs. | 碳税使污染成本高昂，因此企业投资清洁技术以降低成本。
+i | Reforestation projects absorb carbon dioxide and restore habitats, helping both climate and wildlife. | 重新造林项目吸收二氧化碳并恢复栖息地，既有助于气候也有助于野生动物。
+i | Banning single-use plastics forces businesses to innovate with biodegradable alternatives, reducing landfill waste. | 禁止一次性塑料促使企业创新使用可生物降解的替代品，减少垃圾填埋。
+i | Public transport improvements cut car use, lowering both congestion and urban air pollution. | 改善公共交通减少汽车使用，降低拥堵和城市空气污染。
+i | Education campaigns that explain the consequences of littering can change habits more effectively than fines alone. | 解释乱扔垃圾后果的教育活动比单纯罚款更能有效改变习惯。
+i | International agreements set common targets, but enforcement remains weak because nations fear economic disadvantage. | 国际协议设定共同目标，但执行仍然薄弱，因为国家担心经济劣势。
+i | Green spaces in cities improve mental health and reduce the urban heat island effect. | 城市绿地改善心理健康并减少城市热岛效应。
+i | Consumer demand for sustainable products pushes companies to adopt eco-friendly packaging and supply chains. | 消费者对可持续产品的需求推动企业采用环保包装和供应链。
+i | Subsidies for solar panels lower the initial cost, making renewable energy accessible to low-income households. | 太阳能电池板补贴降低初始成本，使低收入家庭也能使用可再生能源。
+i | Waste-to-energy plants turn non-recyclable rubbish into electricity, reducing landfill use but raising emissions concerns. | 垃圾发电厂将不可回收垃圾转化为电力，减少填埋但引发排放担忧。
+
+@topic urbanization | Urbanization | 城市化 | 城
+p | Some people believe that urbanisation brings more benefits than drawbacks. To what extent do you agree or disagree? | 有些人认为城市化带来的好处多于坏处。你在多大程度上同意或不同意？
+p | What are the main problems associated with rapid urbanisation, and what measures can be taken to address them? | 快速城市化的主要问题是什么，可以采取哪些措施来解决？
+c | ease the pressure on | 缓解……的压力 | Building more affordable housing would [ease the pressure on] low-income families. | 建设更多经济适用房将缓解低收入家庭的压力。 | relieve the pressure on; reduce the pressure on
+c | a detrimental effect on | 对……产生不利影响 | Rapid urbanisation can have [a detrimental effect on] residents' mental health. | 快速城市化可能对居民心理健康产生不利影响。 | a harmful effect on; an adverse effect on
+c | curb migration | 抑制迁移 | Improving rural schools could [curb migration] to overcrowded cities. | 改善农村学校可以抑制向过度拥挤城市的迁移。 | stem migration; check migration
+c | tackle inequality | 解决不平等 | Urban planners must [tackle inequality] in access to public services. | 城市规划者必须解决公共服务获取方面的不平等。 | address inequality; combat inequality
+c | exacerbate congestion | 加剧拥堵 | Building more roads often [exacerbates congestion] in the long run. | 修建更多道路从长远来看往往会加剧拥堵。 | aggravate congestion; worsen congestion
+c | foster social cohesion | 促进社会凝聚力 | Community centres can [foster social cohesion] in diverse neighbourhoods. | 社区中心可以在多元化社区中促进社会凝聚力。 | promote social cohesion; strengthen social cohesion
+c | implement sustainable policies | 实施可持续政策 | Local governments should [implement sustainable policies] to manage growth. | 地方政府应实施可持续政策来管理增长。 | adopt sustainable policies
+c | a viable solution | 可行的解决方案 | Public transport improvements offer [a viable solution] to urban mobility problems. | 公共交通改善为城市交通问题提供了可行的解决方案。 | a workable solution; a feasible solution
+c | mitigate the impact of | 减轻……的影响 | Green roofs can [mitigate the impact of] urban heat islands. | 绿色屋顶可以减轻城市热岛的影响。 | lessen the impact of; reduce the impact of
+c | a high population density | 高人口密度 | [A high population density] can put a strain on infrastructure. | 高人口密度会给基础设施带来压力。 | high population density
+c | cause a shortage of | 导致……短缺 | Rapid urbanisation can [cause a shortage of] affordable housing. | 快速城市化可能导致经济适用房短缺。 | create a shortage of; lead to a shortage of
+c | promote economic growth | 促进经济增长 | Cities often [promote economic growth] by attracting investment. | 城市往往通过吸引投资来促进经济增长。 | stimulate economic growth; drive economic growth
+c | improve living standards | 提高生活水平 | Urbanisation can [improve living standards] for many rural migrants. | 城市化可以为许多农村移民提高生活水平。 | raise living standards; enhance living standards
+c | create job opportunities | 创造就业机会 | New industries in cities [create job opportunities] for young people. | 城市中的新产业为年轻人创造就业机会。 | generate job opportunities; provide job opportunities
+c | reduce traffic congestion | 减少交通拥堵 | Congestion charges can [reduce traffic congestion] in city centres. | 拥堵费可以减少市中心的交通拥堵。 | ease traffic congestion; alleviate traffic congestion
+c | preserve green spaces | 保护绿地 | Urban planners should [preserve green spaces] for recreation. | 城市规划者应保护绿地和娱乐空间。 | protect green spaces; conserve green spaces
+c | a sense of belonging | 归属感 | Community events can foster [a sense of belonging] among residents. | 社区活动可以培养居民的归属感。 | a feeling of belonging
+c | environmental degradation | 环境退化 | Unplanned urban growth often results in [environmental degradation]. | 无计划的城市增长往往导致环境退化。 | environmental deterioration
+c | infrastructure development | 基础设施建设 | Rapid [infrastructure development] is needed to cope with population growth. | 需要快速的基础设施发展来应对人口增长。 | infrastructure improvement; infrastructure expansion
+c | affordable housing | 经济适用房 | The government should invest in [affordable housing] for low-income families. | 政府应投资经济适用房，为低收入家庭提供住房。 | low-cost housing
+c | urban planning | 城市规划 | Good [urban planning] can create more liveable cities. | 良好的城市规划可以创造更宜居的城市。 | city planning; town planning
+i | Cities offer diverse job opportunities that attract rural migrants, but this can lead to overcrowding. | 城市提供多样化的就业机会，吸引农村移民，但这可能导致过度拥挤。
+i | Urbanisation often strains infrastructure, causing problems like traffic jams and inadequate housing. | 城市化往往给基础设施带来压力，导致交通堵塞和住房不足等问题。
+i | Concentrating people in cities can increase economic efficiency but also widen income inequality. | 将人们集中在城市可以提高经济效率，但也会扩大收入不平等。
+i | Green spaces in cities improve residents' mental health and provide recreational areas. | 城市中的绿地改善居民心理健康，并提供娱乐区域。
+i | Unplanned urban growth can lead to slums, pollution, and social isolation. | 无计划的城市增长可能导致贫民窟、污染和社会孤立。
+i | Public transport improvements can reduce traffic congestion and lower emissions. | 公共交通的改善可以减少交通拥堵并降低排放。
+i | Community-based initiatives can foster social cohesion in diverse urban neighbourhoods. | 基于社区的倡议可以在多元化的城市社区中促进社会凝聚力。
+i | Urban agriculture can provide fresh food and reduce the urban heat island effect. | 城市农业可以提供新鲜食物并减少城市热岛效应。
+i | Governments should implement policies to ensure affordable housing and sustainable urban development. | 政府应实施政策，确保经济适用房和可持续城市发展。
+
+@topic globalization | Globalization & Culture | 全球化与文化 | 球
+p | Some people believe that globalisation is destroying local cultures, while others think it enriches them. Discuss both views and give your own opinion. | 有些人认为全球化正在摧毁当地文化，而另一些人则认为它丰富了当地文化。讨论双方观点并给出你自己的意见。
+p | Many minority languages are disappearing as English becomes the dominant global language. What problems does this cause, and what measures can be taken to address them? | 随着英语成为全球主导语言，许多少数民族语言正在消失。这会导致什么问题，可以采取什么措施来解决？
+c | erode cultural identity | 削弱文化认同 | The dominance of English-language media may [erode cultural identity] in smaller language communities. | 英语媒体的主导地位可能会削弱较小语言社区的文化认同。 | undermine cultural identity; weaken cultural identity
+c | foster cultural exchange | 促进文化交流 | International student programmes [foster cultural exchange] by bringing together people from different backgrounds. | 国际学生项目通过将不同背景的人聚集在一起，促进了文化交流。 | promote cultural exchange; encourage cultural exchange
+c | dilute local traditions | 淡化当地传统 | The influx of foreign customs can [dilute local traditions], especially among the younger generation. | 外国习俗的涌入可能会淡化当地传统，尤其是在年轻一代中。 | weaken local traditions; water down local traditions
+c | assert cultural sovereignty | 维护文化主权 | Some governments [assert cultural sovereignty] by imposing quotas on foreign films and music. | 一些政府通过对国外电影和音乐实行配额来维护文化主权。 | defend cultural sovereignty; protect cultural sovereignty
+c | a homogenised cultural landscape | 同质化的文化景观 | The spread of global brands has created [a homogenised cultural landscape] in many cities. | 全球品牌的传播在许多城市创造了同质化的文化景观。 | a uniform cultural landscape; a standardized cultural landscape
+c | a vibrant cultural tapestry | 充满活力的文化织锦 | Immigration has woven [a vibrant cultural tapestry] in major cities around the world. | 移民在世界主要城市编织了一幅充满活力的文化织锦。 | a rich cultural tapestry; a colourful cultural tapestry
+c | commodify cultural practices | 将文化习俗商品化 | Tourism can [commodify cultural practices], turning sacred rituals into entertainment for visitors. | 旅游业可能将文化习俗商品化，把神圣的仪式变成游客的娱乐。 | commercialise cultural practices
+c | safeguard intangible heritage | 保护非物质遗产 | UNESCO works with governments to [safeguard intangible heritage] such as oral traditions and performing arts. | 联合国教科文组织与各国政府合作，保护口头传统和表演艺术等非物质遗产。 | protect intangible heritage; preserve intangible heritage
+c | a cultural melting pot | 文化大熔炉 | Cities like New York are often described as [a cultural melting pot] where diverse influences blend. | 像纽约这样的城市常被描述为文化大熔炉，各种影响在此交融。
+c | exert cultural influence | 施加文化影响 | Countries with strong media industries can [exert cultural influence] far beyond their borders. | 拥有强大媒体产业的国家可以将其文化影响力远远扩展到境外。 | wield cultural influence; project cultural influence
+c | undergo cultural assimilation | 经历文化同化 | Immigrant communities may [undergo cultural assimilation] over several generations. | 移民社区可能会在几代人的时间里经历文化同化。 | experience cultural assimilation; go through cultural assimilation
+c | a backlash against globalisation | 对全球化的抵制 | There has been [a backlash against globalisation] in many countries, with voters demanding more protection for local industries. | 许多国家出现了对全球化的抵制，选民要求对当地产业提供更多保护。 | a resistance to globalisation; a reaction against globalisation
+c | preserve linguistic diversity | 保护语言多样性 | Efforts to [preserve linguistic diversity] are crucial as minority languages disappear at an alarming rate. | 随着少数民族语言以惊人的速度消失，保护语言多样性的努力至关重要。 | maintain linguistic diversity; safeguard linguistic diversity
+c | a dominant cultural narrative | 主导文化叙事 | Hollywood films often promote [a dominant cultural narrative] that marginalises other perspectives. | 好莱坞电影经常推广一种边缘化其他观点的主导文化叙事。 | a prevailing cultural narrative; a mainstream cultural narrative
+c | bridge cultural divides | 弥合文化鸿沟 | Exchange programmes help [bridge cultural divides] by fostering mutual understanding. | 交流项目通过促进相互理解来帮助弥合文化鸿沟。 | close cultural divides; narrow cultural divides
+c | a sense of cultural dislocation | 文化脱节感 | Rapid modernisation can leave older generations with [a sense of cultural dislocation]. | 快速现代化可能会让老一辈人产生文化脱节感。 | a feeling of cultural dislocation; cultural disorientation
+c | adopt foreign cultural norms | 采纳外国文化规范 | Young people are often quicker to [adopt foreign cultural norms] than their parents. | 年轻人通常比父母更快采纳外国文化规范。 | embrace foreign cultural norms; take on foreign cultural norms
+c | a monoculture of taste | 品味单一化 | The global popularity of a few music genres risks creating [a monoculture of taste]. | 少数音乐类型的全球流行有可能造成品味单一化。 | a homogenisation of taste; a uniformity of taste
+c | revitalise traditional crafts | 振兴传统工艺 | Government grants can help [revitalise traditional crafts] that might otherwise die out. | 政府拨款可以帮助振兴否则可能消失的传统工艺。 | revive traditional crafts
+c | a global cultural convergence | 全球文化趋同 | Some scholars argue that [a global cultural convergence] is inevitable as societies become more interconnected. | 一些学者认为，随着社会联系更加紧密，全球文化趋同是不可避免的。 | a worldwide cultural convergence; a global cultural homogenisation
+c | curb cultural imperialism | 遏制文化帝国主义 | Local content quotas are one way to [curb cultural imperialism] in the media. | 本地内容配额是遏制媒体中文化帝国主义的一种方式。 | check cultural imperialism; limit cultural imperialism
+c | nurture cultural pluralism | 培育文化多元主义 | Schools should [nurture cultural pluralism] by teaching students about different traditions. | 学校应该通过向学生传授不同传统来培育文化多元主义。 | foster cultural pluralism; promote cultural pluralism
+c | the erosion of local customs | 当地习俗的侵蚀 | Global media saturation has contributed to [the erosion of local customs] in many rural areas. | 全球媒体的饱和导致了许多农村地区当地习俗的侵蚀。 | the decline of local customs; the weakening of local customs
+c | a cultural renaissance | 文化复兴 | The city has experienced [a cultural renaissance] thanks to investment in the arts. | 由于对艺术的投资，这座城市经历了文化复兴。 | a cultural revival; a cultural rebirth
+i | Global media allows minority cultures to share their music and stories with worldwide audiences, which can boost pride and tourism. | 全球媒体使少数文化能够与世界各地的受众分享音乐和故事，这可以增强自豪感并促进旅游业。
+i | When global brands dominate, local shops and crafts lose customers, and unique traditions may disappear within a generation. | 当全球品牌占据主导地位时，当地商店和手工艺品失去顾客，独特的传统可能在一代人的时间内消失。
+i | Language loss accelerates as young people abandon native tongues for English, cutting them off from oral histories and traditional knowledge. | 随着年轻人放弃母语转用英语，语言流失加速，使他们与口述历史和传统知识隔绝。
+i | Tourism can fund heritage restoration, but overcrowding and commercialisation may turn sacred sites into theme parks. | 旅游业可以为遗产修复提供资金，但过度拥挤和商业化可能将圣地变成主题公园。
+i | International education fosters tolerance by exposing students to different viewpoints, reducing prejudice and stereotypes. | 国际教育通过让学生接触不同观点来培养宽容，减少偏见和刻板印象。
+i | Governments can protect cultural diversity by subsidising local arts, requiring quotas for domestic content, and supporting language education. | 政府可以通过补贴当地艺术、要求国内内容配额和支持语言教育来保护文化多样性。
+i | Digital archives and UNESCO listings help preserve intangible heritage by documenting rituals and skills before they vanish. | 数字档案和联合国教科文组织名录通过记录仪式和技能来帮助保护非物质遗产，以防它们消失。
+i | A shared global culture can promote peace by creating common ground, but it may also sideline local voices and histories. | 共享的全球文化可以通过创造共同点来促进和平，但也可能边缘化当地声音和历史。
+i | Fast fashion and global food chains spread uniform tastes, reducing demand for traditional clothing and cuisine. | 快时尚和全球食品连锁店传播统一的品味，减少了对传统服装和美食的需求。
+i | Cultural exchange programmes build empathy and cross-cultural skills, which are essential in an interconnected world. | 文化交流项目培养同理心和跨文化技能，这在相互联系的世界中至关重要。
+
+@topic health | Health | 健康 | 健
+p | Some people believe that the best way to improve public health is to increase the number of sports facilities. Others think this would have little effect and that other measures are needed. Discuss both views and give your own opinion. | 一些人认为改善公共健康的最佳方式是增加体育设施。另一些人认为这收效甚微，需要其他措施。讨论双方观点并给出自己的意见。
+p | In many countries, the average weight of people is increasing and levels of fitness are decreasing. What are the causes of this problem and what measures could be taken to solve it? | 在许多国家，人们的平均体重在增加，而健康水平在下降。这个问题的原因是什么？可以采取什么措施来解决？
+c | foster dependence on | 助长对…的依赖 | Over-reliance on technology may [foster dependence on] screens from an early age. | 过度依赖科技可能助长从小对屏幕的依赖。 | encourage dependence on; promote dependence on
+c | alleviate pressure | 减轻压力 | Regular exercise can [alleviate pressure] and improve mood. | 定期锻炼可以减轻压力并改善情绪。 | relieve pressure; ease pressure
+c | implement a ban | 实施禁令 | Some countries have [implemented a ban] on smoking in public places. | 一些国家已实施公共场所禁烟令。 | impose a ban; enforce a ban
+c | raise awareness of | 提高对…的意识 | Campaigns should [raise awareness of] the risks of excessive screen time. | 运动应提高人们对过度屏幕时间风险的认识。 | increase awareness of; heighten awareness of
+c | promote healthy eating | 促进健康饮食 | Schools can [promote healthy eating] by offering nutritious lunches. | 学校可以通过提供营养午餐来促进健康饮食。 | encourage healthy eating; foster healthy eating
+c | reduce the risk of | 降低…的风险 | Vaccination can [reduce the risk of] serious illness. | 接种疫苗可以降低严重疾病的风险。 | lower the risk of; decrease the risk of
+c | access to healthcare | 获得医疗保健 | Rural residents often have limited [access to healthcare]. | 农村居民获得医疗保健的机会往往有限。 | healthcare access; availability of healthcare
+c | a balanced diet | 均衡饮食 | Maintaining [a balanced diet] is essential for long-term health. | 保持均衡饮食对长期健康至关重要。 | a healthy diet; a nutritious diet
+c | mental health issues | 心理健康问题 | Stigma around [mental health issues] prevents many from seeking help. | 对心理健康问题的污名使许多人无法寻求帮助。 | mental health problems; psychological issues
+c | physical inactivity | 缺乏运动 | [Physical inactivity] is a major risk factor for chronic diseases. | 缺乏运动是慢性病的主要风险因素。 | lack of exercise; sedentary behaviour
+c | chronic disease | 慢性病 | Preventing [chronic disease] requires lifestyle changes and early intervention. | 预防慢性病需要改变生活方式和早期干预。 | chronic illness; long-term disease
+c | health outcomes | 健康结果 | Education levels strongly influence [health outcomes] across populations. | 教育水平强烈影响人群的健康结果。 | health results; health status
+c | public health campaign | 公共卫生运动 | A [public health campaign] can encourage people to quit smoking. | 公共卫生运动可以鼓励人们戒烟。 | health campaign; public health initiative
+c | sedentary behaviour | 久坐行为 | Reducing [sedentary behaviour] in children is crucial for their development. | 减少儿童的久坐行为对其发育至关重要。 | inactivity; sitting too much
+c | preventive measures | 预防措施 | Governments should invest in [preventive measures] to reduce healthcare costs. | 政府应投资于预防措施以降低医疗成本。 | prevention measures; proactive measures
+c | healthier lifestyle | 更健康的生活方式 | Many people are adopting a [healthier lifestyle] by exercising regularly. | 许多人通过定期锻炼采取更健康的生活方式。 | more healthy lifestyle; improved lifestyle
+c | medical treatment | 医疗 | Access to free [medical treatment] varies widely between countries. | 免费医疗的可及性在各国之间差异很大。 | healthcare treatment; medical care
+c | health education | 健康教育 | [Health education] in schools can teach children about nutrition and hygiene. | 学校的健康教育可以教授儿童营养和卫生知识。 | health literacy; health awareness
+c | sedentary lifestyle | 久坐的生活方式 | A [sedentary lifestyle] increases the risk of obesity and heart disease. | 久坐的生活方式增加肥胖和心脏病的风险。 | inactive lifestyle; sitting-heavy lifestyle
+i | Sugar taxes push manufacturers to reformulate drinks, cutting sugar intake without banning anything. | 糖税促使制造商调整饮料配方，在不禁止任何产品的情况下减少糖分摄入。
+i | Urban design that prioritises walking and cycling makes exercise a natural part of daily routines. | 优先考虑步行和骑行的城市规划使锻炼成为日常生活的自然组成部分。
+i | Long working hours leave little time for cooking healthy meals, pushing people towards fast food. | 长时间工作使人们几乎没有时间烹饪健康餐食，从而转向快餐。
+i | Health education in schools can instil lifelong habits, as children are more receptive to new routines. | 学校健康教育可以灌输终身习惯，因为儿童更容易接受新习惯。
+i | Free screening programmes detect diseases early, when treatment is cheaper and more effective. | 免费筛查项目能在疾病早期发现，此时治疗更便宜且更有效。
+i | Stigma around mental illness discourages people from seeking help, worsening their condition. | 对精神疾病的污名使人们不愿寻求帮助，从而加重病情。
+i | Advertising of unhealthy food targets children, shaping their preferences before they can make informed choices. | 不健康食品的广告针对儿童，在他们能做出明智选择之前就塑造了他们的偏好。
+i | An ageing population increases demand for healthcare, straining public budgets and staff numbers. | 人口老龄化增加了医疗需求，给公共预算和人员数量带来压力。
+i | Telemedicine can extend healthcare to remote areas, reducing the need for long-distance travel. | 远程医疗可以将医疗保健扩展到偏远地区，减少长途旅行的需要。
+i | Workplace wellness programmes that offer gym access and counselling can reduce sick leave and boost productivity. | 提供健身房和心理咨询的工作场所健康计划可以减少病假并提高生产力。
+
+@topic work | Work & Careers | 工作与职业 | 职
+p | Some people believe that job satisfaction is more important than a high salary. To what extent do you agree or disagree? | 有些人认为工作满意度比高薪更重要。你在多大程度上同意或不同意？
+p | In many countries, people are increasingly changing careers multiple times. What are the causes of this trend? Is it a positive or negative development? | 在许多国家，人们越来越频繁地多次转行。这一趋势的原因是什么？这是积极还是消极的发展？
+c | pursue a career in | 从事…职业 | Many graduates [pursue a career in] technology because of the sector's rapid growth. | 许多毕业生因科技行业的快速增长而从事该领域的职业。 | follow a career in; build a career in
+c | offer a competitive salary | 提供有竞争力的薪资 | Companies that [offer a competitive salary] tend to attract more qualified applicants. | 提供有竞争力的薪资的公司往往能吸引更多合格的申请者。 | pay a competitive salary; provide a competitive salary
+c | enhance employee morale | 提高员工士气 | Flexible working arrangements can [enhance employee morale] and reduce turnover. | 灵活的工作安排可以提高员工士气并减少人员流动。 | boost employee morale; improve employee morale
+c | foster a collaborative culture | 培养协作文化 | Managers should [foster a collaborative culture] to encourage teamwork and innovation. | 管理者应培养协作文化以鼓励团队合作和创新。 | build a collaborative culture; create a collaborative culture
+c | impose excessive workloads | 施加过重工作量 | Some employers [impose excessive workloads] on staff, leading to stress and burnout. | 一些雇主给员工施加过重工作量，导致压力和倦怠。 | assign excessive workloads; place excessive workloads
+c | provide on-the-job training | 提供在职培训 | Firms that [provide on-the-job training] help new hires adapt quickly to their roles. | 提供在职培训的公司帮助新员工快速适应岗位。 | offer on-the-job training; deliver on-the-job training
+c | reward employee performance | 奖励员工绩效 | Companies should [reward employee performance] fairly to maintain motivation. | 公司应公平奖励员工绩效以保持积极性。 | recognize employee performance; incentivize employee performance
+c | create a supportive work environment | 创造支持性工作环境 | Employers can [create a supportive work environment] by listening to staff concerns. | 雇主可以通过倾听员工关切来创造支持性工作环境。 | build a supportive work environment; foster a supportive work environment
+c | achieve a healthy work-life balance | 实现健康的工作与生活平衡 | Employees who [achieve a healthy work-life balance] are often more productive. | 实现健康的工作与生活平衡的员工往往更高效。 | maintain a healthy work-life balance; strike a healthy work-life balance
+c | face intense competition for promotion | 面临激烈的晋升竞争 | In large corporations, employees [face intense competition for promotion], which can be demotivating. | 在大公司，员工面临激烈的晋升竞争，这可能令人沮丧。 | encounter intense competition for promotion; meet intense competition for promotion
+c | develop a professional network | 建立职业人脉 | Attending industry events helps professionals [develop a professional network]. | 参加行业活动有助于专业人士建立职业人脉。 | build a professional network; expand a professional network
+c | acquire practical experience | 获得实践经验 | Internships allow students to [acquire practical experience] before entering the job market. | 实习让学生进入就业市场前获得实践经验。 | gain practical experience; obtain practical experience
+c | undertake a challenging project | 承担具有挑战性的项目 | Employees who [undertake a challenging project] often develop new skills quickly. | 承担具有挑战性项目的员工往往能快速掌握新技能。 | take on a challenging project; handle a challenging project
+c | meet tight deadlines | 赶上紧迫的截止日期 | Working under pressure to [meet tight deadlines] can lead to chronic stress. | 为赶上紧迫的截止日期而在压力下工作可能导致慢性压力。 | meet strict deadlines; meet demanding deadlines
+c | adapt to changing job requirements | 适应不断变化的岗位要求 | Workers must [adapt to changing job requirements] to remain employable. | 工人必须适应不断变化的岗位要求以保持就业能力。 | adjust to changing job requirements; respond to changing job requirements
+c | offer flexible working hours | 提供弹性工作时间 | Many companies now [offer flexible working hours] to attract talent. | 许多公司现在提供弹性工作时间以吸引人才。 | provide flexible working hours; allow flexible working hours
+c | reduce staff turnover | 降低员工流失率 | Investing in employee development can [reduce staff turnover] significantly. | 投资于员工发展可以显著降低员工流失率。 | lower staff turnover; decrease staff turnover
+c | boost productivity | 提高生产力 | Regular breaks and clear goals can [boost productivity] in the workplace. | 定期休息和明确目标可以提高工作场所的生产力。 | increase productivity; enhance productivity
+c | cause work-related stress | 导致工作相关压力 | Excessive overtime can [cause work-related stress] and health problems. | 过度加班会导致工作相关压力和健康问题。 | trigger work-related stress; lead to work-related stress
+c | pursue professional development | 追求职业发展 | Many employees [pursue professional development] to stay competitive in their field. | 许多员工追求职业发展以保持在其领域的竞争力。 | seek professional development; undertake professional development
+c | secure a promotion | 获得晋升 | To [secure a promotion], employees often need to demonstrate leadership potential. | 为了获得晋升，员工通常需要展示领导潜力。 | earn a promotion; obtain a promotion
+c | lack job autonomy | 缺乏工作自主权 | Employees who [lack job autonomy] may feel disengaged and unmotivated. | 缺乏工作自主权的员工可能会感到疏离和缺乏动力。 | have little job autonomy; be deprived of job autonomy
+c | experience career stagnation | 经历职业停滞 | Without new challenges, workers may [experience career stagnation]. | 没有新的挑战，员工可能会经历职业停滞。 | face career stagnation; suffer career stagnation
+c | value employee well-being | 重视员工福祉 | Companies that [value employee well-being] often see higher retention rates. | 重视员工福祉的公司往往有更高的留任率。 | prioritize employee well-being; care about employee well-being
+i | Flexible working hours allow employees to manage family commitments, which reduces stress and increases loyalty. | 弹性工作时间让员工能兼顾家庭责任，从而减轻压力并提高忠诚度。
+i | Companies that invest in training create a more skilled workforce, which boosts productivity and innovation. | 投资于培训的公司能打造更熟练的劳动力，从而提高生产力和创新。
+i | Excessive workloads lead to burnout, causing higher absenteeism and staff turnover. | 过重的工作量导致倦怠，造成更高的缺勤率和员工流失率。
+i | Automation replaces routine tasks, freeing workers to focus on creative and strategic roles. | 自动化取代常规任务，让员工腾出精力专注于创造性和战略性工作。
+i | A lack of career progression demotivates employees, prompting them to seek opportunities elsewhere. | 缺乏职业晋升会打击员工积极性，促使他们另寻机会。
+i | Remote work reduces commuting time, giving employees more hours for rest and family. | 远程工作减少通勤时间，让员工有更多时间休息和陪伴家人。
+i | Performance-based pay can motivate staff, but if poorly designed it may encourage unhealthy competition. | 绩效工资可以激励员工，但如果设计不当可能助长不健康的竞争。
+i | Mentorship programs help new employees adapt quickly, reducing early turnover. | 导师计划帮助新员工快速适应，减少早期离职。
+i | Strict hierarchies stifle initiative, as junior staff fear voicing ideas. | 严格的等级制度扼杀主动性，因为初级员工害怕表达想法。
+i | Governments can offer tax incentives to companies that provide childcare support, helping parents stay in work. | 政府可以向提供托儿支持的公司提供税收优惠，帮助父母留在职场。
+
+@topic media | Media & Advertising | 媒体与广告 | 媒
+p | Some people believe that advertising encourages consumers to buy things they do not need. To what extent do you agree or disagree? | 有些人认为广告鼓励消费者购买他们不需要的东西。你在多大程度上同意或不同意？
+p | Should governments regulate advertising aimed at children? Discuss both views and give your own opinion. | 政府应该监管针对儿童的广告吗？讨论双方观点并给出你自己的意见。
+c | foster materialism | 助长物质主义 | Constant exposure to luxury ads can [foster materialism] in young children. | 不断接触奢侈品广告会助长幼儿的物质主义。 | encourage materialism
+c | exploit consumer insecurities | 利用消费者的不安全感 | Some brands [exploit consumer insecurities] by promising instant confidence. | 一些品牌通过承诺即时自信来利用消费者的不安全感。 | prey on consumer insecurities
+c | target vulnerable groups | 针对弱势群体 | Advertisers should not [target vulnerable groups] such as children or the elderly. | 广告商不应针对儿童或老人等弱势群体。 | target vulnerable populations
+c | manipulate public perception | 操纵公众认知 | Social media campaigns can [manipulate public perception] of important issues. | 社交媒体活动可以操纵公众对重要问题的认知。 | shape public perception
+c | erode trust in | 削弱对……的信任 | Fake news can [erode trust in] mainstream journalism. | 假新闻会削弱人们对主流新闻的信任。 | undermine trust in
+c | amplify harmful stereotypes | 放大有害刻板印象 | Some advertisements [amplify harmful stereotypes] about gender roles. | 一些广告放大了关于性别角色的有害刻板印象。 | reinforce harmful stereotypes
+c | raise brand awareness | 提高品牌知名度 | Companies use social media to [raise brand awareness] among younger audiences. | 公司利用社交媒体在年轻受众中提高品牌知名度。 | increase brand awareness
+c | exercise undue influence | 施加不当影响 | Advertisers can [exercise undue influence] over children's food choices. | 广告商可以对儿童的食物选择施加不当影响。 | have undue influence
+c | promote unhealthy lifestyles | 助长不健康的生活方式 | Fast-food commercials often [promote unhealthy lifestyles] to young viewers. | 快餐广告经常向年轻观众助长不健康的生活方式。 | encourage unhealthy lifestyles
+c | safeguard user privacy | 保护用户隐私 | Regulations are needed to [safeguard user privacy] in targeted advertising. | 需要法规来在定向广告中保护用户隐私。 | protect user privacy
+c | impose stricter regulations | 实施更严格的法规 | Governments should [impose stricter regulations] on advertising to children. | 政府应对儿童广告实施更严格的法规。 | enforce stricter regulations
+c | combat disinformation | 打击虚假信息 | Platforms must [combat disinformation] during elections. | 平台必须在选举期间打击虚假信息。 | counter disinformation
+c | fact-check claims | 核实声明 | Journalists should [fact-check claims] before publishing them. | 记者在发表声明前应核实声明。 | verify claims
+c | hold platforms accountable | 追究平台责任 | Lawmakers must [hold platforms accountable] for harmful content. | 立法者必须追究平台对有害内容的责任。 | make platforms accountable
+c | a pervasive influence | 无处不在的影响 | Advertising has [a pervasive influence] on children's eating habits. | 广告对儿童的饮食习惯有无处不在的影响。 | a widespread influence
+c | a lucrative industry | 利润丰厚的行业 | Digital advertising has become [a lucrative industry] worth billions. | 数字广告已成为价值数十亿美元的利润丰厚的行业。 | a profitable industry
+c | a captive audience | 无法回避的受众（只能被动接收） | Children are [a captive audience] for food advertisements. | 儿童是食品广告的被动受众。
+c | an ethical obligation | 道德义务 | Advertisers have [an ethical obligation] not to mislead consumers. | 广告商有道德义务不误导消费者。 | a moral obligation
+c | deeply entrenched | 根深蒂固的 | Consumerism is [deeply entrenched] in modern society. | 消费主义在现代社会根深蒂固。 | firmly entrenched
+c | highly persuasive | 极具说服力的 | Advertisements are [highly persuasive], especially to young audiences. | 广告极具说服力，尤其是对年轻受众。 | very persuasive
+c | blatantly misleading | 公然误导的 | Some health claims are [blatantly misleading] and should be banned. | 一些健康声明公然误导，应该被禁止。 | clearly misleading
+c | comply with regulations | 遵守法规 | Advertisers must [comply with regulations] on truthfulness. | 广告商必须遵守关于真实性的法规。 | adhere to regulations
+c | capitalise on trends | 利用趋势 | Brands quickly [capitalise on trends] on social media. | 品牌迅速利用社交媒体上的趋势。 | exploit trends
+i | Advertising funds free content, but it also creates pressure to maximise engagement, which can prioritise sensationalism over accuracy. | 广告资助免费内容，但也带来最大化参与度的压力，这可能导致煽情主义优先于准确性。
+i | Targeted advertising uses personal data to influence behaviour, raising concerns about manipulation and privacy. | 定向广告利用个人数据影响行为，引发对操纵和隐私的担忧。
+i | Children are especially vulnerable to advertising because they cannot easily distinguish persuasion from information. | 儿童尤其容易受到广告影响，因为他们难以区分说服和信息的区别。
+i | Regulating advertising can protect consumers, but overly strict rules may limit free speech and market competition. | 监管广告可以保护消费者，但过于严格的规则可能限制言论自由和市场竞争。
+i | Media literacy education helps people recognise manipulation, reducing the power of misleading advertisements. | 媒体素养教育帮助人们识别操纵，减少误导性广告的影响力。
+i | Fact-checking by independent organisations can hold media accountable and reduce the spread of disinformation. | 独立组织的事实核查可以追究媒体责任，减少虚假信息的传播。
+i | Platforms profit from viral content, so they have little incentive to remove sensational but engaging material. | 平台从病毒式内容中获利，因此几乎没有动力删除耸人听闻但吸引人的材料。
+i | Advertising can promote unhealthy products, such as junk food, contributing to obesity and related diseases. | 广告可以推广不健康产品，如垃圾食品，导致肥胖和相关疾病。
+i | Bans on advertising harmful products, like tobacco, have successfully reduced consumption in many countries. | 对烟草等有害产品的广告禁令在许多国家成功减少了消费。
+i | Transparency requirements, such as labelling sponsored content, help audiences identify paid promotions. | 透明度要求，如标注赞助内容，帮助受众识别付费推广。
+
+@topic government | Government & Society | 政府与社会 | 政
+p | Some people believe that the government should provide free healthcare for all citizens, while others think individuals should pay for their own healthcare. Discuss both views and give your own opinion. | 有些人认为政府应该为所有公民提供免费医疗，而另一些人认为个人应该为自己的医疗付费。讨论这两种观点并给出你自己的意见。
+p | In many countries, the gap between the rich and the poor is widening. What problems does this cause, and what measures can governments take to reduce inequality? | 在许多国家，贫富差距正在扩大。这会导致什么问题，政府可以采取什么措施来减少不平等？
+c | foster a sense of community | 培养社区归属感 | Local festivals and public spaces help [foster a sense of community] among residents. | 当地的节日和公共空间有助于培养居民之间的社区归属感。 | cultivate a sense of community; build a sense of community
+c | bridge the gap between | 缩小差距 | Free adult education can [bridge the gap between] rich and poor neighborhoods. | 免费的成人教育可以缩小贫富社区之间的差距。 | narrow the gap between; close the gap between
+c | impose strict regulations | 实施严格法规 | Governments should [impose strict regulations] on companies that pollute rivers. | 政府应该对污染河流的公司实施严格的法规。 | enforce strict regulations; introduce strict regulations
+c | raise public awareness | 提高公众意识 | Campaigns to [raise public awareness] of mental health can reduce stigma. | 提高公众对心理健康意识的运动可以减少污名化。 | increase public awareness; heighten public awareness
+c | provide subsidized childcare | 提供补贴托儿服务 | To help working parents, the state should [provide subsidized childcare] for low-income families. | 为了帮助在职父母，国家应该为低收入家庭提供补贴托儿服务。 | offer subsidized childcare; fund subsidized childcare
+c | a profound impact | 深远影响 | Automation will have [a profound impact] on the job market and social stability. | 自动化将对就业市场和社会稳定产生深远影响。 | a far-reaching impact; a deep impact
+c | ensure equal access to | 确保平等获取 | The government must [ensure equal access to] education for all children, regardless of background. | 政府必须确保所有儿童都能平等接受教育，无论其背景如何。 | guarantee equal access to; provide equal access to
+c | reduce the burden on | 减轻负担 | Investing in public transport can [reduce the burden on] overcrowded roads. | 投资公共交通可以减轻过度拥挤的道路负担。 | ease the burden on; lessen the burden on
+c | strengthen social cohesion | 加强社会凝聚力 | Community sports programs can [strengthen social cohesion] in diverse neighborhoods. | 社区体育项目可以加强多元社区的社会凝聚力。 | enhance social cohesion; promote social cohesion
+c | mitigate the effects of | 减轻影响 | Early intervention programs can [mitigate the effects of] childhood poverty. | 早期干预项目可以减轻童年贫困的影响。 | alleviate the effects of; lessen the effects of
+c | a controversial issue | 有争议的问题 | Whether to legalize assisted dying remains [a controversial issue] in many countries. | 是否将辅助死亡合法化在许多国家仍然是一个有争议的问题。 | a contentious issue; a debated issue
+c | a lack of affordable housing | 经济适用房短缺 | [A lack of affordable housing] has forced many young people to live with their parents. | 经济适用房短缺迫使许多年轻人与父母同住。 | a shortage of affordable housing; a dearth of affordable housing
+c | implement a tax on | 实施税收 | Several cities have [implemented a tax on] single-use plastics to reduce waste. | 几个城市已经对一次性塑料实施税收以减少浪费。 | introduce a tax on; levy a tax on
+c | address the root causes of | 解决根本原因 | To reduce crime, governments must [address the root causes of] poverty and exclusion. | 为了减少犯罪，政府必须解决贫困和排斥的根本原因。 | tackle the root causes of; deal with the root causes of
+c | foster economic growth | 促进经济增长 | Investment in infrastructure can [foster economic growth] and create jobs. | 对基础设施的投资可以促进经济增长并创造就业机会。 | promote economic growth; stimulate economic growth
+i | Progressive taxation reduces inequality because those who earn more contribute a larger share of their income, funding services that benefit the poor. | 累进税制减少不平等，因为高收入者贡献更大比例的收入，为穷人受益的服务提供资金。
+i | Universal healthcare improves public health and productivity, as healthy workers take fewer sick days and children learn better. | 全民医疗改善公共健康和生产效率，因为健康的工人请病假更少，孩子学习更好。
+i | Too much regulation can stifle innovation and small businesses, as compliance costs are disproportionately high for startups. | 过多的监管可能扼杀创新和小企业，因为合规成本对初创企业来说过高。
+i | Public housing projects reduce homelessness but can concentrate poverty if not mixed with private housing and good transport links. | 公共住房项目减少无家可归现象，但如果不与私人住房和良好的交通连接混合，可能会集中贫困。
+i | Investing in public transport reduces congestion and pollution, as more people leave their cars at home. | 投资公共交通减少拥堵和污染，因为更多人把车留在家里。
+i | A lack of affordable childcare forces many parents, especially women, out of the workforce, harming the economy. | 缺乏负担得起的托儿服务迫使许多父母，尤其是女性，退出劳动力市场，损害经济。
+i | Community policing builds trust between residents and police, leading to better crime reporting and prevention. | 社区警务在居民和警察之间建立信任，从而改善犯罪报告和预防。
+i | Free school meals improve nutrition and academic performance, especially for children from low-income families. | 免费学校餐改善营养和学习成绩，特别是对低收入家庭的孩子。
+i | Strict environmental regulations can push polluting industries to adopt cleaner technologies, reducing emissions without losing jobs. | 严格的环境法规可以推动污染行业采用更清洁的技术，在不失去工作的情况下减少排放。
+i | Digital government services save time and money but risk excluding elderly and low-income citizens who lack internet access. | 数字政府服务节省时间和金钱，但可能排斥缺乏互联网访问的老年人和低收入公民。
+
+@topic crime | Crime & Law | 犯罪与法律 | 法
+p | Some people believe that long prison sentences are the most effective way to reduce crime, while others think rehabilitation programmes work better. Discuss both views and give your own opinion. | 有些人认为长期监禁是减少犯罪最有效的方式，另一些人则认为改造项目效果更好。讨论双方观点并给出你自己的看法。
+p | In many countries, crime rates are falling, yet public fear of crime remains high. What are the reasons for this, and what measures could reduce this fear? | 在许多国家，犯罪率在下降，但公众对犯罪的恐惧依然很高。原因是什么？可以采取哪些措施来减少这种恐惧？
+c | curb crime | 遏制犯罪 | Installing street lighting in deprived areas can [curb crime] at a fraction of the cost of extra patrols. | 在贫困地区安装路灯能以远低于增加巡逻的成本遏制犯罪。 | reduce crime; cut crime
+c | deter sb from committing | 阻止某人实施 | Visible CCTV cameras [deter] many young people [from committing] petty theft in shopping centres. | 显眼的监控摄像头能阻止许多年轻人在商场实施小偷小摸。 | discourage sb from committing
+c | impose a heavy fine | 处以重罚 | Authorities should [impose a heavy fine] on companies that dump toxic waste into rivers. | 当局应对向河流倾倒有毒废物的公司处以重罚。 | levy a heavy fine
+c | serve a custodial sentence | 服监禁刑 | Offenders who [serve a custodial sentence] often leave prison with no job prospects. | 服监禁刑的罪犯出狱后往往没有就业前景。 | serve a prison term
+c | a suspended sentence | 缓刑 | A first-time shoplifter may receive [a suspended sentence] and be ordered to pay compensation. | 初犯的商店盗窃者可能被判缓刑并被责令赔偿。
+c | repeat offending | 再次犯罪 | Without support after release, [repeat offending] becomes almost inevitable for many prisoners. | 若出狱后得不到支持，许多囚犯再次犯罪几乎不可避免。 | recidivism
+c | tackle the underlying causes | 解决根本原因 | Policing alone cannot [tackle the underlying causes] of violence in impoverished neighbourhoods. | 仅靠警务无法解决贫困社区暴力的根本原因。 | address the underlying causes
+c | deterrent effect | 威慑作用 | Studies suggest that the [deterrent effect] of long prison terms is weaker than commonly assumed. | 研究表明，长期监禁的威慑作用比人们通常认为的要弱。
+c | bring sb to justice | 将某人绳之以法 | International cooperation is essential if we are to [bring] cybercriminals [to justice]. | 要把网络罪犯绳之以法，国际合作至关重要。
+c | combat organised crime | 打击有组织犯罪 | Cross-border task forces have been set up to [combat organised crime] more effectively. | 已设立跨境工作组以更有效地打击有组织犯罪。 | fight organised crime
+c | a surge in crime | 犯罪激增 | Economic downturns are often accompanied by [a surge in crime], particularly theft and fraud. | 经济衰退往往伴随犯罪激增，尤其是盗窃和诈骗。 | a spike in crime
+c | petty offences | 轻微违法行为 | Prosecuting every [petty offence] clogs the courts and diverts resources from serious cases. | 起诉每一起轻微违法都会堵塞法院，挤占重案资源。 | minor offences
+c | strictly enforce the law | 严格执法 | Governments must [strictly enforce the law] against businesses that employ undocumented workers. | 政府必须严格执法，打击雇用无证工人的企业。 | rigorously enforce the law
+c | a lenient punishment | 从轻处罚 | Critics argue that [a lenient punishment] for drunk driving sends the wrong message. | 批评者认为对酒驾从轻处罚传递了错误信号。 | a light punishment
+c | act as a deterrent | 起威慑作用 | Fines alone rarely [act as a deterrent] for large corporations driven by profit. | 仅靠罚款很少能对逐利的大公司起到威慑作用。 | serve as a deterrent
+c | restorative justice | 恢复性司法 | [Restorative justice] allows victims to confront offenders and explain the harm they have suffered. | 恢复性司法让受害者能面对罪犯，讲述自己所受的伤害。
+c | a crime-ridden area | 犯罪猖獗的地区 | Businesses avoid investing in [a crime-ridden area], which deepens its economic decline. | 企业不愿在犯罪猖獗的地区投资，这加剧了其经济衰退。
+c | break the cycle of crime | 打破犯罪循环 | Mentoring schemes for at-risk teenagers can help [break the cycle of crime] across generations. | 针对高危青少年的辅导计划有助于打破代际犯罪循环。
+c | deter potential offenders | 威慑潜在犯罪者 | Well-lit streets and active neighbourhoods [deter potential offenders] by raising the risk of being seen. | 照明良好、邻里活跃的街道通过提高被发现的风险来威慑潜在犯罪者。 | discourage potential offenders
+c | the severity of punishment | 刑罚的严厉程度 | Criminologists question whether [the severity of punishment] matters more than the likelihood of arrest. | 犯罪学家质疑刑罚的严厉程度是否比被捕的可能性更重要。
+c | reintegrate sb into society | 使某人重新融入社会 | Work-release programmes help prisoners [reintegrate into society] and find stable employment. | 工作释放计划帮助囚犯重新融入社会并找到稳定工作。
+c | overcrowded prisons | 监狱过度拥挤 | [Overcrowded prisons] undermine rehabilitation and breed violence among inmates. | 监狱过度拥挤削弱改造效果，并在囚犯中滋生暴力。
+c | deterrence through surveillance | 通过监控威慑 | Cities relying on [deterrence through surveillance] must weigh security gains against privacy losses. | 依赖监控威慑的城市必须权衡安全收益与隐私损失。
+i | Fines are more effective when they are proportional to a company's revenue, so a penalty actually hurts rather than being treated as a routine cost. | 罚款与公司收入挂钩时更有效，这样处罚才真正有痛感，而不会被当作日常成本。
+i | Prison work programmes teach marketable skills and give inmates a daily routine, which makes them more employable and less likely to reoffend. | 监狱劳动项目教授实用技能并让囚犯有日常作息，从而提高其就业能力、降低再犯可能。
+i | Neighbourhood watch schemes raise the chance that a crime is witnessed, and offenders respond more to certainty of detection than to harsh sentences. | 邻里守望计划提高犯罪被目击的概率，而罪犯对被抓的确定性比对严刑更敏感。
+i | Poverty pushes some people into theft or drug dealing because legal work pays too little to cover basic needs, so welfare and job creation matter as much as policing. | 贫困使一些人走上偷窃或贩毒之路，因为合法工作收入难以满足基本需求，因此福利和创造就业与警务同样重要。
+i | Tagging offenders with electronic monitors allows them to keep jobs and family ties while restricting their movement, cutting the cost of imprisonment. | 给罪犯佩戴电子监控器可让其保留工作和家庭联系，同时限制行动，降低监禁成本。
+i | Early intervention in troubled families, such as parenting support and youth clubs, prevents children from drifting into gangs before criminal habits form. | 对问题家庭及早干预，如育儿支持和青少年俱乐部，可在犯罪习惯形成前防止孩子滑向帮派。
+i | Overcrowded prisons mix petty offenders with hardened criminals, exposing first-time inmates to criminal networks and increasing the chance they reoffend. | 拥挤的监狱让轻罪犯与惯犯混住，使初犯接触犯罪网络，增加其再犯可能。
+i | Corruption within police forces discourages victims from reporting crimes, so independent oversight bodies are needed to maintain public trust in law enforcement. | 警队内部腐败使受害者不愿报案，因此需要独立监督机构来维持公众对执法的信任。
+i | Public awareness campaigns about fraud and online scams help people recognise warning signs, reducing a crime that police struggle to investigate across borders. | 关于诈骗和网络骗局的公众宣传帮助人们识别警示信号，减少警方难以跨境侦查的犯罪。
+i | Restorative justice meetings give victims a voice and make offenders confront the human cost of their actions, which reduces reoffending more than short custodial terms. | 恢复性司法会议让受害者发声，使罪犯直面行为的人道代价，比短期监禁更能减少再犯。
+
+@topic family | Family & Generations | 家庭与代际 | 家
+p | In many countries, adult children live far from their ageing parents. Does this trend do more harm than good? Give reasons for your answer and include any relevant examples from your own knowledge or experience. | 在许多国家，成年子女与年迈父母分居两地。这一趋势弊大于利吗？请给出理由，并结合你的知识或经验举例。
+p | Some people believe that grandparents should play a major role in raising children, while others think parents alone should be responsible. Discuss both views and give your own opinion. | 有人认为祖父母应在抚养孩子中发挥重要作用，另一些人则认为只应由父母负责。讨论双方观点并给出你自己的看法。
+c | raise a child | 抚养孩子 | Couples today often delay marriage because they are unsure whether they can [raise a child] in an expensive city. | 如今的夫妇常常推迟结婚，因为他们不确定能否在昂贵的城市里抚养孩子。 | bring up a child
+c | shoulder the burden | 承担重担 | When both parents work long hours, grandparents often [shoulder the burden] of daily care. | 当父母双方都长时间工作时，祖父母往往承担起日常照料的重担。 | bear the burden
+c | spend quality time with sb | 与某人共度美好时光 | Busy professionals should make a conscious effort to [spend quality time with] their children at weekends. | 忙碌的职场人士应在周末有意识地与孩子共度美好时光。
+c | strike a balance between | 在……之间取得平衡 | Working mothers constantly try to [strike a balance between] career ambitions and family duties. | 职场妈妈不断努力在事业抱负与家庭责任之间取得平衡。 | find a balance between
+c | take on responsibility | 承担责任 | Teenagers should [take on responsibility] for household chores to prepare for independent living. | 青少年应承担家务责任，为独立生活做准备。 | assume responsibility
+c | tighten family ties | 增进家庭纽带 | Regular shared meals can [tighten family ties] in ways that messaging apps never can. | 定期的共同用餐能以通讯软件永远做不到的方式增进家庭纽带。 | cement family ties
+c | bridge the generation gap | 弥合代沟 | Family trips that involve both children and grandparents can help [bridge the generation gap]. | 让子女和祖父母共同参与的家庭旅行有助于弥合代沟。 | narrow the generation gap
+c | a demanding job | 要求很高的工作 | A [demanding job] leaves many parents with little energy for conversation at home. | 要求很高的工作让许多父母在家中没有精力交谈。 | an exacting job
+c | place a strain on sth | 给……造成压力 | Caring for elderly relatives can [place a strain on] a family's finances and emotions. | 照顾年迈的亲属会给家庭的经济和情感造成压力。 | put a strain on sth
+c | foster independence in sb | 培养某人的独立性 | Simple tasks such as cooking dinner can [foster independence in] adolescents. | 做晚饭之类的简单任务可以培养青少年的独立性。 | cultivate independence in sb
+c | a close-knit family | 关系紧密的家庭 | Growing up in a [close-knit family] teaches children how to resolve conflicts respectfully. | 在关系紧密的家庭中成长能教会孩子如何尊重地解决冲突。
+c | inherit traditions from sb | 从某人那里继承传统 | Young people who [inherit traditions from] their grandparents often feel a stronger sense of identity. | 从祖父母那里继承传统的年轻人往往有更强的认同感。
+c | make sacrifices for sb | 为某人做出牺牲 | Many immigrant parents [make sacrifices for] their children's education. | 许多移民父母为子女的教育做出牺牲。
+c | a role model for sb | 某人的榜样 | Parents who read regularly become a [role model for] their children without saying a word. | 经常阅读的父母无需多言就成为孩子的榜样。
+c | discipline children | 管教孩子 | Some parents find it difficult to [discipline children] without resorting to harsh punishment. | 有些父母发现很难在不诉诸严厉惩罚的情况下管教孩子。
+c | nurture a child's talents | 培养孩子的才能 | Parents should [nurture a child's talents] rather than impose their own unfulfilled ambitions. | 父母应培养孩子的才能，而不是强加自己未实现的抱负。 | cultivate a child's talents
+c | a supportive family environment | 支持性的家庭环境 | A [supportive family environment] gives teenagers the confidence to resist peer pressure. | 支持性的家庭环境给青少年抵御同伴压力的信心。
+c | the burden of care | 照护负担 | As the population ages, the [burden of care] increasingly falls on adult children. | 随着人口老龄化，照护负担越来越多地落在成年子女身上。 | the care burden
+c | live within one's means | 量入为出 | Teaching children to [live within] their [means] is more valuable than giving them pocket money. | 教孩子量入为出比给他们零花钱更有价值。
+c | be estranged from sb | 与某人疏远 | Adults who [are estranged from] their parents often regret not resolving conflicts sooner. | 与父母疏远的成年人常常后悔没有早点解决冲突。
+c | reinforce stereotypes about sb | 强化对某人的刻板印象 | Media portrayals of lazy teenagers can [reinforce stereotypes about] young people. | 媒体对懒惰青少年的描绘会强化对年轻人的刻板印象。
+c | adapt to changing circumstances | 适应变化的环境 | Families that [adapt to changing circumstances] cope better with relocation and job loss. | 能够适应变化环境的家庭更能应对搬迁和失业。
+i | When grandparents provide childcare, parents save on nursery fees and children gain extra adult attention, but grandparents may lose their retirement freedom. | 祖父母帮忙带孩子，父母可省下托儿费，孩子获得更多成人关注，但祖父母可能失去退休自由。
+i | Parents who work long hours may compensate with gifts, yet children often value shared time more than expensive presents. | 长时间工作的父母可能用礼物补偿，但孩子往往更看重共处时光而非昂贵礼物。
+i | Living with elderly relatives lets younger generations learn caregiving skills, but cramped housing can make such arrangements stressful. | 与年迈亲属同住让年轻一代学会照护技能，但拥挤的住房会让这种安排充满压力。
+i | Adult children who live far from their parents often rely on video calls, which maintain contact but cannot replace hands-on help. | 远离父母的成年子女常依赖视频通话，这能保持联系却无法替代实际帮助。
+i | Strict parenting may produce obedient children in the short term, but it can damage trust and make teenagers secretive. | 严格管教短期内可能培养出听话的孩子，但会损害信任，使青少年变得隐瞒。
+i | When parents share household chores equally, children absorb ideas about fairness that shape their own future relationships. | 当父母平等分担家务时，孩子会吸收公平观念，进而影响他们未来的关系。
+i | Family businesses pass skills and networks from one generation to the next, but they can also trap talented children in unwanted careers. | 家族企业将技能和人脉代代相传，但也可能把有才华的子女困在不想要的职业中。
+i | Government subsidies for childcare ease the financial pressure on young couples and may encourage them to have more children. | 政府托儿补贴减轻年轻夫妇的经济压力，可能鼓励他们多生孩子。
+i | Divorce forces children to adapt to two households, which can build resilience but often disrupts routines and schooling. | 离婚迫使孩子适应两个家庭，这可能培养韧性，但常打乱作息和学业。
+i | Migrants who send money home support their parents financially, yet their absence leaves elderly relatives without daily companionship. | 寄钱回家的移民在经济上支持父母，但他们的缺席让年迈亲属缺少日常陪伴。
+
+@topic transport | Transport | 交通 | 交
+p | Some people believe that increasing the cost of driving is the best way to reduce traffic congestion, while others think better public transport is the answer. Discuss both views and give your opinion. | 有些人认为提高驾驶成本是减少交通拥堵的最佳方式，而另一些人认为更好的公共交通才是解决之道。讨论双方观点并给出你的意见。
+p | In many cities, the number of cars is growing rapidly, causing serious problems. What are the causes of this trend and what measures can be taken to address it? | 在许多城市，汽车数量迅速增长，造成严重问题。这一趋势的原因是什么，可以采取哪些措施来解决？
+c | curb car use | 抑制汽车使用 | The government should [curb car use] in city centres to reduce pollution. | 政府应抑制市中心的汽车使用以减少污染。 | restrict car use; limit car use
+c | tackle congestion | 解决拥堵 | The mayor promised to [tackle congestion] by improving public transport. | 市长承诺通过改善公共交通来解决拥堵。 | ease congestion; reduce congestion
+c | exacerbate traffic problems | 加剧交通问题 | Building more roads often [exacerbates traffic problems] in the long run. | 从长远看，修建更多道路往往会加剧交通问题。 | worsen traffic problems; aggravate traffic problems
+c | promote sustainable modes of transport | 推广可持续交通方式 | The city aims to [promote sustainable modes of transport] such as cycling and walking. | 该市旨在推广骑行和步行等可持续交通方式。 | encourage sustainable modes of transport; support sustainable modes of transport
+c | invest heavily in | 大力投资于 | Governments should [invest heavily in] rail networks to reduce road traffic. | 政府应大力投资铁路网络以减少道路交通。 | invest substantially in; put heavy investment into
+c | raise public awareness of | 提高公众对…的意识 | Campaigns can [raise public awareness of] the benefits of cycling. | 宣传活动可以提高公众对骑行益处的意识。 | increase public awareness of; heighten public awareness of
+c | impose a congestion charge | 征收拥堵费 | The council decided to [impose a congestion charge] on drivers entering the city centre. | 市议会决定对进入市中心的司机征收拥堵费。 | introduce a congestion charge; levy a congestion charge
+c | shift to public transport | 转向公共交通 | Higher parking fees can encourage commuters to [shift to public transport]. | 提高停车费可以鼓励通勤者转向公共交通。 | switch to public transport; move to public transport
+c | reduce carbon emissions | 减少碳排放 | Promoting electric vehicles can help [reduce carbon emissions] in cities. | 推广电动汽车有助于减少城市碳排放。 | cut carbon emissions; lower carbon emissions
+c | alleviate pressure on | 减轻…的压力 | Better bus services would [alleviate pressure on] the overcrowded metro. | 更好的公交服务会减轻过度拥挤的地铁的压力。 | ease pressure on; relieve pressure on
+c | a viable alternative to | …的可行替代方案 | Cycling is [a viable alternative to] driving for short trips. | 对于短途出行，骑行是开车的可行替代方案。 | a feasible alternative to; a practical alternative to
+c | be heavily dependent on | 严重依赖 | Many suburban residents [are heavily dependent on] cars for daily errands. | 许多郊区居民日常事务严重依赖汽车。 | be heavily reliant on; depend heavily on
+c | deter people from | 阻止人们… | High fuel taxes may [deter people from] driving unnecessarily. | 高燃油税可能阻止人们不必要地开车。 | discourage people from; prevent people from
+c | enhance connectivity | 增强连通性 | New tram lines can [enhance connectivity] between suburbs and the city centre. | 新电车线路可以增强郊区和市中心之间的连通性。 | improve connectivity; strengthen connectivity
+c | a surge in | …的激增 | The city has seen [a surge in] cycling since new bike lanes were built. | 自新自行车道建成以来，该市骑行激增。 | a sharp increase in; a rise in
+c | prioritise pedestrians | 优先考虑行人 | Urban planners should [prioritise pedestrians] over cars in city centres. | 城市规划者应在市中心优先考虑行人而非汽车。 | give priority to pedestrians; put pedestrians first
+c | a reliable and affordable service | 可靠且负担得起的服务 | Commuters need [a reliable and affordable service] to leave their cars at home. | 通勤者需要可靠且负担得起的服务才能把车留在家里。 | a dependable and affordable service; a reliable and low-cost service
+c | reduce traffic volumes | 减少交通流量 | Congestion pricing has helped [reduce traffic volumes] in several cities. | 拥堵收费已在几个城市帮助减少交通流量。 | cut traffic volumes; lower traffic volumes
+c | a shift away from | 从…的转变 | There has been [a shift away from] private cars towards cycling. | 已经出现了从私家车转向骑行的转变。 | a move away from; a transition away from
+c | make public transport more attractive | 使公共交通更具吸引力 | Cheap fares and frequent services [make public transport more attractive]. | 便宜的票价和频繁的服务使公共交通更具吸引力。 | make public transport more appealing
+i | Congestion charges make driving into city centres expensive, so some commuters switch to buses or trains. | 拥堵费使开车进入市中心变得昂贵，因此一些通勤者转向公交车或火车。
+i | Building more roads can backfire because extra capacity attracts more drivers, worsening congestion over time. | 修建更多道路可能适得其反，因为额外容量吸引更多司机，随时间推移加剧拥堵。
+i | Reliable and frequent public transport reduces waiting times, making it a practical alternative to private cars. | 可靠且频繁的公共交通减少等待时间，使其成为私家车的实用替代方案。
+i | Cycling infrastructure such as protected lanes encourages people to cycle by making them feel safe. | 受保护的自行车道等骑行基础设施通过让人们感到安全来鼓励骑行。
+i | Traffic fumes contribute to respiratory diseases, increasing healthcare costs for the whole society. | 交通尾气导致呼吸系统疾病，增加整个社会的医疗成本。
+i | Car-oriented cities spread facilities far apart, forcing residents to drive even for short errands. | 以汽车为导向的城市将设施分散得很远，迫使居民甚至短途事务也要开车。
+i | Congestion wastes fuel and time, reducing economic productivity as workers and goods are delayed. | 拥堵浪费燃料和时间，因工人和货物延迟而降低经济生产力。
+i | Parking restrictions in city centres discourage unnecessary car trips and free up space for other uses. | 市中心的停车限制阻止不必要的汽车出行，并腾出空间用于其他用途。
+i | Subsidising public transport can make it affordable for low-income groups, promoting social equity. | 补贴公共交通可以使其对低收入群体负担得起，促进社会公平。
+i | Telecommuting reduces the need for daily travel, cutting peak-hour congestion without new infrastructure. | 远程办公减少日常出行需求，无需新基础设施即可减少高峰时段拥堵。
+
+@topic tourism | Tourism | 旅游 | 游
+p | Some people believe that tourism has a largely positive impact on local communities, while others argue that it causes more harm than good. Discuss both views and give your own opinion. | 一些人认为旅游业对当地社区主要产生积极影响，而另一些人则认为弊大于利。讨论这两种观点并给出你自己的意见。
+p | In many popular destinations, overcrowding has become a serious problem. What are the causes of this phenomenon and what measures could be taken to address it? | 在许多热门目的地，过度拥挤已成为严重问题。这一现象的原因是什么，可以采取哪些措施来解决？
+c | curb overtourism | 遏制过度旅游 | Cities like Venice are introducing entry fees to [curb overtourism]. | 像威尼斯这样的城市正在引入入场费以遏制过度旅游。 | limit overtourism; rein in overtourism
+c | foster cultural understanding | 促进文化理解 | Travel that involves staying with local families can [foster cultural understanding]. | 寄宿当地家庭的旅行可以促进文化理解。 | promote cultural understanding; enhance cultural understanding
+c | strain local infrastructure | 使当地基础设施不堪重负 | A sudden surge in visitors can [strain local infrastructure] such as transport and waste systems. | 游客突然激增会使交通和垃圾处理等当地基础设施不堪重负。 | put a strain on local infrastructure; overburden local infrastructure
+c | generate revenue | 创造收入 | Museums can [generate revenue] by selling tickets to international visitors. | 博物馆可以通过向国际游客售票来创造收入。 | produce revenue; create revenue
+c | create employment opportunities | 创造就业机会 | The hospitality sector continues to [create employment opportunities] for young people. | 酒店业继续为年轻人创造就业机会。 | generate employment opportunities; provide employment opportunities
+c | promote sustainable tourism | 推广可持续旅游 | Governments should [promote sustainable tourism] that benefits both visitors and hosts. | 政府应推广使游客和东道主都受益的可持续旅游。 | encourage sustainable tourism; foster sustainable tourism
+c | minimise environmental impact | 尽量减少环境影响 | Eco-lodges are designed to [minimise environmental impact] by using solar power. | 生态旅馆通过使用太阳能来尽量减少环境影响。 | reduce environmental impact; lessen environmental impact
+c | attract visitors | 吸引游客 | The new museum is expected to [attract visitors] from across the region. | 新博物馆预计将吸引来自整个地区的游客。 | draw visitors; pull in visitors
+c | enhance the visitor experience | 提升游客体验 | Interactive exhibits can [enhance the visitor experience] and encourage repeat visits. | 互动展览可以提升游客体验并鼓励再次参观。 | improve the visitor experience; enrich the visitor experience
+c | alleviate congestion | 缓解拥堵 | Staggered opening hours can [alleviate congestion] at popular attractions. | 错开开放时间可以缓解热门景点的拥堵。 | ease congestion; reduce congestion
+c | impose restrictions | 实施限制 | Some cities [impose restrictions] on the number of cruise ships allowed to dock. | 一些城市对允许停靠的游轮数量实施限制。 | place restrictions; enforce restrictions
+c | contribute to the local economy | 为当地经济做贡献 | Small businesses such as family-run restaurants [contribute to the local economy]. | 家庭经营的餐馆等小企业为当地经济做出贡献。 | support the local economy; benefit the local economy
+c | depend heavily on | 严重依赖 | Many island nations [depend heavily on] tourism for foreign currency. | 许多岛国严重依赖旅游业获取外汇。 | rely heavily on; be heavily dependent on
+c | a significant source of income | 重要的收入来源 | For many rural communities, tourism is [a significant source of income]. | 对许多农村社区来说，旅游业是重要的收入来源。 | a major source of income; an important source of income
+c | a delicate balance | 微妙的平衡 | Managing visitor numbers requires [a delicate balance] between access and conservation. | 管理游客数量需要在开放与保护之间取得微妙的平衡。 | a fine balance; a careful balance
+c | heavily commercialised | 高度商业化的 | Once-quiet fishing villages have become [heavily commercialised] resorts. | 曾经安静的渔村已变成高度商业化的度假胜地。 | overly commercialised; highly commercialised
+c | culturally enriching | 丰富文化的 | A stay in a foreign country can be a [culturally enriching] experience. | 在外国逗留可能是一次丰富文化的经历。 | culturally rewarding; culturally valuable
+c | seasonal employment | 季节性就业 | Resorts often offer only [seasonal employment], leaving workers without income in winter. | 度假胜地通常只提供季节性就业，使工人在冬季没有收入。 | seasonal work; seasonal jobs
+c | tourism revenue | 旅游收入 | A portion of [tourism revenue] should be reinvested in conservation. | 一部分旅游收入应再投资于保护。 | tourist revenue; travel revenue
+i | Tourism creates jobs in hospitality, transport and retail, offering employment to low-skilled workers who might otherwise struggle to find work. | 旅游业在酒店、交通和零售业创造就业，为原本可能难以找到工作的低技能工人提供就业机会。
+i | Visitor spending supports local businesses such as family-run restaurants and craft shops, keeping money within the community. | 游客消费支持家庭餐馆和工艺品店等当地企业，使资金留在社区内。
+i | Revenue from entrance fees and tourist taxes can be used to maintain heritage sites that would otherwise fall into disrepair. | 门票和旅游税收入可用于维护否则会失修的文化遗产。
+i | Meeting people from different backgrounds challenges stereotypes and builds tolerance, especially in communities that rarely host foreigners. | 接触不同背景的人挑战刻板印象并培养宽容，尤其是在很少接待外国人的社区。
+i | Overcrowding in peak season congests roads, strains public transport and makes daily life difficult for residents. | 旺季过度拥挤使道路拥堵、公共交通不堪重负，给居民日常生活带来困难。
+i | Construction of hotels and resorts can destroy natural habitats, while increased waste and water use put further pressure on ecosystems. | 酒店和度假村的建设可能破坏自然栖息地，而垃圾和用水增加进一步给生态系统带来压力。
+i | When local traditions are performed mainly for paying visitors, they risk becoming shallow shows that lose their original meaning. | 当当地传统主要为付费游客表演时，它们可能变成失去原意的肤浅表演。
+i | Many tourism jobs are seasonal and low-paid, so local people may face months without work and limited chances for career progression. | 许多旅游工作季节性强且工资低，因此当地人可能数月无工作，职业发展机会有限。
+i | Governments can introduce visitor caps or timed entry at popular sites to spread tourist flows and protect fragile places. | 政府可以在热门景点实施游客上限或定时入场，以分散客流并保护脆弱地点。
+i | Promoting off-season travel and lesser-known destinations can reduce pressure on honeypots and spread economic benefits more evenly. | 推广淡季旅游和鲜为人知的目的地可以减轻热门景点的压力，更均匀地传播经济利益。
+
+@topic arts | Arts | 艺术 | 艺
+p | Some people believe that governments should provide financial support for the arts, while others think that artists should find their own funding. Discuss both views and give your own opinion. | 有些人认为政府应该为艺术提供财政支持，而另一些人认为艺术家应该自己寻找资金。讨论双方观点并给出你自己的意见。
+p | Art education is often considered less important than subjects like science and mathematics in schools. To what extent do you agree or disagree? | 在学校里，艺术教育通常被认为不如科学和数学等科目重要。你在多大程度上同意或不同意？
+c | curb public spending on the arts | 削减艺术公共开支 | During recessions, governments often [curb public spending on the arts] to balance budgets. | 经济衰退期间，政府常削减艺术公共开支以平衡预算。 | cut public funding for the arts; reduce public spending on the arts
+c | foster creativity | 培养创造力 | Engaging with the arts can [foster creativity] in both children and adults. | 接触艺术可以培养儿童和成人的创造力。 | nurture creativity; cultivate creativity
+c | aesthetic value | 美学价值 | The [aesthetic value] of a painting often outweighs its monetary worth. | 一幅画的美学价值往往超过其金钱价值。 | artistic merit; aesthetic merit
+c | cultural heritage | 文化遗产 | Preserving [cultural heritage] through the arts helps communities maintain their identity. | 通过艺术保护文化遗产有助于社区保持自身认同。 | cultural legacy
+c | artistic expression | 艺术表达 | Freedom of [artistic expression] is essential for a vibrant creative sector. | 艺术表达自由对充满活力的创意产业至关重要。 | creative expression
+c | engage with art | 接触艺术 | Schools should encourage students to [engage with art] from an early age. | 学校应鼓励学生从小接触艺术。 | interact with art; experience art
+c | artistic endeavors | 艺术事业 | Government grants can support [artistic endeavors] that might otherwise lack funding. | 政府拨款可以支持原本可能缺乏资金的艺术事业。 | creative endeavors; artistic pursuits
+c | cultural enrichment | 文化丰富 | Exposure to diverse art forms provides [cultural enrichment] for society. | 接触多种艺术形式为社会提供文化丰富。 | cultural enhancement
+c | artistic community | 艺术界 | A thriving [artistic community] can revitalize a declining neighborhood. | 蓬勃发展的艺术界可以振兴衰落的社区。 | creative community; arts community
+c | art appreciation | 艺术鉴赏 | Courses in [art appreciation] help students understand different cultural contexts. | 艺术鉴赏课程帮助学生理解不同文化背景。 | appreciation of art
+c | artistic freedom | 艺术自由 | Censorship can severely restrict [artistic freedom] and stifle innovation. | 审查制度会严重限制艺术自由并扼杀创新。 | creative freedom
+c | aesthetic experience | 审美体验 | Visiting a gallery can provide a profound [aesthetic experience]. | 参观画廊可以提供深刻的审美体验。 | aesthetic encounter
+c | artistic merit | 艺术价值 | The [artistic merit] of a work should not be judged solely by its price. | 一件作品的艺术价值不应仅由价格评判。 | artistic value; aesthetic merit
+c | stimulate economic growth | 刺激经济增长 | Investing in the arts can [stimulate economic growth] through tourism and job creation. | 投资艺术可以通过旅游业和创造就业刺激经济增长。 | boost economic growth; promote economic growth
+c | enhance quality of life | 提高生活质量 | Access to cultural activities can significantly [enhance quality of life] in urban areas. | 接触文化活动可以显著提高城市地区的生活质量。 | improve quality of life
+c | preserve cultural traditions | 保护文化传统 | Museums play a key role in helping to [preserve cultural traditions] for future generations. | 博物馆在帮助为后代保护文化传统方面发挥关键作用。 | maintain cultural traditions; safeguard cultural traditions
+c | artistic innovation | 艺术创新 | Digital technology has opened new avenues for [artistic innovation]. | 数字技术为艺术创新开辟了新途径。 | creative innovation
+c | cultural diversity | 文化多样性 | The arts can celebrate and promote [cultural diversity] within a society. | 艺术可以庆祝和促进社会内的文化多样性。 | cultural variety
+c | artistic excellence | 艺术卓越 | Funding bodies often prioritize projects that demonstrate [artistic excellence]. | 资助机构通常优先考虑展现艺术卓越的项目。 | artistic quality; creative excellence
+c | engage a wider audience | 吸引更广泛的观众 | Free admission to museums can [engage a wider audience] and democratize access to art. | 博物馆免费入场可以吸引更广泛的观众并使艺术 access 民主化。 | attract a wider audience; reach a wider audience
+c | artistic legacy | 艺术遗产 | The city's [artistic legacy] is preserved in its numerous galleries and theaters. | 这座城市的艺术遗产保存在众多画廊和剧院中。 | cultural legacy; artistic heritage
+c | creative industries | 创意产业 | The [creative industries] have become a major source of employment in many economies. | 创意产业已成为许多经济体的主要就业来源。 | cultural industries; creative sector
+i | Public funding for the arts ensures that less commercially viable forms, such as experimental theater or avant-garde music, can survive and enrich the cultural landscape. | 公共艺术资助确保商业可行性较低的艺术形式（如实验戏剧或前卫音乐）得以生存并丰富文化景观。
+i | Art education improves academic performance because it trains students to observe carefully, think critically, and persist through open-ended problems. | 艺术教育提高学业成绩，因为它训练学生仔细观察、批判性思考并在开放式问题中坚持。
+i | Museums and galleries attract tourists, generating revenue that often exceeds the public subsidies they receive. | 博物馆和画廊吸引游客，产生的收入往往超过它们获得的公共补贴。
+i | Participating in community art projects strengthens social ties by bringing together people from different backgrounds to collaborate on a shared goal. | 参与社区艺术项目通过将不同背景的人聚集在一起为共同目标合作来加强社会联系。
+i | Without public support, artists may become dependent on commercial sponsors, leading to self-censorship and a homogenization of creative output. | 没有公共支持，艺术家可能依赖商业赞助，导致自我审查和创意产出的同质化。
+i | Art provides a non-verbal outlet for expressing complex emotions, which can be particularly beneficial for individuals who struggle to articulate their feelings. | 艺术为表达复杂情感提供非语言渠道，这对难以表达感受的人尤其有益。
+i | The creative industries create jobs and stimulate innovation, contributing to economic growth beyond the cultural sector itself. | 创意产业创造就业并刺激创新，促进文化部门之外的经济增长。
+i | Exposure to art from different cultures fosters tolerance and empathy by allowing people to see the world from diverse perspectives. | 接触不同文化的艺术通过让人们从多元视角看世界来培养宽容和同理心。
+i | Government funding for the arts can be justified as a means of preserving national heritage and identity for future generations. | 政府对艺术的资助可以作为为后代保护国家遗产和身份的手段来证明其合理性。
+i | Critics argue that public money is better spent on essential services like healthcare and education, since the arts can be supported by private donations. | 批评者认为公共资金最好用于医疗和教育等基本服务，因为艺术可以通过私人捐赠支持。
+
+@topic sport | Sport | 体育 | 体
+p | Some people believe that governments should invest more in public sports facilities rather than in elite athletes. To what extent do you agree or disagree? | 一些人认为政府应该更多投资于公共体育设施而不是精英运动员。你在多大程度上同意或不同意？
+p | The commercialisation of sport has led to astronomical salaries for top athletes. Do the advantages of this trend outweigh the disadvantages? | 体育商业化导致顶尖运动员获得天价薪酬。这一趋势的利大于弊吗？
+c | curb excessive spending | 遏制过度支出 | Salary caps could [curb excessive spending] on star players. | 工资帽可以遏制在明星球员上的过度支出。 | restrain excessive spending; limit excessive spending
+c | foster discipline | 培养纪律性 | Regular training can [foster discipline] and time management skills. | 定期训练可以培养纪律性和时间管理技能。 | cultivate discipline; instil discipline
+c | build resilience | 增强韧性 | Competitive sport helps young people [build resilience] in the face of setbacks. | 竞技体育帮助年轻人在挫折面前增强韧性。 | develop resilience; strengthen resilience
+c | boost self-esteem | 提升自尊 | Mastering a new skill can [boost self-esteem] and confidence. | 掌握一项新技能可以提升自尊和自信。 | enhance self-esteem; raise self-esteem
+c | alleviate stress | 缓解压力 | Physical activity is an effective way to [alleviate stress]. | 体育活动是缓解压力的有效方式。 | relieve stress; reduce stress
+c | attract sponsorship | 吸引赞助 | Successful teams [attract sponsorship] from global brands. | 成功的球队吸引全球品牌的赞助。 | draw sponsorship; secure sponsorship
+c | secure funding | 获得资金 | Local clubs struggle to [secure funding] for basic equipment. | 当地俱乐部难以获得购买基本设备的资金。 | obtain funding; acquire funding
+c | raise the profile of | 提升…的知名度 | Hosting the Olympics can [raise the profile of] a city. | 举办奥运会可以提升城市的知名度。 | boost the profile of
+c | promote inclusivity | 促进包容性 | Community sports programmes can [promote inclusivity] among diverse groups. | 社区体育项目可以促进不同群体间的包容性。 | foster inclusivity; encourage inclusivity
+c | level the playing field | 创造公平竞争环境 | Scholarships help [level the playing field] for disadvantaged athletes. | 奖学金有助于为弱势运动员创造公平竞争环境。 | create a fair playing field; equalise opportunities
+c | peak physical condition | 最佳体能状态 | Athletes must maintain [peak physical condition] to compete at the highest level. | 运动员必须保持最佳体能状态才能在高水平竞争。 | top physical condition; optimal physical condition
+c | performance-enhancing drugs | 提高成绩的药物 | The use of [performance-enhancing drugs] undermines the integrity of sport. | 使用提高成绩的药物破坏体育的诚信。 | doping substances
+c | grassroots participation | 基层参与 | Investment in facilities can increase [grassroots participation] in sport. | 对设施的投資可以增加基层体育参与。 | community participation; amateur participation
+c | commercialisation of sport | 体育商业化 | The [commercialisation of sport] has transformed how events are funded. | 体育商业化改变了赛事的资助方式。 | commercialization of sport; marketisation of sport
+c | sports facilities | 体育设施 | Public [sports facilities] are essential for encouraging regular exercise. | 公共体育设施对于鼓励定期锻炼至关重要。 | sporting facilities; athletic facilities
+c | sponsorship deals | 赞助协议 | Lucrative [sponsorship deals] can distract athletes from their training. | 丰厚的赞助协议可能使运动员分心。 | sponsorship agreements; sponsorship contracts
+c | doping scandals | 兴奋剂丑闻 | Repeated [doping scandals] have damaged the credibility of some sports. | 反复出现的兴奋剂丑闻损害了一些体育项目的信誉。 | drug scandals; doping controversies
+c | public funding | 公共资金 | The allocation of [public funding] for elite sport is often debated. | 精英体育的公共资金分配常常引发争论。 | government funding; state funding
+i | Hosting mega-events often requires building stadiums that become white elephants, draining public funds long after the event. | 举办大型赛事往往需要建造体育场，这些场馆在赛后成为白象，长期消耗公共资金。
+i | Taxing sugary drinks can push manufacturers to reformulate products, reducing sugar intake without banning anything. | 对含糖饮料征税可以推动制造商重新配方，减少糖分摄入而无需禁止任何东西。
+i | Sponsorship money in sport can create a conflict of interest, as athletes may prioritise commercial obligations over training. | 体育赞助收入可能产生利益冲突，因为运动员可能将商业义务置于训练之上。
+i | Early specialisation in a single sport increases the risk of overuse injuries and burnout among young athletes. | 过早专注于单一运动会增加年轻运动员过度使用损伤和倦怠的风险。
+i | Public sports facilities in deprived areas can improve health outcomes by providing free or low-cost exercise options. | 贫困地区的公共体育设施可以通过提供免费或低成本锻炼选择来改善健康状况。
+i | Screening for performance-enhancing drugs deters cheating, but inconsistent testing across countries undermines fairness. | 兴奋剂检测遏制作弊，但各国检测不一致破坏公平。
+i | Televised sport can inspire viewers to take up exercise, but watching is not a substitute for participation. | 电视转播的体育可以激励观众锻炼，但观看不能代替参与。
+i | Athletes who speak out on social issues can use their platform to raise awareness, though they may face backlash. | 运动员就社会问题发声可以利用平台提高意识，尽管可能面临反弹。
+i | Government funding for elite sport often comes at the expense of grassroots programmes, widening the participation gap. | 政府对精英体育的资助往往以基层项目为代价，扩大参与差距。
+i | Including sport in the school curriculum can improve concentration and academic performance by breaking up sedentary study time. | 将体育纳入学校课程可以通过打破久坐学习时间来提高注意力和学业成绩。
+
+@topic economy | Economy & Consumerism | 经济与消费 | 经
+p | Some people believe that consumerism has a negative impact on society. To what extent do you agree or disagree? | 有些人认为消费主义对社会有负面影响。你在多大程度上同意或不同意？
+p | Discuss the advantages and disadvantages of advertising on consumer behavior. | 讨论广告对消费者行为的利弊。
+c | foster a culture of | 培养……的文化 | Advertising can [foster a culture of] excessive spending among young people. | 广告可以在年轻人中培养过度消费的文化。 | cultivate a culture of; promote a culture of
+c | place a burden on | 给……带来负担 | High levels of debt [place a burden on] families and the economy. | 高债务水平给家庭和经济带来负担。 | impose a burden on; put a strain on
+c | make informed choices | 做出明智选择 | Consumers need clear labeling to [make informed choices] about what they buy. | 消费者需要清晰的标签来做出明智的购买选择。 | make educated choices; make informed decisions
+c | promote sustainability | 促进可持续性 | Companies should [promote sustainability] by using eco-friendly packaging. | 公司应通过使用环保包装来促进可持续性。 | foster sustainability; encourage sustainability
+c | drive innovation | 推动创新 | Competition in the market can [drive innovation] and benefit consumers. | 市场竞争可以推动创新并惠及消费者。 | stimulate innovation; spur innovation
+c | create jobs | 创造就业 | The tourism industry can [create jobs] and boost local economies. | 旅游业可以创造就业并提振当地经济。 | generate jobs; provide jobs
+c | boost the economy | 提振经济 | Government spending on infrastructure can [boost the economy] during a recession. | 政府基础设施支出可以在经济衰退期间提振经济。 | stimulate the economy; strengthen the economy
+c | a growing trend | 日益增长的趋势 | Online shopping has become [a growing trend] among busy professionals. | 网上购物已成为忙碌专业人士中日益增长的趋势。 | an increasing trend; a rising trend
+c | consumer demand | 消费者需求 | Companies must adapt to changing [consumer demand] to stay competitive. | 公司必须适应不断变化的消费者需求以保持竞争力。 | customer demand; market demand
+c | financial burden | 经济负担 | Student loans can become a heavy [financial burden] for graduates. | 学生贷款可能成为毕业生的沉重经济负担。 | economic burden; monetary burden
+c | disposable products | 一次性产品 | The widespread use of [disposable products] has led to serious environmental problems. | 一次性产品的广泛使用导致了严重的环境问题。 | single-use products; throwaway products
+c | material possessions | 物质财产 | People often equate happiness with [material possessions], but true fulfillment comes from relationships. | 人们常把幸福等同于物质财产，但真正的满足来自人际关系。 | material goods; worldly possessions
+c | spending habits | 消费习惯 | Parents should teach children healthy [spending habits] from an early age. | 父母应从小教育孩子健康的消费习惯。 | consumption habits; buying habits
+c | consumer confidence | 消费者信心 | Low [consumer confidence] can lead to reduced spending and economic slowdown. | 消费者信心低迷会导致支出减少和经济放缓。 | buyer confidence; consumer optimism
+c | brand loyalty | 品牌忠诚度 | Companies often use rewards programs to build [brand loyalty]. | 公司常用奖励计划来建立品牌忠诚度。 | customer loyalty; brand allegiance
+c | ethical consumption | 道德消费 | Many consumers now practice [ethical consumption] by buying fair-trade products. | 许多消费者现在通过购买公平贸易产品来实践道德消费。 | responsible consumption; conscious consumption
+i | Advertising creates artificial needs by linking products to happiness, which drives people to buy things they don't need. | 广告通过将产品与幸福联系起来制造人为需求，促使人们购买不需要的东西。
+i | Easy credit and buy-now-pay-later schemes encourage impulse buying, leading to debt and financial stress. | 宽松的信贷和先买后付计划鼓励冲动购物，导致债务和财务压力。
+i | A culture of consumerism can weaken community ties as people focus on individual material gain rather than social connections. | 消费主义文化可能削弱社区纽带，因为人们关注个人物质利益而非社会联系。
+i | Excessive consumption depletes natural resources and generates waste, contributing to environmental degradation. | 过度消费耗尽自然资源并产生废物，导致环境退化。
+i | Governments can curb excessive consumption by imposing higher taxes on luxury goods and using the revenue for public services. | 政府可以通过对奢侈品征收更高税收并将收入用于公共服务来抑制过度消费。
+i | Financial education in schools can help young people develop responsible spending habits and avoid debt. | 学校的金融教育可以帮助年轻人养成负责任的消费习惯并避免债务。
+i | Companies that adopt sustainable practices often gain a competitive edge as environmentally conscious consumers prefer their products. | 采用可持续做法的公司往往获得竞争优势，因为具有环保意识的消费者更喜欢他们的产品。
+i | Consumer spending drives economic growth, but over-reliance on consumption can lead to boom-and-bust cycles. | 消费者支出推动经济增长，但过度依赖消费可能导致繁荣与萧条周期。
+i | The shift to minimalism and second-hand shopping reflects growing awareness of the environmental and financial costs of consumerism. | 向极简主义和二手购物的转变反映了人们对消费主义的环境和财务成本的认识日益增强。
+i | In many societies, buying expensive goods is seen as a sign of success, which pressures people to spend beyond their means. | 在许多社会，购买昂贵商品被视为成功的标志，这迫使人们入不敷出。
+
+@topic ai | Artificial Intelligence | 人工智能 | 智
+p | Some people believe that artificial intelligence will bring more benefits than drawbacks to society. To what extent do you agree or disagree? | 有些人认为人工智能将给社会带来更多好处而非弊端。你在多大程度上同意或不同意？
+p | The increasing use of AI in the workplace is causing concern about job losses. What are the causes of this concern and what measures can be taken to address it? | 工作场所中人工智能的日益使用引发了对失业的担忧。这种担忧的原因是什么，可以采取什么措施来解决？
+c | harness the power of AI | 利用人工智能的力量 | Businesses can [harness the power of AI] to streamline operations and cut costs. | 企业可以利用人工智能的力量来简化运营并降低成本。 | leverage AI; exploit AI
+c | unleash innovation | 释放创新 | By removing regulatory barriers, governments can [unleash innovation] in the tech sector. | 通过消除监管障碍，政府可以释放科技领域的创新。 | spur innovation; stimulate innovation
+c | mitigate the risks | 减轻风险 | Regulators must [mitigate the risks] associated with autonomous vehicles before they become widespread. | 监管机构必须在自动驾驶汽车普及之前减轻相关风险。 | reduce the risks; minimize the risks
+c | raise profound ethical questions | 引发深刻的伦理问题 | The development of autonomous weapons [raises profound ethical questions] about accountability. | 自主武器的发展引发了关于问责的深刻伦理问题。 | raise serious ethical questions; raise deep ethical concerns
+c | outperform humans | 超越人类 | In certain repetitive tasks, machines already [outperform humans] in speed and accuracy. | 在某些重复性任务中，机器在速度和准确性上已经超越人类。 | surpass humans; exceed human performance
+c | hold AI systems accountable | 追究人工智能系统的责任 | It is essential to [hold AI systems accountable] when their decisions cause harm. | 当人工智能系统的决策造成伤害时，追究其责任至关重要。 | make AI systems accountable; ensure accountability of AI systems
+c | embed ethical guidelines | 嵌入伦理准则 | Developers should [embed ethical guidelines] into the design of AI products from the start. | 开发者应从一开始就将伦理准则嵌入人工智能产品的设计中。 | incorporate ethical guidelines; integrate ethical guidelines
+c | curb the misuse of | 遏制…的滥用 | Strict regulations are needed to [curb the misuse of] facial recognition technology. | 需要严格的法规来遏制人脸识别技术的滥用。 | prevent the misuse of; restrict the misuse of
+c | a paradigm shift in | …的范式转变 | AI represents [a paradigm shift in] how we diagnose and treat diseases. | 人工智能代表了我们在疾病诊断和治疗方面的范式转变。 | a fundamental shift in; a revolutionary change in
+c | a growing unease about | 对…日益不安 | There is [a growing unease about] the concentration of AI power in a few tech giants. | 人们对人工智能权力集中在少数科技巨头手中日益感到不安。 | increasing anxiety about; mounting concern about
+c | a lack of transparency | 缺乏透明度 | The public's trust in AI is undermined by [a lack of transparency] in how algorithms make decisions. | 公众对人工智能的信任因算法决策缺乏透明度而受到损害。 | insufficient transparency; an absence of transparency
+c | be susceptible to | 易受…影响 | Young people may [be susceptible to] algorithmic manipulation on social media. | 年轻人可能易受社交媒体上算法操纵的影响。 | be vulnerable to; be prone to
+c | be fraught with | 充满… | The use of AI in criminal justice is [fraught with] risks of reinforcing existing biases. | 在刑事司法中使用人工智能充满了强化现有偏见的风险。 | be filled with; be laden with
+c | grapple with | 努力应对 | Lawmakers are still [grappling with] how to regulate emerging AI technologies. | 立法者仍在努力应对如何监管新兴的人工智能技术。 | struggle with; wrestle with
+c | capitalize on | 利用 | Small businesses can [capitalize on] AI tools to compete with larger rivals. | 小企业可以利用人工智能工具与更大的竞争对手竞争。 | take advantage of; exploit
+i | AI-powered diagnostic tools can detect diseases like cancer earlier than human doctors, improving survival rates. | 人工智能诊断工具能比人类医生更早发现癌症等疾病，从而提高生存率。
+i | Automating routine tasks frees workers to focus on creative and strategic work, which boosts job satisfaction. | 自动化日常任务使工人能够专注于创造性和战略性工作，从而提高工作满意度。
+i | Without mandatory audits, AI systems can perpetuate hidden biases in hiring, lending and policing decisions. | 如果没有强制性审计，人工智能系统可能在招聘、贷款和警务决策中延续隐藏的偏见。
+i | The opacity of deep learning models makes it hard to challenge decisions, undermining legal accountability. | 深度学习模型的不透明性使决策难以被质疑，削弱了法律问责制。
+i | If companies replace workers with AI without retraining programmes, long-term unemployment and inequality may rise. | 如果公司在没有再培训计划的情况下用人工智能取代工人，长期失业和不平等可能加剧。
+i | Governments can require bias audits and transparency reports, forcing developers to address discrimination before deployment. | 政府可以要求偏见审计和透明度报告，迫使开发者在部署前解决歧视问题。
+i | Public investment in digital skills training can help displaced workers move into new roles created by AI. | 对数字技能培训的公共投资可以帮助失业工人进入人工智能创造的新岗位。
+i | International cooperation on AI safety standards can prevent a race to the bottom in regulation. | 人工智能安全标准的国际合作可以防止监管逐底竞争。
+i | AI tutors can personalize learning, but over-reliance may weaken students' independent problem-solving skills. | 人工智能导师可以提供个性化学习，但过度依赖可能削弱学生独立解决问题的能力。
+i | Clear labelling of AI-generated content and penalties for misuse can help curb the spread of disinformation. | 明确标记人工智能生成的内容并处罚滥用行为，有助于遏制虚假信息的传播。
+
+@topic animals | Animals & Nature | 动物与自然 | 兽
+p | Some people believe that zoos are cruel and should be closed, while others argue that they play a vital role in conservation. Discuss both views and give your own opinion. | 一些人认为动物园残忍应关闭，另一些人则认为它们在保护中起重要作用。讨论双方观点并给出自己的意见。
+p | The loss of biodiversity is a major environmental problem. What are the causes of this loss, and what measures can be taken to address it? | 生物多样性丧失是一个主要的环境问题。造成这种丧失的原因是什么，可以采取什么措施来解决？
+c | curb poaching | 遏制偷猎 | Stricter penalties are needed to [curb poaching] of rhinos and elephants. | 需要更严厉的惩罚来遏制对犀牛和大象的偷猎。 | combat poaching; suppress poaching
+c | tackle deforestation | 解决森林砍伐问题 | Governments must [tackle deforestation] to protect wildlife habitats. | 政府必须解决森林砍伐问题以保护野生动物栖息地。 | address deforestation; combat deforestation
+c | foster respect for | 培养对……的尊重 | Education can [foster respect for] wildlife from an early age. | 教育可以从小培养对野生动物的尊重。 | cultivate respect for; encourage respect for
+c | impose a ban on | 对……实施禁令 | Many countries have [imposed a ban on] ivory trade to protect elephants. | 许多国家已对象牙贸易实施禁令以保护大象。 | place a ban on; impose a prohibition on
+c | preserve ecosystems | 保护生态系统 | We must [preserve ecosystems] to maintain the balance of nature. | 我们必须保护生态系统以维持自然平衡。 | protect ecosystems; conserve ecosystems
+c | mitigate environmental damage | 减轻环境破坏 | Planting trees can help [mitigate environmental damage] caused by logging. | 植树可以帮助减轻伐木造成的环境破坏。 | reduce environmental damage; lessen environmental damage
+c | habitat destruction | 栖息地破坏 | [Habitat destruction] is the leading cause of species decline. | 栖息地破坏是物种减少的主要原因。 | habitat loss; habitat degradation
+c | illegal wildlife trade | 非法野生动物贸易 | [Illegal wildlife trade] threatens many rare species with extinction. | 非法野生动物贸易使许多稀有物种面临灭绝威胁。 | illicit wildlife trade; wildlife smuggling
+c | animal testing | 动物实验 | [Animal testing] for cosmetics is banned in many countries. | 许多国家禁止化妆品动物实验。 | animal experimentation; animal research
+c | ethical treatment of | 对……的人道对待 | Consumers are demanding [ethical treatment of] farm animals. | 消费者要求对农场动物进行伦理对待。 | humane treatment of
+c | sustainable fishing practices | 可持续捕鱼方式 | [Sustainable fishing practices] are essential to prevent the collapse of fish stocks. | 可持续捕鱼方式对于防止鱼类资源崩溃至关重要。 | sustainable fishing methods; responsible fishing practices
+c | combat illegal logging | 打击非法伐木 | Authorities must [combat illegal logging] to protect forests. | 当局必须打击非法伐木以保护森林。 | fight illegal logging; tackle illegal logging
+c | reduce carbon footprint | 减少碳足迹 | Individuals can [reduce] their [carbon footprint] by eating less meat. | 个人可以通过少吃肉来减少碳足迹。 | lower carbon footprint; shrink carbon footprint
+c | promote sustainable agriculture | 促进可持续农业 | Governments should [promote sustainable agriculture] to protect soil and water. | 政府应促进可持续农业以保护土壤和水。 | encourage sustainable agriculture; support sustainable agriculture
+c | protect endangered species | 保护濒危物种 | International laws are needed to [protect endangered species] from poaching. | 需要国际法律来保护濒危物种免遭偷猎。 | safeguard endangered species; conserve endangered species
+c | a moral obligation | 道德义务 | We have [a moral obligation] to protect animals from cruelty. | 我们有道德义务保护动物免受虐待。 | an ethical obligation; a moral duty
+c | strike a balance | 取得平衡 | We need to [strike a balance] between economic growth and nature conservation. | 我们需要在经济增长和自然保护之间取得平衡。 | find a balance; achieve a balance
+i | Habitat loss forces wildlife into smaller areas, increasing competition for food and making populations more vulnerable to disease. | 栖息地丧失迫使野生动物进入更小的区域，加剧食物竞争，使种群更易感染疾病。
+i | Poaching driven by demand for ivory and exotic pets pushes species like elephants and tigers closer to extinction. | 对象牙和异域宠物的需求驱动的偷猎使大象和老虎等物种更接近灭绝。
+i | Zoos can educate urban children about animals, but seeing them in cages may teach that wildlife exists for human entertainment. | 动物园可以教育城市儿童了解动物，但看到动物被关在笼子里可能让他们以为野生动物是为人类娱乐而存在的。
+i | Animal testing has helped develop vaccines and medicines, but modern alternatives like computer modelling can replace many tests. | 动物实验帮助开发了疫苗和药物，但计算机建模等现代替代方法可以取代许多实验。
+i | Sustainable farming practices, such as crop rotation, preserve soil health and reduce the need to clear forests for new farmland. | 可持续农业实践，如轮作，保护土壤健康，减少为开辟新农田而砍伐森林的需求。
+i | Ecotourism gives local communities a financial reason to protect wildlife, as tourists pay to see animals in their natural habitat. | 生态旅游为当地社区提供了保护野生动物的经济理由，因为游客付费在自然栖息地观赏动物。
+i | Stricter laws against illegal logging and poaching deter criminals only if penalties are high and enforcement is consistent. | 只有处罚严厉且执法一致，针对非法伐木和偷猎的更严格法律才能威慑犯罪分子。
+i | Climate change alters habitats faster than many species can adapt, forcing them to migrate or face decline. | 气候变化改变栖息地的速度超过许多物种的适应能力，迫使它们迁移或面临衰退。
+i | Plant-based diets reduce demand for meat, which lowers the pressure on land and water used for livestock farming. | 植物性饮食减少对肉类的需求，从而减轻用于畜牧业的土地和水资源的压力。
+i | Public awareness campaigns can change consumer behaviour, for example by discouraging the purchase of products made from endangered species. | 公众意识活动可以改变消费者行为，例如劝阻购买濒危物种制品。
+
+@topic ageing | Ageing Society | 老龄化 | 老
+p | In many countries the proportion of older people is steadily increasing. Does this trend bring more benefits or more problems to society? | 在许多国家，老年人口比例正稳步上升。这一趋势给社会带来的益处更多还是问题更多？
+p | Some believe that people should be required to retire at a fixed age, while others think they should decide for themselves. Discuss both views and give your own opinion. | 一些人认为人们应在固定年龄强制退休，另一些人则认为应由个人自行决定。讨论双方观点并给出你自己的看法。
+c | raise the retirement age | 提高退休年龄 | Many governments have decided to [raise the retirement age] to keep pension systems solvent. | 许多政府已决定提高退休年龄，以维持养老金体系的偿付能力。
+c | a demographic shift | 人口结构变化 | The [demographic shift] towards older populations is reshaping labour markets worldwide. | 人口结构向老龄化的转变正在重塑全球劳动力市场。 | a demographic transition
+c | sustain the pension system | 维持养老金体系 | Higher contributions alone cannot [sustain the pension system] indefinitely. | 仅靠提高缴费无法无限期地维持养老金体系。 | keep the pension system afloat
+c | place a strain on | 给……造成压力 | A growing elderly population will [place a strain on] public healthcare. | 不断增长的老年人口将给公共医疗造成压力。 | put pressure on; place pressure on
+c | a care deficit | 护理缺口 | Rural areas already face a severe [care deficit] as young people move to cities. | 随着年轻人迁往城市，农村地区已面临严重的护理缺口。
+c | retain older employees | 留住年长员工 | Flexible hours and part-time contracts help firms [retain older employees]. | 弹性工时和兼职合同有助于企业留住年长员工。 | keep older employees
+c | age discrimination | 年龄歧视 | Tackling [age discrimination] in hiring is essential if people are to work longer. | 如果人们要工作更久，解决招聘中的年龄歧视至关重要。 | ageism
+c | work beyond retirement age | 超过退休年龄继续工作 | More people now choose to [work beyond retirement age] in flexible roles. | 如今更多人选择在弹性岗位上超过退休年龄继续工作。
+c | a burden on public finances | 公共财政负担 | Pension top-ups have become [a burden on public finances] in many countries. | 在许多国家，养老金补贴已成为公共财政负担。 | a drain on public finances
+c | the dependency ratio | 抚养比 | A worsening [dependency ratio] leaves fewer taxpayers supporting each retiree. | 不断恶化的抚养比意味着支持每位退休者的纳税人更少。
+c | encourage delayed retirement | 鼓励延迟退休 | Tax incentives can [encourage delayed retirement] without forcing anyone to stay on. | 税收激励可以鼓励延迟退休，而无需强迫任何人留任。
+c | adapt to an older workforce | 适应老龄劳动力 | Employers must [adapt to an older workforce] by redesigning jobs and workplaces. | 雇主必须通过重新设计岗位和工作场所来适应老龄劳动力。
+c | secure a decent pension | 获得体面养老金 | Many low-paid workers never manage to [secure a decent pension]. | 许多低薪劳动者始终无法获得体面的养老金。 | earn a decent pension
+c | spiralling healthcare costs | 不断攀升的医疗成本 | Governments struggle to contain [spiralling healthcare costs] as populations age. | 随着人口老龄化，政府难以控制不断攀升的医疗成本。 | soaring healthcare costs
+c | combat loneliness | 对抗孤独 | Community centres and befriending schemes help [combat loneliness] among older residents. | 社区中心和结对帮扶计划有助于对抗老年居民的孤独。 | tackle loneliness; reduce loneliness
+c | transfer skills to younger staff | 向年轻员工传授技能 | Mentoring programmes let experienced workers [transfer skills to younger staff]. | 导师计划让经验丰富的员工向年轻员工传授技能。 | pass skills on to younger staff
+c | a live-in carer | 住家护理员 | Families often hire [a live-in carer] when relatives need round-the-clock help. | 当亲属需要全天候照护时，家庭往往会聘请住家护理员。
+c | reform the pension system | 改革养老金制度 | The government plans to [reform the pension system] to make it fairer across generations. | 政府计划改革养老金制度，使其在代际之间更加公平。 | overhaul the pension system
+c | postpone retirement | 推迟退休 | Some workers [postpone retirement] simply because their savings are inadequate. | 一些劳动者推迟退休仅仅是因为储蓄不足。 | delay retirement
+c | intergenerational fairness | 代际公平 | Debates over pensions increasingly centre on [intergenerational fairness]. | 关于养老金的争论日益围绕代际公平展开。
+i | Raising the retirement age keeps experienced staff in work and slows the rise in pension payouts, though it hits manual workers hardest. | 提高退休年龄可让有经验的员工继续工作，并减缓养老金支出的增长，但对体力劳动者冲击最大。
+i | Automation and productivity growth can offset a smaller workforce, so an ageing society need not mean slower economic growth. | 自动化与生产率增长可抵消劳动力减少，因此老龄化社会未必意味着经济增长放缓。
+i | Older volunteers and part-time workers keep local services running, from libraries to childcare, at little public cost. | 老年志愿者和兼职工作者以极低的公共成本维持着从图书馆到托儿所的本地服务。
+i | Without affordable care services, the burden of looking after frail parents falls on women, pushing many out of paid work. | 若缺乏负担得起的护理服务，照顾体弱父母的重担便落在女性身上，使许多人退出有偿工作。
+i | Age-friendly design such as step-free transport and larger signage lets older people stay independent and shop locally. | 无障碍交通和更大标识等适老设计让老年人保持独立并就近消费。
+i | Mentoring schemes pair experienced retirees with young staff, passing on tacit knowledge that no manual can capture. | 导师计划将有经验的退休者与年轻员工配对，传授任何手册都无法记录的经验知识。
+i | Pension reforms that cut benefits too sharply can push older people into poverty, shifting costs onto health services. | 过度削减福利的养老金改革可能使老年人陷入贫困，把成本转嫁给医疗服务。
+i | Encouraging immigration of working-age adults widens the tax base and eases labour shortages in care and construction. | 鼓励劳动年龄成年人移民可扩大税基，并缓解护理和建筑行业的劳动力短缺。
+i | Flexible and part-time roles let people phase into retirement gradually instead of stopping work abruptly at a fixed age. | 弹性与兼职岗位让人逐步过渡到退休，而不是在固定年龄突然停止工作。
+i | Community programmes that bring older and younger residents together reduce loneliness and challenge stereotypes on both sides. | 让老少居民相聚的社区项目可减少孤独感，并打破双方的刻板印象。
+
+@topic science | Science & Space | 科学与太空 | 星
+p | Some people believe that space exploration is a waste of money, while others think it is essential for human progress. Discuss both views and give your own opinion. | 有些人认为太空探索是浪费金钱，而另一些人认为它对人类进步至关重要。讨论双方观点并给出你自己的意见。
+p | Governments should prioritize solving problems on Earth rather than investing in space exploration. To what extent do you agree or disagree? | 政府应该优先解决地球上的问题，而不是投资于太空探索。你在多大程度上同意或不同意？
+c | curb emissions | 减少排放 | Governments must [curb emissions] to meet climate targets. | 政府必须减少排放以实现气候目标。 | cut emissions; reduce emissions
+c | yield tangible results | 产生切实成果 | Space programs often [yield tangible results] in medicine and materials science. | 太空项目 often 在医学和材料科学领域产生切实成果。 | produce tangible results; deliver tangible results
+c | mitigate the impact | 减轻影响 | Reforestation projects can [mitigate the impact] of climate change. | 重新造林项目可以减轻气候变化的影响。 | lessen the impact; reduce the impact
+c | raise awareness | 提高意识 | Campaigns to [raise awareness] of mental health have reduced stigma. | 提高心理健康意识的活动减少了污名化。 | increase awareness; heighten awareness
+c | allocate resources | 分配资源 | It is crucial to [allocate resources] efficiently in healthcare. | 在医疗保健中有效分配资源至关重要。 | distribute resources; assign resources
+c | pose a threat | 构成威胁 | Plastic pollution [poses a threat] to marine ecosystems. | 塑料污染对海洋生态系统构成威胁。 | present a threat; constitute a threat
+c | reap the benefits | 获得好处 | Countries that invest in education will [reap the benefits] in the long run. | 投资教育的国家从长远来看将获得好处。 | gain the benefits; enjoy the benefits
+c | combat climate change | 应对气候变化 | International cooperation is essential to [combat climate change]. | 国际合作对于应对气候变化至关重要。 | fight climate change; tackle climate change
+c | promote sustainable development | 促进可持续发展 | Governments should [promote sustainable development] to protect the environment. | 政府应该促进可持续发展以保护环境。 | foster sustainable development; encourage sustainable development
+c | address the root causes | 解决根本原因 | To reduce crime, we must [address the root causes] such as poverty. | 为了减少犯罪，我们必须解决贫困等根本原因。 | tackle the root causes; deal with the root causes
+c | a growing body of evidence | 越来越多的证据 | There is [a growing body of evidence] linking diet to heart disease. | 越来越多的证据表明饮食与心脏病有关。 | mounting evidence
+c | play a pivotal role | 发挥关键作用 | Education can [play a pivotal role] in reducing inequality. | 教育可以在减少不平等方面发挥关键作用。 | play a crucial role; play a key role
+c | foster a sense of | 培养……感 | Team sports can [foster a sense of] belonging among young people. | 团队运动可以培养年轻人的归属感。 | cultivate a sense of; develop a sense of
+c | have access to | 有机会获得 | All children should [have access to] quality education. | 所有儿童都应该有机会获得优质教育。 | be given access to
+i | Space research drives technological innovation, as seen in satellite communications and medical imaging, which later benefit society. | 太空研究推动技术创新，如卫星通信和医学成像，这些技术后来造福社会。
+i | Investing in space exploration can inspire students to pursue STEM careers, addressing skills shortages in many economies. | 投资太空探索可以激励学生从事STEM职业，解决许多经济体的技能短缺问题。
+i | Critics argue that space spending diverts funds from pressing social needs like healthcare and education, which require immediate attention. | 批评者认为太空支出挪用了医疗和教育等迫切需要关注的社会需求资金。
+i | Space exploration fosters international collaboration, as countries pool resources and expertise for missions like the International Space Station. | 太空探索促进国际合作，各国为国际空间站等任务汇聚资源和专业知识。
+i | Satellite technology enables precise monitoring of climate change, helping governments make informed environmental policies. | 卫星技术能够精确监测气候变化，帮助政府制定明智的环境政策。
+i | The high cost of space missions raises questions about accountability, as taxpayers may not see direct returns for decades. | 太空任务的高成本引发问责问题，纳税人可能几十年看不到直接回报。
+i | Space exploration can yield practical spin-offs, such as water purification systems, that improve lives on Earth. | 太空探索可以产生实际副产品，如净水系统，改善地球上的生活。
+i | Prioritizing space over social welfare may deepen inequality if the benefits of innovation are not shared equitably. | 如果创新成果不能公平分享，将太空置于社会福利之上可能加深不平等。
+i | Public-private partnerships can reduce the financial burden of space exploration while maintaining scientific progress. | 公私合作可以减轻太空探索的财政负担，同时保持科学进步。
+i | Space exploration serves as a unifying human endeavor, promoting peace and cooperation among nations. | 太空探索作为人类共同努力的事业，促进国家间的和平与合作。
+
+@topic housing | Housing & Architecture | 住房与建筑 | 住
+p | Some people believe that governments should invest more in public housing to address the housing crisis. To what extent do you agree or disagree? | 一些人认为政府应该加大对公共住房的投资以解决住房危机。你在多大程度上同意或不同意？
+p | In many cities, old buildings are being demolished to make way for modern developments. What are the advantages and disadvantages of this trend? | 在许多城市，老建筑被拆除以便为现代开发让路。这一趋势的利弊是什么？
+p | Some argue that high-rise buildings are the best solution to housing shortages in urban areas. Others think low-rise housing is better. Discuss both views and give your opinion. | 一些人认为高层建筑是解决城市地区住房短缺的最佳方案。另一些人认为低层住房更好。讨论这两种观点并给出你的意见。
+p | What are the causes of the shortage of affordable housing in major cities, and what measures can be taken to solve this problem? | 大城市经济适用房短缺的原因是什么，可以采取哪些措施来解决这个问题？
+c | curb urban sprawl | 遏制城市扩张 | Green belts around cities can [curb urban sprawl] and protect farmland from development. | 城市周围的绿化带可以遏制城市扩张，保护农田不被开发。 | contain urban sprawl; limit urban sprawl
+c | tackle housing shortages | 解决住房短缺 | Governments must [tackle housing shortages] by increasing the supply of affordable homes. | 政府必须通过增加经济适用房供应来解决住房短缺问题。 | address housing shortages; ease housing shortages
+c | preserve historical architecture | 保护历史建筑 | Cities should [preserve historical architecture] rather than replace old buildings with glass towers. | 城市应该保护历史建筑，而不是用玻璃塔楼取代老建筑。 | conserve historical architecture; protect historical architecture
+c | meet housing demand | 满足住房需求 | The construction of new apartments has failed to [meet housing demand] in growing cities. | 在发展中城市，新公寓的建设未能满足住房需求。 | satisfy housing demand; meet the demand for housing
+c | drive up property prices | 推高房价 | Foreign investment can [drive up property prices] and make homes unaffordable for locals. | 外国投资可能推高房价，使当地人买不起房。 | push up property prices; inflate property prices
+c | alleviate traffic congestion | 缓解交通拥堵 | Building more cycle lanes can [alleviate traffic congestion] in densely populated areas. | 修建更多自行车道可以缓解人口密集地区的交通拥堵。 | ease traffic congestion; reduce traffic congestion
+c | enhance energy efficiency | 提高能源效率 | Retrofitting old buildings with insulation can [enhance energy efficiency] and cut heating bills. | 用隔热材料改造旧建筑可以提高能源效率并减少取暖费用。 | improve energy efficiency; boost energy efficiency
+c | social cohesion | 社会凝聚力 | Mixed-income housing projects can promote [social cohesion] by bringing different groups together. | 混合收入住房项目可以通过将不同群体聚集在一起促进社会凝聚力。 | social unity; community cohesion
+c | aesthetic appeal | 美学吸引力 | Well-designed public spaces add [aesthetic appeal] to a neighbourhood and attract visitors. | 设计良好的公共空间为社区增添美学吸引力并吸引游客。 | visual appeal
+c | impose a burden on | 给…造成负担 | Poorly planned infrastructure can [impose a burden on] local taxpayers. | 规划不善的基础设施可能给当地纳税人造成负担。 | place a burden on; put a strain on
+c | cater to the needs of | 满足…的需求 | New housing developments should [cater to the needs of] elderly residents. | 新的住房开发项目应满足老年居民的需求。 | meet the needs of; serve the needs of
+c | adversely affect | 对…产生不利影响 | Noise from construction sites can [adversely affect] residents' quality of life. | 建筑工地的噪音会对居民的生活质量产生不利影响。 | negatively affect; harm
+c | a shortage of affordable homes | 经济适用房短缺 | There is [a shortage of affordable homes] in popular urban areas. | 在热门城区，经济适用房短缺。 | a lack of affordable homes
+c | regenerate urban areas | 振兴城市地区 | Investment in infrastructure can [regenerate urban areas] and create jobs. | 对基础设施的投资可以振兴城市地区并创造就业机会。 | revitalise urban areas; rejuvenate urban areas
+c | a high-density development | 高密度开发 | [A high-density development] can accommodate more people but may reduce living space. | 高密度开发可以容纳更多人，但可能减少居住空间。 | a dense development; high-density housing
+c | impose restrictions on | 对…施加限制 | The council should [impose restrictions on] building height to protect the skyline. | 议会应对建筑高度施加限制以保护天际线。 | place restrictions on; put restrictions on
+c | provide incentives for | 为…提供激励 | Governments can [provide incentives for] developers to build eco-friendly homes. | 政府可以为开发商提供激励，以建造环保住宅。 | offer incentives for; give incentives for
+c | a sense of place | 地方归属感 | Preserving old buildings helps maintain [a sense of place] in a rapidly changing city. | 保护老建筑有助于在快速变化的城市中保持地方归属感。 | local identity; a sense of identity
+c | reduce the carbon footprint | 减少碳足迹 | Using sustainable materials can [reduce the carbon footprint] of new buildings. | 使用可持续材料可以减少新建筑的碳足迹。 | lower the carbon footprint; cut the carbon footprint
+c | a well-designed layout | 精心设计的布局 | [A well-designed layout] can make a small apartment feel spacious. | 精心设计的布局可以使小公寓感觉宽敞。 | an efficient layout
+c | create a sense of overcrowding | 造成拥挤感 | Tall buildings packed closely together can [create a sense of overcrowding]. | 密集的高楼大厦会造成拥挤感。 | give a feeling of overcrowding; produce a sense of overcrowding
+i | Rent control can keep existing tenants in their homes but may discourage landlords from maintaining properties, leading to deterioration. | 租金管制可以让现有租户留在家里，但可能阻碍房东维护房产，导致房屋状况恶化。
+i | Building on brownfield sites reuses already-developed land, reducing pressure on greenfield areas and preserving natural habitats. | 在棕地上建房可以重复利用已开发土地，减少对绿地的压力并保护自然栖息地。
+i | High-rise living can isolate residents because shared spaces are often poorly designed, weakening neighbourly ties. | 高层生活可能使居民孤立，因为共享空间往往设计不佳，削弱邻里关系。
+i | Mixed-use developments combine housing, shops and offices, allowing people to live near work and reducing commuting. | 混合用途开发将住房、商店和办公室结合起来，使人们能够住在工作地点附近并减少通勤。
+i | Preserving historic buildings can boost tourism, as visitors are drawn to cities with distinctive architecture. | 保护历史建筑可以促进旅游业，因为游客会被具有独特建筑的城市所吸引。
+i | Poorly insulated homes waste energy and raise heating costs, so stricter building codes can cut both emissions and bills. | 隔热不良的房屋浪费能源并增加取暖费用，因此更严格的建筑规范可以减少排放和账单。
+i | Governments can offer tax breaks to developers who include affordable units in new projects, increasing supply without direct spending. | 政府可以向在新项目中包含经济适用房的开发商提供税收减免，从而在不直接支出的情况下增加供应。
+i | Converting empty offices into apartments can quickly increase housing supply, especially as remote work leaves office space vacant. | 将空置办公室改造成公寓可以迅速增加住房供应，尤其是当远程工作使办公空间空置时。
+i | Overcrowded housing can spread disease and strain public services, so reducing density through better planning improves public health. | 过度拥挤的住房可能传播疾病并给公共服务带来压力，因此通过更好的规划降低密度可以改善公共卫生。
+i | Green roofs and walls can insulate buildings, reduce urban heat and provide habitats for wildlife. | 绿色屋顶和墙壁可以隔热、减少城市热量并为野生动物提供栖息地。
+i | Strict rent controls may deter investment in rental housing, ultimately reducing supply and worsening affordability. | 严格的租金管制可能会阻碍租赁住房的投资，最终减少供应并加剧负担能力问题。
+i | Participatory design, where residents help plan their neighbourhoods, can create spaces that better suit local needs. | 参与式设计，即居民帮助规划他们的社区，可以创造更符合当地需求的空间。
+
+@topic food | Food & Diet | 饮食 | 食
+p | In many countries, the consumption of fast food is increasing. What are the causes of this trend? What measures can be taken to encourage healthier eating habits? | 在许多国家，快餐消费正在增加。这一趋势的原因是什么？可以采取哪些措施来鼓励更健康的饮食习惯？
+p | Some people believe that governments should impose a tax on unhealthy foods to improve public health. To what extent do you agree or disagree? | 一些人认为政府应该对不健康食品征税以改善公共健康。你在多大程度上同意或不同意？
+p | Discuss the view that schools should be responsible for teaching children about nutrition and healthy eating. | 讨论学校应该负责教授儿童营养和健康饮食的观点。
+p | Food waste is a growing problem in many parts of the world. What are the causes of food waste, and what solutions can you suggest? | 食物浪费在世界许多地方日益严重。食物浪费的原因是什么？你可以提出哪些解决方案？
+c | foster healthy eating habits | 培养健康饮食习惯 | Parents should [foster healthy eating habits] in their children from an early age. | 父母应从小培养孩子健康的饮食习惯。 | cultivate healthy eating habits; develop healthy eating habits
+c | impose a tax on | 对……征税 | Some countries [impose a tax on] sugary beverages to discourage consumption. | 一些国家对含糖饮料征税以抑制消费。 | levy a tax on; place a tax on
+c | processed foods | 加工食品 | Consumers should limit their intake of [processed foods] to reduce health risks. | 消费者应限制加工食品的摄入以降低健康风险。 | packaged foods
+c | food security | 粮食安全 | Climate change poses a serious threat to global [food security]. | 气候变化对全球粮食安全构成严重威胁。
+c | nutritional value | 营养价值 | Fresh vegetables are known for their high [nutritional value]. | 新鲜蔬菜以其高营养价值而闻名。
+c | diet-related diseases | 饮食相关疾病 | Preventing [diet-related diseases] requires a combination of education and regulation. | 预防饮食相关疾病需要教育和监管相结合。 | diet-related illnesses
+c | adopt a healthy lifestyle | 采取健康生活方式 | People should [adopt a healthy lifestyle] that includes regular exercise and proper nutrition. | 人们应采取包括定期锻炼和合理营养的健康生活方式。 | embrace a healthy lifestyle; maintain a healthy lifestyle
+c | food additives | 食品添加剂 | Some consumers are concerned about the potential health effects of [food additives]. | 一些消费者担心食品添加剂的潜在健康影响。
+c | organic produce | 有机农产品 | The demand for [organic produce] has grown significantly in recent years. | 近年来对有机农产品的需求显著增长。
+c | portion sizes | 份量 | Restaurants should reduce [portion sizes] to help customers avoid overeating. | 餐馆应减少份量以帮助顾客避免暴饮暴食。 | serving sizes
+c | eating disorders | 饮食失调 | Social media can contribute to the development of [eating disorders] among young people. | 社交媒体可能导致年轻人出现饮食失调。
+c | nutritional deficiency | 营养缺乏 | A lack of variety in the diet can lead to [nutritional deficiency]. | 饮食缺乏多样性可能导致营养缺乏。 | nutrient deficiency
+c | food deserts | 食品荒漠 | Low-income neighborhoods often become [food deserts] with limited access to fresh produce. | 低收入社区往往成为食品荒漠，难以获得新鲜农产品。
+c | sustainable food production | 可持续食品生产 | Investing in [sustainable food production] is crucial for long-term environmental health. | 投资可持续食品生产对长期环境健康至关重要。
+c | curb food waste | 减少食物浪费 | Supermarkets can [curb food waste] by donating unsold items to charities. | 超市可以通过将未售出商品捐赠给慈善机构来减少食物浪费。 | reduce food waste; limit food waste
+c | promote healthier choices | 促进更健康的选择 | Governments should [promote healthier choices] through subsidies for fruits and vegetables. | 政府应通过补贴水果和蔬菜来促进更健康的选择。 | encourage healthier choices; foster healthier choices
+c | calorie intake | 卡路里摄入 | Tracking [calorie intake] can help individuals manage their weight effectively. | 记录卡路里摄入可以帮助个人有效管理体重。
+c | dietary habits | 饮食习惯 | Changing [dietary habits] requires sustained effort and support from the environment. | 改变饮食习惯需要持续的努力和环境的支持。 | eating habits
+c | food labeling | 食品标签 | Clear [food labeling] can empower consumers to make informed choices. | 清晰的食品标签可以让消费者做出明智的选择。 | food labelling
+c | combat malnutrition | 对抗营养不良 | International organizations work to [combat malnutrition] in developing countries. | 国际组织致力于在发展中国家对抗营养不良。 | fight malnutrition; tackle malnutrition
+c | enhance food safety | 加强食品安全 | Stricter regulations are needed to [enhance food safety] and prevent outbreaks. | 需要更严格的法规来加强食品安全和防止疫情爆发。 | improve food safety; strengthen food safety
+i | Subsidizing fruits and vegetables lowers their price, making healthy eating more affordable for low-income families. | 补贴水果和蔬菜会降低其价格，使低收入家庭更能负担健康饮食。
+i | Clear front-of-pack labels help consumers quickly compare products and choose healthier options. | 清晰的包装正面标签帮助消费者快速比较产品并选择更健康的选项。
+i | School meal standards ensure children receive balanced nutrition, establishing healthy habits early in life. | 学校膳食标准确保儿童获得均衡营养，从小建立健康习惯。
+i | Restricting advertising of junk food to children reduces their exposure and subsequent demand for unhealthy products. | 限制针对儿童的垃圾食品广告可减少他们接触不健康产品并降低后续需求。
+i | Urban planning that includes supermarkets in residential areas improves access to fresh food and reduces food deserts. | 在住宅区包含超市的城市规划改善了新鲜食物的获取，减少了食品荒漠。
+i | Nutrition education in schools equips students with knowledge to make informed dietary choices throughout life. | 学校的营养教育使学生具备知识，在一生中做出明智的饮食选择。
+i | Food waste reduction campaigns encourage households to plan meals and compost, cutting methane emissions from landfills. | 减少食物浪费的运动鼓励家庭计划膳食和堆肥，减少垃圾填埋场的甲烷排放。
+i | Processed foods are often cheaper and more convenient, which explains their popularity despite health warnings. | 加工食品通常更便宜、更方便，这解释了它们尽管有健康警告仍受欢迎的原因。
+i | Government regulation of food marketing can counteract the influence of advertising on children's preferences. | 政府对食品营销的监管可以抵消广告对儿童偏好的影响。
+i | Community gardens increase access to fresh produce and foster social connections among residents. | 社区花园增加了新鲜农产品的获取，并促进了居民之间的社会联系。
+i | Taxing unhealthy foods may regressively affect low-income households, so revenues should fund healthy food subsidies. | 对不健康食品征税可能对低收入家庭产生累退影响，因此税收应资助健康食品补贴。
+
+@topic gender | Gender Equality | 性别平等 | 等
+p | Some people believe that gender equality has been largely achieved in their country, while others argue that significant inequalities remain. Discuss both views and give your own opinion. | 一些人认为本国的性别平等已基本实现，而另一些人则认为仍存在显著不平等。讨论双方观点并给出你自己的意见。
+p | The gender pay gap persists in many industries. What are the causes of this gap and what measures can be taken to close it? | 许多行业仍存在性别薪酬差距。这一差距的原因是什么？可以采取哪些措施来缩小它？
+p | Some argue that women should be given preferential treatment in hiring and promotion to compensate for historical disadvantages. To what extent do you agree or disagree? | 一些人认为应在招聘和晋升中给予女性优惠待遇以弥补历史劣势。你在多大程度上同意或不同意？
+p | In many countries, women are underrepresented in leadership positions in politics and business. What problems does this cause and how can it be solved? | 在许多国家，女性在政治和商业领导职位中代表性不足。这会导致什么问题？如何解决？
+c | close the gender pay gap | 缩小性别薪酬差距 | Many countries have introduced pay transparency laws to [close the gender pay gap]. | 许多国家出台了薪酬透明法以缩小性别薪酬差距。 | narrow the gender pay gap
+c | tackle gender discrimination | 解决性别歧视 | Governments must [tackle gender discrimination] in hiring and promotion. | 政府必须解决招聘和晋升中的性别歧视。 | combat gender discrimination
+c | promote gender equality | 促进性别平等 | Education is a powerful tool to [promote gender equality] from a young age. | 教育是自幼促进性别平等的有力工具。 | advance gender equality
+c | break the glass ceiling | 打破玻璃天花板 | Mentorship programs help women [break the glass ceiling] in male-dominated industries. | 导师计划帮助女性在男性主导的行业打破玻璃天花板。 | shatter the glass ceiling
+c | challenge gender stereotypes | 挑战性别刻板印象 | Advertisements that [challenge gender stereotypes] can gradually change public attitudes. | 挑战性别刻板印象的广告能逐渐改变公众态度。 | confront gender stereotypes
+c | underrepresentation of women | 女性代表性不足 | The [underrepresentation of women] in leadership positions remains a pressing concern. | 女性在领导职位中的代表性不足仍是一个紧迫问题。
+c | gender-balanced workforce | 性别均衡的劳动力 | Companies with a [gender-balanced workforce] tend to make more innovative decisions. | 拥有性别均衡劳动力的公司往往能做出更具创新性的决策。 | gender-diverse workforce
+c | equal access to education | 平等受教育机会 | Ensuring [equal access to education] for girls is essential for national development. | 确保女童平等受教育机会对国家发展至关重要。 | equitable access to education
+c | combat gender bias | 消除性别偏见 | Training programs can help [combat gender bias] in recruitment and evaluation. | 培训项目有助于消除招聘和评估中的性别偏见。 | counter gender bias
+c | gender-neutral policies | 性别中立政策 | Implementing [gender-neutral policies] benefits both employees and employers. | 实施性别中立政策对雇员和雇主都有好处。
+c | empower women economically | 赋予女性经济权能 | Microfinance initiatives [empower women economically] by supporting small businesses. | 小额信贷通过支持小企业赋予女性经济权能。 | economically empower women
+c | gender disparity in wages | 工资性别差异 | The [gender disparity in wages] persists despite equal pay legislation. | 尽管有同工同酬立法，工资性别差异依然存在。 | gender wage gap
+c | shatter traditional gender roles | 打破传统性别角色 | Shared parental leave can help [shatter traditional gender roles] in childcare. | 共享育儿假有助于打破育儿中的传统性别角色。 | dismantle traditional gender roles
+c | foster a culture of equality | 培育平等文化 | Schools should [foster a culture of equality] where all students feel valued. | 学校应培育平等文化，让所有学生感到被重视。 | cultivate a culture of equality
+c | eliminate gender-based violence | 消除性别暴力 | Stricter laws are needed to [eliminate gender-based violence] and protect victims. | 需要更严格的法律来消除性别暴力并保护受害者。 | eradicate gender-based violence
+c | gender-inclusive language | 性别包容性语言 | Using [gender-inclusive language] in the workplace promotes respect and fairness. | 在工作场所使用性别包容性语言促进尊重和公平。
+c | gender quota system | 性别配额制度 | A [gender quota system] can accelerate women's representation in politics. | 性别配额制度可以加速女性在政治中的代表性。
+c | unequal division of labor | 劳动分工不平等 | The [unequal division of labor] at home often limits women's career prospects. | 家庭中劳动分工不平等往往限制女性的职业前景。 | unequal division of labour
+i | Gender quotas in corporate boards can quickly increase female representation, but they may be seen as tokenism if not accompanied by a supportive culture. | 公司董事会中的性别配额可以迅速增加女性代表，但如果没有支持性文化，可能被视为象征主义。
+i | Flexible work arrangements help both men and women balance career and family, reducing the motherhood penalty that slows women's advancement. | 灵活工作安排帮助男女平衡事业与家庭，减少阻碍女性晋升的母职惩罚。
+i | Educating girls yields high economic returns: women reinvest more income in their families' health and education, breaking cycles of poverty. | 教育女孩带来高经济回报：女性将更多收入再投资于家庭健康和教育，打破贫困循环。
+i | Unconscious bias in hiring can be reduced by blind recruitment, where names and genders are removed from initial applications. | 招聘中的无意识偏见可以通过盲招减少，即在初筛中移除姓名和性别信息。
+i | Shared parental leave encourages fathers to take an active role in childcare, challenging the stereotype that caring is primarily a mother's duty. | 共享育儿假鼓励父亲积极参与育儿，挑战照顾主要是母亲责任的刻板印象。
+i | The gender pay gap is partly driven by women being concentrated in lower-paid sectors and facing barriers to promotion. | 性别薪酬差距部分源于女性集中在低薪行业并面临晋升障碍。
+i | Media portrayals of women as homemakers or objects can reinforce stereotypes; diverse representations can gradually shift public perceptions. | 媒体将女性描绘为家庭主妇或物品可能强化刻板印象；多元表现可以逐渐改变公众认知。
+i | Affordable childcare enables more women to remain in the workforce, boosting household income and economic growth. | 负担得起的托儿服务使更多女性留在劳动力市场，提高家庭收入并促进经济增长。
+i | Laws against gender-based violence must be enforced effectively, with accessible reporting mechanisms and support for victims. | 反对性别暴力的法律必须有效执行，提供便捷的举报机制和对受害者的支持。
+i | Mentorship and networking programs for women can help them navigate male-dominated fields and access leadership opportunities. | 为女性提供的导师和社交网络项目可以帮助她们在男性主导领域发展并获得领导机会。
+i | Gender stereotypes in education, such as discouraging girls from STEM subjects, limit talent and perpetuate occupational segregation. | 教育中的性别刻板印象，如劝阻女孩学习STEM科目，限制了人才并延续职业隔离。
+i | Technology can promote gender equality by enabling remote work and online learning, but the digital gender divide must be addressed. | 技术可以通过支持远程工作和在线学习促进性别平等，但必须解决数字性别鸿沟。
+
+@topic language | Language Learning | 语言学习 | 语
+p | Some people believe that learning a foreign language should start in primary school, while others think it is better to begin in secondary school. Discuss both views and give your opinion. | 有些人认为学习外语应该从小学开始，而另一些人认为从中学开始更好。讨论双方观点并给出你的意见。
+p | In many countries, minority languages are disappearing. What are the causes of this trend? What measures can be taken to protect these languages? | 在许多国家，少数民族语言正在消失。这一趋势的原因是什么？可以采取哪些措施来保护这些语言？
+p | Some people think that the best way to learn a language is to live in a country where it is spoken. To what extent do you agree or disagree? | 有些人认为学习一门语言的最好方法是住在说该语言的国家。你在多大程度上同意或不同意？
+p | Many schools now use technology to teach languages. Do the advantages of this trend outweigh the disadvantages? | 许多学校现在使用技术来教授语言。这一趋势的优点大于缺点吗？
+c | acquire a language | 习得语言 | Children [acquire a language] naturally through daily interaction with caregivers. | 儿童通过与照料者的日常互动自然习得语言。 | pick up a language
+c | attain fluency | 达到流利 | Without regular practice, few learners [attain fluency] in a foreign language. | 没有定期练习，很少有人能在外语上达到流利。 | achieve fluency
+c | command of a language | 语言掌握能力 | Studying abroad can give students a strong [command of a language]. | 出国留学能让学生对一门语言有很强的掌握能力。
+c | linguistic competence | 语言能力 | Grammar drills alone do not guarantee [linguistic competence] in real conversations. | 仅靠语法练习并不能保证在真实对话中具备语言能力。 | language proficiency
+c | immersion programme | 沉浸式课程 | An [immersion programme] forces learners to use the target language all day. | 沉浸式课程迫使学习者在全天使用目标语言。 | immersion course
+c | language barrier | 语言障碍 | The [language barrier] often prevents immigrants from accessing basic services. | 语言障碍常常使移民无法获得基本服务。
+c | mother tongue | 母语 | Maintaining one's [mother tongue] helps children stay connected to their cultural roots. | 保持母语有助于孩子与自己的文化根源保持联系。 | native language
+c | bilingual upbringing | 双语成长环境 | A [bilingual upbringing] can enhance cognitive flexibility in young children. | 双语成长环境可以增强幼儿的认知灵活性。
+c | vocabulary retention | 词汇记忆 | Using new words in context improves [vocabulary retention] far more than rote memorisation. | 在语境中使用新词比死记硬背更能提高词汇记忆。 | vocabulary recall
+c | pronunciation accuracy | 发音准确性 | Regular feedback from teachers is essential for improving [pronunciation accuracy]. | 教师的定期反馈对于提高发音准确性至关重要。
+c | grammatical accuracy | 语法准确性 | Extensive reading gradually enhances [grammatical accuracy] without explicit instruction. | 广泛阅读能在没有明确教学的情况下逐渐提高语法准确性。
+c | fluency and coherence | 流利度与连贯性 | Speaking exams assess [fluency and coherence] as well as vocabulary range. | 口语考试既评估词汇范围，也评估流利度与连贯性。
+c | overcome language anxiety | 克服语言焦虑 | Supportive classroom environments help learners [overcome language anxiety]. | 支持性的课堂环境帮助学习者克服语言焦虑。 | reduce language anxiety
+c | build confidence in speaking | 建立口语自信 | Role-play activities [build confidence in speaking] for shy students. | 角色扮演活动能为害羞的学生建立口语自信。 | gain confidence in speaking
+c | foster intercultural communication | 促进跨文化交流 | Learning a foreign language can [foster intercultural communication] and mutual understanding. | 学习外语可以促进跨文化交流和相互理解。 | promote intercultural communication
+c | endangered language | 濒危语言 | An [endangered language] often has only a few elderly speakers left. | 濒危语言通常只剩下几位年长的使用者。
+c | language revitalisation | 语言复兴 | [Language revitalisation] efforts include bilingual education and community classes. | 语言复兴的努力包括双语教育和社区课程。
+c | cognitive benefits | 认知益处 | Bilingualism offers [cognitive benefits] such as better task-switching skills. | 双语能力带来认知益处，例如更好的任务切换能力。
+c | enhance memory | 增强记忆力 | Learning new languages can [enhance memory] and delay cognitive decline. | 学习新语言可以增强记忆力并延缓认知衰退。 | improve memory
+c | critical thinking skills | 批判性思维技能 | Analysing texts in a foreign language develops [critical thinking skills]. | 用外语分析文本可以培养批判性思维技能。
+c | career prospects | 职业前景 | Proficiency in English can greatly expand one's [career prospects]. | 精通英语可以大大拓展职业前景。 | job prospects
+c | global competitiveness | 全球竞争力 | Language skills are vital for a nation's [global competitiveness]. | 语言技能对一个国家的全球竞争力至关重要。
+c | language acquisition | 语言习得 | Early [language acquisition] is facilitated by exposure to rich input. | 早期语言习得得益于接触丰富的语言输入。
+c | comprehensible input | 可理解输入 | Teachers should provide [comprehensible input] slightly above learners' current level. | 教师应提供略高于学习者当前水平的可理解输入。
+c | output practice | 输出练习 | Speaking and writing tasks offer essential [output practice] for learners. | 口语和写作任务为学习者提供必要的输出练习。
+c | error correction | 纠错 | Timely [error correction] helps prevent fossilised mistakes. | 及时的纠错有助于防止错误固化。
+c | self-directed learning | 自主学习 | Apps and online resources promote [self-directed learning] outside the classroom. | 应用程序和在线资源促进课堂外的自主学习。 | autonomous learning
+i | Learning a second language strengthens executive function by constantly switching between two language systems, improving focus and multitasking. | 学习第二语言通过不断在两种语言系统间切换来增强执行功能，从而提高注意力和多任务处理能力。
+i | Bilingual children often outperform monolinguals in tasks requiring selective attention because they must suppress interference from the other language. | 双语儿童在需要选择性注意的任务中往往优于单语儿童，因为他们必须抑制另一种语言的干扰。
+i | Early exposure to a foreign language leads to more native-like pronunciation because the brain retains the ability to distinguish unfamiliar sounds. | 早期接触外语会带来更接近母语的发音，因为大脑保留了区分不熟悉声音的能力。
+i | Immersion programmes accelerate fluency by forcing learners to use the language for real communication rather than memorising rules. | 沉浸式课程通过迫使学习者为真实交流使用语言而非记忆规则来加速流利度。
+i | Language learning fosters empathy and cultural awareness, as learners gain insight into how other people express ideas and values. | 语言学习培养同理心和文化意识，因为学习者能深入了解他人如何表达思想和价值观。
+i | Proficiency in a global lingua franca like English expands career opportunities by enabling access to international markets and information. | 精通像英语这样的全球通用语，通过提供进入国际市场和获取信息的机会来拓展职业机会。
+i | Rote memorisation of vocabulary without context leads to poor retention, as words are forgotten quickly when not used meaningfully. | 脱离语境的死记硬背词汇会导致记忆效果差，因为单词在不被有意义地使用时很快被遗忘。
+i | Language barriers can isolate immigrants and limit their access to healthcare, education and employment, worsening social inequality. | 语言障碍可能使移民孤立，并限制他们获得医疗、教育和就业的机会，加剧社会不平等。
+i | Minority languages disappear when older speakers die and younger generations switch to dominant languages for economic reasons. | 当老一辈使用者去世，年轻一代为经济原因转向主流语言时，少数民族语言就会消失。
+i | Governments can preserve endangered languages by funding bilingual education and media broadcasting in those languages. | 政府可以通过资助双语教育和用这些语言进行媒体广播来保护濒危语言。
+i | Technology can support language learning through adaptive apps that provide instant feedback and personalised practice. | 技术可以通过提供即时反馈和个性化练习的自适应应用程序来支持语言学习。
+i | Learning a language later in life is harder because the brain's plasticity decreases, but it still brings cognitive benefits. | 晚年学习语言更难，因为大脑的可塑性降低，但它仍然带来认知益处。
+
+@topic charity | Charity & Volunteering | 慈善与志愿 | 善
+p | Some people believe that volunteering should be a mandatory part of the school curriculum. To what extent do you agree or disagree? | 有些人认为志愿服务应该成为学校课程的必修部分。你在多大程度上同意或不同意？
+p | Many charities rely on donations from the public. What are the advantages and disadvantages of this funding model? | 许多慈善机构依赖公众捐款。这种资助模式的优点和缺点是什么？
+p | Some people think that giving money to charity is more effective than volunteering time. Discuss both views and give your opinion. | 有些人认为捐钱给慈善机构比贡献时间做志愿者更有效。讨论这两种观点并给出你的意见。
+p | International aid organizations often provide food and medicine to developing countries. Some argue this creates dependency. What are the causes of this problem and what solutions can you suggest? | 国际援助组织经常向发展中国家提供食品和药品。有些人认为这会造成依赖。这个问题的原因是什么，你可以建议什么解决方案？
+c | donate to charity | 向慈善机构捐款 | Many people prefer to [donate to charity] rather than give money directly to beggars. | 许多人宁愿向慈善机构捐款，而不是直接把钱给乞丐。 | give to charity
+c | volunteer one's time | 贡献时间做志愿者 | Retired professionals can [volunteer] their [time] to mentor young people from disadvantaged backgrounds. | 退休专业人士可以贡献时间指导弱势背景的年轻人。 | give one's time
+c | charitable organization | 慈善组织 | A reputable [charitable organization] ensures that most of its funds reach those in need. | 一家声誉良好的慈善组织确保其大部分资金到达需要的人手中。 | charity
+c | raise funds for | 为……筹集资金 | Students often [raise funds for] local shelters by organizing sponsored runs and bake sales. | 学生经常通过组织赞助跑步和烘焙义卖为当地收容所筹集资金。 | raise money for
+c | philanthropic efforts | 慈善努力 | The billionaire's [philanthropic efforts] have funded schools and hospitals in rural areas. | 这位亿万富翁的慈善努力资助了农村地区的学校和医院。 | charitable efforts
+c | social responsibility | 社会责任 | Companies should demonstrate [social responsibility] by supporting community projects. | 公司应通过支持社区项目来展示社会责任。
+c | help those in need | 帮助有需要的人 | Volunteering is a practical way to [help those in need] in your own neighborhood. | 志愿服务是帮助自己社区有需要的人的一种切实方式。 | assist those in need
+c | make a difference | 产生影响 | Regular volunteering can [make a difference] to both the volunteer and the recipient. | 定期志愿服务可以对志愿者和受助者都产生影响。 | have an impact
+c | give back to the community | 回馈社区 | Many successful individuals feel a duty to [give back to the community] that supported them. | 许多成功人士感到有责任回馈支持过他们的社区。 | contribute to the community
+c | fundraising campaign | 筹款活动 | The [fundraising campaign] aimed to build a new wing for the children's hospital. | 筹款活动旨在为儿童医院建造一个新侧楼。
+c | volunteer work | 志愿工作 | Engaging in [volunteer work] can enhance students' empathy and practical skills. | 参与志愿工作可以增强学生的同理心和实践技能。
+c | charitable giving | 慈善捐赠 | Tax incentives can encourage [charitable giving] among higher-income earners. | 税收激励可以鼓励高收入者进行慈善捐赠。
+c | alleviate poverty | 减轻贫困 | International aid agencies work to [alleviate poverty] in developing countries. | 国际援助机构致力于减轻发展中国家的贫困。 | reduce poverty
+c | provide relief | 提供救济 | After the earthquake, volunteers rushed to [provide relief] to affected families. | 地震后，志愿者赶去为受灾家庭提供救济。 | offer relief
+c | disaster relief | 救灾 | Effective [disaster relief] requires coordination between governments and aid agencies. | 有效的救灾需要政府与援助机构之间的协调。
+c | foster a sense of purpose | 培养目标感 | Helping others can [foster a sense of purpose] in people who feel isolated. | 帮助他人可以在感到孤立的人中培养目标感。 | create a sense of purpose
+c | instill civic values | 灌输公民价值观 | Schools should [instill civic values] through community projects and classroom discussions. | 学校应通过社区项目和课堂讨论灌输公民价值观。 | cultivate civic values
+c | donate generously | 慷慨捐赠 | Wealthy individuals should [donate generously] to causes that benefit the underprivileged. | 富人应慷慨捐赠给有益于弱势群体的事业。 | give generously
+c | a worthy cause | 值得的事业 | Supporting education for girls is [a worthy cause] that yields long-term benefits. | 支持女童教育是一项值得的事业，能带来长期利益。
+c | a pressing need | 迫切需求 | There is [a pressing need] for more volunteers in rural healthcare clinics. | 农村医疗诊所迫切需要更多志愿者。
+c | a helping hand | 帮助之手 | Even a small donation can extend [a helping hand] to families facing hardship. | 即使一小笔捐款也能向面临困难的家庭伸出援助之手。
+c | a sense of fulfillment | 满足感 | Volunteers often report [a sense of fulfillment] from contributing to their community. | 志愿者经常报告从贡献社区中获得满足感。
+c | a sense of solidarity | 团结感 | Community volunteering can strengthen [a sense of solidarity] among diverse groups. | 社区志愿服务可以增强不同群体之间的团结感。
+c | a lack of resources | 资源缺乏 | Many small charities struggle due to [a lack of resources] and skilled staff. | 许多小型慈善机构因缺乏资源和熟练员工而挣扎。
+c | a growing awareness | 日益增强的意识 | There is [a growing awareness] of the importance of volunteering among young people. | 年轻人对志愿服务重要性的意识日益增强。
+c | be actively involved in | 积极参与 | Students should [be actively involved in] community service from an early age. | 学生应从小积极参与社区服务。 | participate actively in
+c | be committed to | 致力于 | The organization [is committed to] improving literacy rates in rural areas. | 该组织致力于提高农村地区的识字率。 | be dedicated to
+i | Mandatory volunteering can breed resentment, reducing the genuine compassion that effective charity relies on. | 强制志愿服务可能滋生怨恨，减少有效慈善所依赖的真正同情心。
+i | Charitable giving can perpetuate dependency if it replaces investment in local businesses and job creation. | 如果慈善捐赠取代了对当地企业和创造就业的投资，可能会使依赖持续下去。
+i | Tax deductions for donations encourage the wealthy to give more, but they also reduce public funds for social programs. | 捐款的税收减免鼓励富人捐更多，但也减少了用于社会项目的公共资金。
+i | Volunteering builds practical skills and social networks, which can improve volunteers' employability and mental well-being. | 志愿服务培养实用技能和社会网络，可以提高志愿者的就业能力和心理健康。
+i | Charities often lack accountability, so donors cannot easily verify how their money is spent. | 慈善机构往往缺乏问责制，因此捐赠者无法轻易核实他们的钱是如何使用的。
+i | Government funding cuts force charities to rely more on volunteers, which can lead to inconsistent service quality. | 政府资金削减迫使慈善机构更多地依赖志愿者，这可能导致服务质量不稳定。
+i | Exposure to volunteering at school can shape lifelong habits of civic engagement and empathy. | 在学校接触志愿服务可以塑造终身参与公民活动和同理心的习惯。
+i | International aid can undermine local markets if it floods a region with free goods that local producers sell. | 如果国际援助用当地生产者销售的免费商品充斥一个地区，可能会破坏当地市场。
+i | Corporate volunteering programs can improve employee morale and teamwork while benefiting the community. | 企业志愿服务项目可以提高员工士气和团队合作，同时使社区受益。
+i | Online fundraising platforms have democratized charity, allowing small causes to reach global donors. | 在线筹款平台使慈善民主化，让小事业能够接触到全球捐赠者。
+i | Volunteering can bridge social divides by bringing together people from different backgrounds to work on common goals. | 志愿服务可以通过将不同背景的人聚集在一起为共同目标工作来弥合社会分歧。
+i | Unregulated charities can be used for money laundering or terrorist financing, so oversight is essential. | 不受监管的慈善机构可能被用于洗钱或恐怖融资，因此监督至关重要。
+
+@topic energy | Energy | 能源 | 能
+p | Some people believe that the best way to reduce energy consumption is to increase the price of energy. To what extent do you agree or disagree? | 有些人认为减少能源消耗的最佳方式是提高能源价格。你在多大程度上同意或不同意？
+p | Governments should invest more in renewable energy sources rather than fossil fuels. Discuss both views and give your own opinion. | 政府应更多投资于可再生能源而非化石燃料。讨论双方观点并给出你自己的意见。
+p | The demand for energy is increasing worldwide. What are the causes of this trend and what solutions can you suggest? | 全球能源需求正在增加。这一趋势的原因是什么？你能提出哪些解决方案？
+p | Some argue that individuals can do little to reduce energy use and that only government and industry can make a difference. To what extent do you agree? | 有些人认为个人在减少能源使用方面作用甚微，只有政府和工业界才能有所作为。你在多大程度上同意？
+c | curb energy consumption | 抑制能源消耗 | Governments can [curb energy consumption] by raising taxes on electricity. | 政府可以通过提高电税来抑制能源消耗。 | reduce energy consumption
+c | mitigate climate change | 缓解气候变化 | Transitioning to clean energy is essential to [mitigate climate change]. | 向清洁能源过渡对于缓解气候变化至关重要。 | combat climate change
+c | a viable alternative | 可行的替代方案 | Solar power has become [a viable alternative] to coal in many regions. | 太阳能在许多地区已成为煤炭的可行替代方案。 | a feasible alternative
+c | energy security | 能源安全 | Diversifying suppliers is crucial for [energy security]. | 供应商多元化对能源安全至关重要。
+c | a substantial increase | 大幅增长 | There has been [a substantial increase] in wind power capacity. | 风能发电能力大幅增长。 | a significant rise
+c | energy efficiency | 能源效率 | Improving [energy efficiency] in buildings can cut costs significantly. | 提高建筑物的能源效率可以大幅降低成本。
+c | a long-term solution | 长期解决方案 | Nuclear power is not [a long-term solution] to climate change. | 核能不是气候变化的长期解决方案。 | a permanent solution
+c | rely heavily on | 严重依赖 | Many economies [rely heavily on] oil exports. | 许多经济体严重依赖石油出口。 | depend heavily on
+c | tackle energy poverty | 解决能源贫困 | Subsidies can help [tackle energy poverty] in rural areas. | 补贴可以帮助解决农村地区的能源贫困。 | address energy poverty
+c | a shift towards | 向…的转变 | There is [a shift towards] sustainable energy sources. | 正在向可持续能源转变。 | a move towards
+c | reduce reliance on | 减少对…的依赖 | Countries aim to [reduce reliance on] imported gas. | 各国旨在减少对进口天然气的依赖。 | cut dependence on
+c | a significant proportion | 很大比例 | A [significant proportion] of electricity still comes from coal. | 仍有很大比例的电力来自煤炭。 | a large proportion
+c | energy transition | 能源转型 | The [energy transition] requires massive investment. | 能源转型需要大量投资。
+c | impose a levy on | 对…征税 | Some countries [impose a levy on] carbon emissions. | 一些国家对碳排放征税。 | impose a tax on
+c | a growing demand for | 对…日益增长的需求 | There is [a growing demand for] clean energy. | 对清洁能源的需求日益增长。 | an increasing demand for
+c | energy conservation | 节能 | [Energy conservation] measures can lower household bills. | 节能措施可以降低家庭账单。
+c | a cost-effective way | 一种经济有效的方式 | Insulation is [a cost-effective way] to save energy. | 隔热是一种经济有效的节能方式。 | an economical way
+c | reduce greenhouse gas emissions | 减少温室气体排放 | Renewable energy can [reduce greenhouse gas emissions] significantly. | 可再生能源可以显著减少温室气体排放。 | cut greenhouse gas emissions
+c | a reliable source of | 可靠的…来源 | Hydropower is [a reliable source of] electricity in mountainous regions. | 水电在山区是可靠的电力来源。 | a dependable source of
+c | spark debate | 引发辩论 | Nuclear power continues to [spark debate] among policymakers. | 核能继续在决策者中引发辩论。 | trigger debate
+i | Carbon taxes raise the cost of fossil fuels, encouraging firms and households to switch to cleaner alternatives. | 碳税提高了化石燃料的成本，促使企业和家庭转向更清洁的替代能源。
+i | Subsidising solar panels lowers upfront costs, making renewable energy accessible to low-income households. | 补贴太阳能电池板降低了前期成本，使低收入家庭也能获得可再生能源。
+i | Investing in public transport reduces car use, cutting both congestion and transport-related emissions. | 投资公共交通减少了汽车使用，从而缓解拥堵并降低交通排放。
+i | Building codes that require insulation reduce heating demand, lowering energy bills and emissions. | 要求隔热的建筑规范减少了供暖需求，降低了能源账单和排放。
+i | Reliance on imported energy leaves countries vulnerable to price shocks and political pressure. | 依赖进口能源使国家容易受到价格冲击和政治压力。
+i | Intermittent renewables like wind and solar need storage or backup power to ensure a stable supply. | 风能和太阳能等间歇性可再生能源需要储能或备用电源来确保稳定供应。
+i | Energy-efficient appliances cut household bills and reduce overall demand on power grids. | 节能家电降低了家庭账单，并减少了对电网的整体需求。
+i | Feed-in tariffs guarantee above-market prices for renewable electricity, attracting investors to the sector. | 上网电价保证可再生能源电力获得高于市场的价格，从而吸引投资者进入该领域。
+i | Smart grids balance supply and demand in real time, reducing waste and improving reliability. | 智能电网实时平衡供需，减少浪费并提高可靠性。
+i | Phasing out coal plants improves air quality, lowering healthcare costs associated with pollution. | 逐步淘汰燃煤电厂改善了空气质量，降低了与污染相关的医疗成本。
+i | Public awareness campaigns encourage small behavioural changes, such as turning off lights, which collectively save energy. | 公众意识活动鼓励人们做出小的行为改变，例如关灯，这些行为共同节约了能源。
+i | International cooperation on technology transfer helps developing countries leapfrog to clean energy systems. | 技术转让方面的国际合作帮助发展中国家跨越式进入清洁能源系统。
+
+@topic poverty | Poverty & Development | 贫困与发展 | 贫
+p | Some people believe that the best way to reduce poverty in developing countries is to provide free education and healthcare. To what extent do you agree or disagree? | 一些人认为减少发展中国家贫困的最佳方式是提供免费教育和医疗保健。你在多大程度上同意或不同意？
+p | Rich countries should give more financial aid to poor countries. To what extent do you agree or disagree? | 富国应该向穷国提供更多财政援助。你在多大程度上同意或不同意？
+p | Economic growth is the most effective way to reduce poverty. Discuss the advantages and disadvantages of this approach. | 经济增长是减少贫困的最有效方式。讨论这种方法的优点和缺点。
+p | Some people think that governments should focus on improving infrastructure in rural areas to reduce poverty, while others believe that investing in education is more important. Discuss both views and give your own opinion. | 一些人认为政府应专注于改善农村地区的基础设施以减少贫困，而另一些人认为投资教育更重要。讨论这两种观点并给出你自己的意见。
+c | combat poverty | 对抗贫困 | Governments must [combat poverty] through a combination of welfare and job creation. | 政府必须通过福利和创造就业相结合来对抗贫困。 | fight poverty; tackle poverty
+c | eradicate extreme poverty | 消除极端贫困 | The World Bank aims to [eradicate extreme poverty] by 2030. | 世界银行旨在到2030年消除极端贫困。 | eliminate extreme poverty
+c | break the cycle of poverty | 打破贫困循环 | Education is key to helping families [break the cycle of poverty]. | 教育是帮助家庭打破贫困循环的关键。 | end the cycle of poverty
+c | lift people out of poverty | 使人们脱贫 | Economic growth has [lifted] millions [out of poverty] in developing countries. | 经济增长使发展中国家数百万人脱贫。 | pull people out of poverty
+c | exacerbate poverty | 加剧贫困 | Climate change is likely to [exacerbate poverty] in vulnerable regions. | 气候变化可能会加剧脆弱地区的贫困。 | worsen poverty
+c | perpetuate poverty | 使贫困持续 | Lack of access to education can [perpetuate poverty] across generations. | 缺乏教育机会可能使贫困代代相传。
+c | living below the poverty line | 生活在贫困线以下 | Many families are still [living below the poverty line] despite economic growth. | 尽管经济增长，许多家庭仍生活在贫困线以下。 | below the poverty threshold
+c | socioeconomic development | 社会经济发展 | Education is crucial for [socioeconomic development] in any country. | 教育对任何国家的社会经济发展都至关重要。 | social and economic development
+c | sustainable development | 可持续发展 | The country is committed to [sustainable development] that benefits all citizens. | 该国致力于惠及所有公民的可持续发展。
+c | human development | 人类发展 | Investing in health and education promotes [human development]. | 投资于健康和教育促进人类发展。
+c | development aid | 发展援助 | Rich countries should increase [development aid] to poorer nations. | 富国应增加对较贫穷国家的发展援助。
+c | foreign aid | 外国援助 | Some argue that [foreign aid] can create dependency rather than self-sufficiency. | 一些人认为外国援助可能造成依赖而非自给自足。 | overseas aid
+c | income inequality | 收入不平等 | Widening [income inequality] can hinder poverty reduction efforts. | 不断扩大的收入不平等可能阻碍减贫努力。 | income disparity
+c | wealth gap | 贫富差距 | The [wealth gap] between rich and poor has widened in recent decades. | 近几十年来，贫富差距已经扩大。 | wealth disparity
+c | social mobility | 社会流动性 | Education is a key driver of [social mobility]. | 教育是社会流动性的关键驱动力。
+c | equal opportunity | 机会平等 | Policies should ensure [equal opportunity] for all, regardless of background. | 政策应确保所有人享有机会平等，不论背景如何。 | equality of opportunity
+c | basic infrastructure | 基础设施 | Investing in [basic infrastructure] like roads and electricity is essential for development. | 投资于道路和电力等基础设施对发展至关重要。 | core infrastructure
+c | access to education | 受教育机会 | Improving [access to education] for girls is a priority in many developing countries. | 改善女童受教育机会是许多发展中国家的优先事项。
+c | access to clean water | 获得清洁水 | Millions still lack [access to clean water] and sanitation. | 数百万人仍然缺乏清洁水和卫生设施。
+c | financial inclusion | 金融普惠 | Mobile banking has promoted [financial inclusion] among the poor. | 移动银行促进了贫困人口的金融普惠。
+c | social safety net | 社会安全网 | A strong [social safety net] can protect vulnerable groups from falling into poverty. | 强大的社会安全网可以保护弱势群体免于陷入贫困。 | welfare safety net
+i | Investing in education and healthcare improves productivity, enabling poor households to earn higher incomes and escape poverty. | 投资教育和医疗保健可以提高生产力，使贫困家庭能够获得更高收入并摆脱贫困。
+i | Microfinance provides small loans to entrepreneurs who lack collateral, allowing them to start businesses and generate income. | 小额信贷向缺乏抵押品的企业家提供小额贷款，使他们能够创业并创造收入。
+i | Fair trade guarantees farmers a minimum price for their crops, stabilizing their incomes and reducing vulnerability to market fluctuations. | 公平贸易保证农民的农作物获得最低价格，稳定他们的收入并减少对市场波动的脆弱性。
+i | Foreign aid can fund infrastructure projects like roads and schools, but may create dependency if not accompanied by local capacity building. | 外国援助可以资助道路和学校等基础设施项目，但如果没有本地能力建设，可能会造成依赖。
+i | Debt relief frees up government resources that can be redirected to social programs, directly benefiting the poor. | 债务减免释放了政府资源，可以转用于社会项目，直接惠及穷人。
+i | Corruption diverts public funds away from poverty alleviation, so anti-corruption measures are essential for effective development. | 腐败将公共资金从扶贫中转移，因此反腐败措施对有效发展至关重要。
+i | Climate change disproportionately affects the poor, who rely on agriculture and lack resources to adapt, deepening their poverty. | 气候变化对穷人的影响尤为严重，他们依赖农业且缺乏适应资源，从而加深贫困。
+i | Universal basic income provides a safety net that allows recipients to invest in education or start small businesses without fear of destitution. | 全民基本收入提供了一张安全网，使受助者能够投资教育或创办小企业，而不必担心贫困。
+i | Vocational training equips young people with practical skills that match local labor market demands, increasing their employability. | 职业培训为年轻人提供符合当地劳动力市场需求的实用技能，提高他们的就业能力。
+i | Improving access to clean water and sanitation reduces disease, enabling children to attend school and adults to work productively. | 改善获得清洁水和卫生设施的机会可以减少疾病，使儿童能够上学，成人能够高效工作。
+i | Progressive taxation and social spending can reduce income inequality, which in turn fosters social mobility and reduces poverty. | 累进税制和社会支出可以减少收入不平等，进而促进社会流动性和减少贫困。
+i | Empowering women through education and employment boosts household incomes and improves child welfare, breaking intergenerational poverty. | 通过教育和就业赋予妇女权力可以增加家庭收入并改善儿童福利，打破代际贫困。
+
+@topic internet | Internet & Privacy | 网络与隐私 | 网
+p | Some people believe that governments should regulate the internet to protect users' privacy, while others think that such regulation would restrict freedom of expression. Discuss both views and give your own opinion. | 有些人认为政府应监管互联网以保护用户隐私，而另一些人认为这种监管会限制言论自由。讨论双方观点并给出你自己的意见。
+p | The increasing use of social media has raised concerns about privacy. What problems does this cause, and what solutions can you suggest? | 社交媒体的日益使用引发了对隐私的担忧。这导致了什么问题，你能提出什么解决方案？
+p | Many people are unaware of how much personal data they share online. Why is this the case, and what can be done to improve awareness? | 许多人不清楚他们在网上分享了多少个人数据。为什么会出现这种情况，可以采取什么措施来提高意识？
+p | Some argue that the benefits of surveillance technologies, such as improved security, outweigh the loss of privacy. To what extent do you agree or disagree? | 一些人认为监控技术的好处（如提高安全性）超过隐私的损失。你在多大程度上同意或不同意？
+c | curb data collection | 限制数据收集 | New laws should [curb data collection] by tech companies to protect users' privacy. | 新法律应限制科技公司的数据收集以保护用户隐私。 | restrict data collection
+c | safeguard personal information | 保护个人信息 | Governments must [safeguard personal information] from being misused by corporations. | 政府必须保护个人信息不被企业滥用。 | protect personal information
+c | pose a threat to privacy | 对隐私构成威胁 | The widespread use of facial recognition technology may [pose a threat to privacy]. | 人脸识别技术的广泛使用可能对隐私构成威胁。 | present a threat to privacy
+c | erode trust | 削弱信任 | Repeated data breaches can [erode trust] in online services and institutions. | 反复的数据泄露会削弱对在线服务和机构的信任。 | undermine trust
+c | invade privacy | 侵犯隐私 | Some apps [invade privacy] by tracking users' location without consent. | 一些应用程序未经同意就追踪用户位置，侵犯隐私。 | intrude on privacy
+c | obtain consent | 获得同意 | Websites must [obtain consent] before collecting and sharing users' data. | 网站在收集和分享用户数据前必须获得同意。 | secure consent
+c | strengthen data protection | 加强数据保护 | The government should [strengthen data protection] to prevent identity theft. | 政府应加强数据保护以防止身份盗窃。 | enhance data protection
+c | raise awareness of privacy risks | 提高隐私风险意识 | Schools should [raise awareness of privacy risks] among young internet users. | 学校应提高年轻网民对隐私风险的认识。 | increase awareness of privacy risks
+c | implement strict regulations | 实施严格法规 | Countries need to [implement strict regulations] to hold tech firms accountable. | 各国需要实施严格法规来追究科技公司的责任。 | enforce strict regulations
+c | protect user data | 保护用户数据 | Companies must take measures to [protect user data] from cyberattacks. | 公司必须采取措施保护用户数据免受网络攻击。 | secure user data
+c | compromise security | 损害安全 | Sharing too much personal information online can [compromise security]. | 在网上分享过多个人信息会损害安全。 | jeopardize security
+c | collect personal data | 收集个人数据 | Many apps [collect personal data] without clearly informing users. | 许多应用程序在未明确告知用户的情况下收集个人数据。 | gather personal data
+c | respect privacy | 尊重隐私 | Advertisers should [respect privacy] and not track users without permission. | 广告商应尊重隐私，未经许可不得追踪用户。 | honor privacy
+c | data breach | 数据泄露 | A major [data breach] can expose millions of users' personal details. | 一次重大数据泄露可能暴露数百万用户的个人信息。 | data leak
+c | privacy settings | 隐私设置 | Users should adjust their [privacy settings] to limit who can see their information. | 用户应调整隐私设置以限制谁可以看到他们的信息。 | privacy preferences
+c | digital footprint | 数字足迹 | Every online action leaves a [digital footprint] that can be traced. | 每一次在线操作都会留下可被追踪的数字足迹。 | digital trail
+c | identity theft | 身份盗窃 | Weak privacy protections can lead to [identity theft] and financial loss. | 薄弱的隐私保护可能导致身份盗窃和经济损失。 | identity fraud
+i | Privacy laws force companies to disclose how they collect and use data, making it harder to exploit personal information secretly. | 隐私法强制公司披露数据收集和使用方式，使秘密利用个人信息更加困难。
+i | Strong encryption protects sensitive data from hackers, but it also hinders law enforcement's ability to access criminal communications. | 强加密保护敏感数据免受黑客攻击，但也阻碍执法部门获取犯罪通信。
+i | Public awareness campaigns teach users to adjust privacy settings and recognize phishing, reducing the risk of identity theft. | 公众意识运动教导用户调整隐私设置和识别网络钓鱼，降低身份盗窃风险。
+i | Companies that prioritize privacy build customer trust, which can be a competitive advantage in the digital market. | 重视隐私的公司能建立客户信任，这在数字市场中可成为竞争优势。
+i | Excessive surveillance in the name of security can chill free speech and discourage people from expressing unpopular opinions online. | 以安全为名的过度监控可能抑制言论自由，阻碍人们在网上表达不受欢迎的观点。
+i | Data breaches erode public trust in digital services, potentially slowing the adoption of beneficial technologies like online banking. | 数据泄露削弱公众对数字服务的信任，可能减缓网上银行等有益技术的采用。
+i | Without clear consent, users may unknowingly share personal information that is later used for targeted advertising or discrimination. | 没有明确同意，用户可能不知不觉地分享个人信息，这些信息后来被用于定向广告或歧视。
+i | Governments should require tech companies to conduct regular privacy impact assessments and publish the results transparently. | 政府应要求科技公司定期进行隐私影响评估并透明地公布结果。
+i | Educating children about digital footprints from a young age helps them make safer choices online throughout their lives. | 从小教育儿童数字足迹知识有助于他们一生中在网上做出更安全的选择。
+i | Anonymity online can protect whistleblowers and activists, but it also enables harassment and illegal activities. | 在线匿名可以保护举报人和活动人士，但也助长骚扰和非法活动。
+i | Default privacy settings should be the most protective, so users must actively opt in to share more data. | 默认隐私设置应是最具保护性的，这样用户必须主动选择分享更多数据。
+i | International cooperation is needed to regulate data flows across borders, as companies can exploit weaker privacy laws in some countries. | 需要国际合作来规范跨境数据流动，因为公司可以利用一些国家较弱的隐私法。
+
+@topic leisure | Leisure & Lifestyle | 休闲生活 | 闲
+p | Some people believe that individuals should spend their leisure time engaging in activities that improve their skills, while others think leisure time should be purely for relaxation. Discuss both views and give your own opinion. | 有些人认为个人应利用休闲时间从事能提升技能的活动，而另一些人认为休闲时间应纯粹用于放松。讨论这两种观点并给出你自己的意见。
+p | In many countries, people are spending more time on screens for leisure. What are the causes of this trend? Is it a positive or negative development? | 在许多国家，人们花更多时间在屏幕上休闲。这一趋势的原因是什么？这是积极还是消极的发展？
+p | Some people think that governments should invest more in public recreational facilities, such as parks and sports centers, to improve public health. To what extent do you agree or disagree? | 有些人认为政府应加大对公园和体育中心等公共娱乐设施的投资，以改善公众健康。你在多大程度上同意或不同意？
+p | Many people today complain that they do not have enough leisure time. What are the reasons for this? What can be done to solve this problem? | 今天许多人抱怨他们没有足够的休闲时间。原因是什么？可以采取什么措施解决这个问题？
+c | lead a sedentary lifestyle | 过着久坐不动的生活 | Many office workers [lead a sedentary lifestyle], spending most of their day in front of a screen. | 许多上班族过着久坐不动的生活，一天大部分时间都坐在屏幕前。 | have a sedentary lifestyle; adopt a sedentary lifestyle
+c | unwind after work | 下班后放松 | People need time to [unwind after work] to relieve stress and recharge. | 人们需要时间下班后放松以缓解压力、恢复精力。 | relax after work; de-stress after work
+c | pursue a hobby | 培养爱好 | Taking up gardening allows individuals to [pursue a hobby] that connects them with nature. | 从事园艺使人们能够培养一种爱好，与自然建立联系。 | take up a hobby; cultivate a hobby
+c | engage in recreational activities | 参与娱乐活动 | Communities that [engage in recreational activities] together tend to have stronger social bonds. | 一起参与娱乐活动的社区往往有更强的社会纽带。 | participate in recreational activities; take part in recreational activities
+c | excessive screen time | 过多的屏幕时间 | [Excessive screen time] can lead to eye strain and reduced physical activity among children. | 过多的屏幕时间会导致儿童眼睛疲劳和身体活动减少。 | too much screen time; prolonged screen time
+c | digital detox | 数字排毒 | A weekend [digital detox] can help people reconnect with family and reduce anxiety. | 周末数字排毒可以帮助人们与家人重新联系并减少焦虑。 | technology detox; screen break
+c | work-life balance | 工作与生活的平衡 | Maintaining a healthy [work-life balance] is crucial for overall happiness and productivity. | 保持健康的工作与生活平衡对整体幸福感和生产力至关重要。 | balance between work and life; life-work balance
+c | leisure pursuits | 休闲活动 | People's [leisure pursuits] have shifted from outdoor activities to indoor entertainment. | 人们的休闲活动已从户外活动转向室内娱乐。 | leisure activities; recreational pursuits
+c | take up a new hobby | 培养新爱好 | Retirement is a good time to [take up a new hobby] such as painting or hiking. | 退休是培养新爱好的好时机，比如绘画或徒步。 | start a new hobby; adopt a new hobby
+c | escape the daily grind | 逃离日常的单调 | Many people travel to [escape the daily grind] and experience something new. | 许多人旅行是为了逃离日常的单调并体验新事物。 | get away from the daily grind; escape the daily routine
+c | recharge one's batteries | 恢复精力 | A short vacation can help employees [recharge] their [batteries] and return to work refreshed. | 短暂的假期可以帮助员工恢复精力，重返工作岗位时精神焕发。 | recharge one's energy; replenish one's energy
+c | foster social connections | 培养社会联系 | Joining clubs and community groups can [foster social connections] and reduce loneliness. | 加入俱乐部和社区团体可以培养社会联系并减少孤独感。 | build social connections; develop social connections
+c | couch potato | 电视迷 | Children who become [couch potatoes] are more likely to develop health issues later in life. | 成为电视迷的儿童在以后的生活中更可能出现健康问题。 | inactive person; sedentary person
+c | binge-watch TV series | 狂看电视剧 | Many young people [binge-watch TV series] over the weekend, neglecting other activities. | 许多年轻人在周末狂看电视剧，忽视了其他活动。 | watch TV series excessively; compulsively watch TV series
+c | outdoor recreation | 户外娱乐 | [Outdoor recreation] such as hiking and cycling promotes physical fitness and mental relaxation. | 户外娱乐如徒步和骑行能促进身体健康和精神放松。 | outdoor activities; outdoor pursuits
+c | stress relief | 减压 | Engaging in hobbies provides effective [stress relief] after a long day. | 从事爱好可以在漫长的一天后提供有效的减压。 | relief from stress; stress reduction
+c | leisure time | 休闲时间 | People today have more [leisure time] than ever before, thanks to technological advances. | 由于技术进步，今天的人们比以往有更多的休闲时间。 | free time; spare time
+c | weekend getaway | 周末度假 | A [weekend getaway] to the countryside can help city dwellers relax and recharge. | 去乡村周末度假可以帮助城市居民放松和恢复精力。 | short break; weekend trip
+c | socialize with friends | 与朋友社交 | People need opportunities to [socialize with friends] to maintain mental health. | 人们需要机会与朋友社交以保持心理健康。 | meet friends; interact with friends
+c | leisure industry | 休闲产业 | The [leisure industry] has grown rapidly, creating jobs and boosting the economy. | 休闲产业发展迅速，创造了就业机会并促进了经济。 | entertainment industry; recreation industry
+c | recreational facilities | 娱乐设施 | The government should invest in [recreational facilities] to encourage physical activity. | 政府应投资娱乐设施以鼓励身体活动。 | leisure facilities; sports facilities
+c | unwind from stress | 从压力中放松 | Listening to music is a simple way to [unwind from stress] after a busy day. | 听音乐是忙碌一天后从压力中放松的简单方法。 | relax from stress; de-stress
+c | take a break from | 暂时中断 | It is important to [take a break from] work to avoid burnout. | 为了避免倦怠，暂时中断工作很重要。 | pause from; have a break from
+c | engage in leisure activities | 从事休闲活动 | People who [engage in leisure activities] regularly report higher levels of happiness. | 经常从事休闲活动的人报告更高的幸福水平。 | participate in leisure activities; take part in leisure activities
+i | Regular leisure activities reduce stress hormones and improve mood, which can lower the risk of mental health issues. | 定期休闲活动能降低压力荷尔蒙、改善情绪，从而降低心理问题的风险。
+i | Hobbies that involve physical activity, such as gardening or cycling, help people stay fit without the pressure of formal exercise. | 涉及身体活动的爱好，如园艺或骑行，能帮助人们保持健康，而没有正式锻炼的压力。
+i | Spending leisure time with family and friends strengthens social bonds and provides emotional support. | 与家人朋友共度休闲时光能加强社会纽带并提供情感支持。
+i | Excessive screen time for leisure can lead to a sedentary lifestyle, increasing the risk of obesity and related diseases. | 过多的屏幕休闲时间会导致久坐生活方式，增加肥胖及相关疾病的风险。
+i | When leisure activities are too passive, such as watching TV for hours, they may fail to provide real relaxation or stimulation. | 当休闲活动过于被动，如长时间看电视，它们可能无法提供真正的放松或刺激。
+i | The rising cost of leisure activities, such as sports memberships and travel, can exclude low-income individuals from these benefits. | 休闲活动成本上升，如体育会员和旅行，可能使低收入者无法享受这些好处。
+i | People today have less free time due to longer working hours and longer commutes, leaving little energy for leisure. | 由于工作时间更长、通勤时间更长，今天人们的空闲时间更少，几乎没有精力休闲。
+i | The abundance of digital entertainment options encourages passive consumption, reducing engagement in active hobbies. | 丰富的数字娱乐选择鼓励被动消费，减少了参与积极爱好的机会。
+i | Employers can offer flexible working hours to help employees balance work and leisure, improving job satisfaction. | 雇主可以提供弹性工作时间，帮助员工平衡工作与休闲，提高工作满意度。
+i | Governments should invest in public recreational facilities like parks and sports centers to make leisure activities accessible to all. | 政府应投资公园和体育中心等公共娱乐设施，使所有人都能参与休闲活动。
+i | Schools can educate children about the importance of active leisure and limit passive screen time. | 学校可以教育儿童积极休闲的重要性，并限制被动的屏幕时间。
+i | Encouraging community events and clubs can foster social connections and provide low-cost leisure options. | 鼓励社区活动和俱乐部可以培养社会联系并提供低成本的休闲选择。
+
+@topic history | History & Tradition | 历史与传统 | 史
+p | Some people believe that history should be a compulsory subject in schools, while others think it is less important than science and technology. Discuss both views and give your opinion. | 有些人认为历史应成为学校的必修课，而另一些人认为它不如科学和技术重要。讨论双方观点并给出你的意见。
+p | Many traditional customs and festivals are disappearing. What are the causes of this trend? What measures can be taken to preserve them? | 许多传统习俗和节日正在消失。这一趋势的原因是什么？可以采取哪些措施来保护它们？
+p | Some argue that governments should spend money on preserving historic buildings, while others say funds should be used for new housing and infrastructure. Discuss both views and give your opinion. | 有些人认为政府应花钱保护历史建筑，而另一些人说资金应用于新住房和基础设施。讨论双方观点并给出你的意见。
+p | In an increasingly globalized world, is it more important to learn about one's own history and traditions or to understand other cultures? Give your opinion and support it with examples. | 在日益全球化的世界中，学习本国历史传统与了解其他文化哪个更重要？给出你的意见并举例支持。
+c | safeguard traditional customs | 维护传统习俗 | Festivals help [safeguard traditional customs] that might otherwise fade away. | 节日有助于维护可能消失的传统习俗。 | protect traditional customs
+c | keep traditions alive | 传承传统 | Community events can [keep traditions alive] in an increasingly globalized world. | 社区活动能在日益全球化的世界中传承传统。 | maintain traditions
+c | foster a sense of identity | 培养认同感 | Learning local history can [foster a sense of identity] among young people. | 学习地方历史能培养年轻人的认同感。 | cultivate a sense of identity
+c | promote cultural continuity | 促进文化延续 | Oral storytelling helps [promote cultural continuity] across generations. | 口头讲故事有助于促进代际文化延续。
+c | transmit ancestral knowledge | 传承祖先知识 | Elders play a key role in [transmitting ancestral knowledge] to younger members. | 长者在向年轻成员传承祖先知识方面发挥关键作用。 | pass down ancestral knowledge
+c | erode cultural values | 侵蚀文化价值观 | Unchecked commercialization can [erode cultural values] over time. | 无节制的商业化会随时间侵蚀文化价值观。 | undermine cultural values
+c | dilute cultural identity | 削弱文化认同 | Mass tourism may [dilute cultural identity] if not managed carefully. | 如果不谨慎管理，大众旅游可能削弱文化认同。 | weaken cultural identity
+c | revive dying crafts | 复兴濒危手工艺 | Workshops and apprenticeships can [revive dying crafts] such as traditional weaving. | 工作坊和学徒制能复兴传统编织等濒危手工艺。 | revitalize dying crafts
+c | document oral histories | 记录口述历史 | Researchers should [document oral histories] before the last speakers pass away. | 研究人员应在最后一批讲述者离世前记录口述历史。 | record oral histories
+c | commemorate historical events | 纪念历史事件 | Museums [commemorate historical events] through exhibitions and educational programs. | 博物馆通过展览和教育项目纪念历史事件。 | mark historical events
+c | draw lessons from history | 从历史中汲取教训 | Societies should [draw lessons from history] to avoid repeating past mistakes. | 社会应从历史中汲取教训，避免重蹈覆辙。 | learn lessons from history
+c | reconcile with the past | 与过去和解 | Public apologies can help nations [reconcile with the past] and move forward. | 公开道歉能帮助国家与过去和解并向前迈进。 | come to terms with the past
+c | bridge generational divides | 弥合代沟 | Intergenerational dialogue projects can [bridge generational divides] in diverse communities. | 代际对话项目能弥合多元社区中的代沟。
+c | reinforce stereotypes | 强化刻板印象 | Some historical films [reinforce stereotypes] rather than challenge them. | 一些历史电影强化而非挑战刻板印象。 | strengthen stereotypes
+c | challenge received wisdom | 挑战公认看法 | New archaeological findings often [challenge received wisdom] about ancient societies. | 新的考古发现常挑战关于古代社会的公认看法。 | question conventional wisdom
+c | a contentious issue | 有争议的问题 | Whether to repatriate artifacts remains [a contentious issue] among museums. | 是否归还文物仍是博物馆界有争议的问题。 | a controversial issue
+c | a valuable legacy | 宝贵的遗产 | Traditional medicine is [a valuable legacy] that deserves scientific study. | 传统医学是值得科学研究的宝贵遗产。 | a precious legacy
+c | a shared heritage | 共同遗产 | World Heritage Sites are [a shared heritage] of humanity. | 世界遗产是人类的共同遗产。
+c | a deep-rooted tradition | 根深蒂固的传统 | Tea ceremonies are [a deep-rooted tradition] in many Asian cultures. | 茶道在许多亚洲文化中是根深蒂固的传统。 | a long-standing tradition
+c | historically significant | 具有历史意义 | The building is [historically significant] and should be restored, not demolished. | 这座建筑具有历史意义，应修复而非拆除。 | of historical significance
+c | intangible cultural heritage | 非物质文化遗产 | UNESCO protects [intangible cultural heritage] such as music and crafts. | 联合国教科文组织保护音乐和手工艺等非物质文化遗产。
+c | hand down from generation to generation | 代代相传 | These recipes are [handed down from generation to generation] in rural families. | 这些食谱在农村家庭中代代相传。 | passed down from generation to generation
+c | rooted in tradition | 植根于传统 | The festival is [rooted in tradition] but has adapted to modern life. | 这个节日植根于传统，但已适应现代生活。 | grounded in tradition
+c | lose sight of history | 忽视历史 | Rapid urbanization may cause societies to [lose sight of history]. | 快速城市化可能使社会忽视历史。 | neglect history
+c | pay homage to ancestors | 向祖先致敬 | Many cultures [pay homage to ancestors] during annual remembrance days. | 许多文化在年度纪念日向祖先致敬。 | honor ancestors
+c | adapt traditions to modern life | 使传统适应现代生活 | Communities must [adapt traditions to modern life] to keep them relevant. | 社区必须使传统适应现代生活以保持其相关性。 | adjust traditions to modern life
+c | strike a balance between tradition and modernity | 在传统与现代之间取得平衡 | Urban planners need to [strike a balance between tradition and modernity]. | 城市规划者需要在传统与现代之间取得平衡。 | balance tradition and modernity
+c | cultural assimilation | 文化同化 | Immigrant communities often face pressure toward [cultural assimilation]. | 移民社区常面临文化同化的压力。
+i | Learning local history gives students a sense of belonging, which strengthens community cohesion and reduces vandalism of heritage sites. | 学习地方历史能给学生归属感，从而增强社区凝聚力并减少对遗产地的破坏。
+i | Oral traditions preserve knowledge that written records miss, such as medicinal plant uses, so documenting them prevents irreversible loss. | 口头传统保存了文字记录遗漏的知识，如药用植物用途，因此记录它们可防止不可逆的损失。
+i | Historic buildings attract tourists and generate revenue, but overcrowding can damage fragile sites, so visitor caps and timed entry are needed. | 历史建筑吸引游客并创造收入，但过度拥挤会损坏脆弱遗址，因此需要游客上限和限时入场。
+i | When young people migrate to cities, rural festivals lose participants; offering grants for cultural events can encourage them to return and participate. | 当年轻人迁往城市，农村节日失去参与者；为文化活动提供资助可鼓励他们回乡参与。
+i | Teaching history through primary sources and debates develops critical thinking better than memorizing dates and names. | 通过原始资料和辩论教授历史比记忆日期和名字更能培养批判性思维。
+i | Some traditions discriminate against women or minorities; respecting culture should not mean tolerating practices that violate human rights. | 一些传统歧视妇女或少数群体；尊重文化不应意味着容忍侵犯人权的做法。
+i | Museums that return looted artifacts to their countries of origin can build trust and allow local communities to reconnect with their heritage. | 将掠夺文物归还原产国的博物馆可以建立信任，并让当地社区重新连接其遗产。
+i | Digital archives make historical documents accessible worldwide, but without funding for maintenance, files can be lost to technological obsolescence. | 数字档案使历史文件全球可访问，但若无维护资金，文件可能因技术过时而丢失。
+i | Language loss accelerates when parents stop speaking their mother tongue at home; bilingual education programs can reverse this trend. | 当父母在家停止说母语时，语言流失加速；双语教育项目可以扭转这一趋势。
+i | Commercializing traditional crafts can provide income for artisans, but mass production may cheapen their cultural meaning. | 传统手工艺商业化可为工匠提供收入，但大规模生产可能贬低其文化意义。
+i | Historical monuments damaged by conflict can be rebuilt as symbols of reconciliation, fostering unity after division. | 被冲突损坏的历史纪念碑可以重建为和解的象征，在分裂后促进团结。
+i | Rote learning of historical facts fails to engage students; project-based work on local heritage makes history relevant and memorable. | 死记硬背历史事实无法吸引学生；基于项目的本地遗产工作使历史相关且难忘。
+
+@topic children | Childhood & Parenting | 儿童成长 | 童
+p | Some people believe that parents should be strict with their children, while others think a more relaxed approach is better. Discuss both views and give your own opinion. | 有些人认为父母应该对孩子严格，而另一些人认为更宽松的方式更好。讨论这两种观点并给出你自己的意见。
+p | In many countries, children are spending increasing amounts of time on screens. What problems does this cause, and what solutions can you suggest? | 在许多国家，孩子们花在屏幕上的时间越来越多。这会导致什么问题，你可以建议什么解决方案？
+p | Some people think that schools should be responsible for teaching children good behaviour, while others believe this is the role of parents. Discuss both views and give your opinion. | 有些人认为学校应该负责教孩子良好行为，而另一些人认为这是父母的责任。讨论这两种观点并给出你的意见。
+p | Many parents today are overly protective of their children, preventing them from facing challenges. Do you think this is a positive or negative development? | 如今许多父母对孩子过度保护，使他们无法面对挑战。你认为这是积极还是消极的发展？
+c | foster independence | 培养独立性 | Allowing children to make small decisions can [foster independence] from an early age. | 允许孩子做小决定可以从小培养独立性。 | encourage self-reliance; cultivate autonomy
+c | set clear boundaries | 设定明确界限 | Parents should [set clear boundaries] while still giving children room to explore. | 父母应该设定明确界限，同时给孩子探索的空间。 | establish firm limits; define clear limits
+c | exert a profound influence on | 对…产生深远影响 | Early childhood experiences [exert a profound influence on] a person's later development. | 童年早期的经历对一个人的后期发展产生深远影响。 | have a profound impact on; shape ... significantly
+c | nurture a child's potential | 培养孩子的潜力 | A supportive home environment can [nurture a child's potential] more effectively than expensive tutoring. | 支持性的家庭环境比昂贵的辅导更能培养孩子的潜力。 | develop a child's potential; cultivate a child's potential
+c | instil discipline in | 向…灌输纪律 | Structured routines help [instil discipline in] young children without being overly strict. | 有规律的作息有助于向幼儿灌输纪律，而不会过于严格。 | impart discipline to; teach discipline to
+c | undermine a child's confidence | 削弱孩子的自信 | Constant criticism can [undermine a child's confidence] and make them reluctant to try new things. | 不断的批评会削弱孩子的自信，使他们不愿尝试新事物。 | erode a child's confidence; damage a child's self-esteem
+c | be overprotective of | 对…过度保护 | Parents who [are overprotective of] their children may prevent them from learning to cope with failure. | 对孩子过度保护的父母可能会阻止他们学习应对失败。 | be overly protective of; smother
+c | meet a child's emotional needs | 满足孩子的情感需求 | Working parents must find ways to [meet a child's emotional needs] despite long hours. | 在职父母必须设法满足孩子的情感需求，尽管工作时间很长。 | satisfy a child's emotional needs; address a child's emotional needs
+c | impose excessive pressure on | 对…施加过度压力 | Schools should not [impose excessive pressure on] students to achieve top grades. | 学校不应对学生施加过度压力以取得优异成绩。 | put excessive pressure on; place undue pressure on
+c | cultivate good habits | 培养良好习惯 | Reading together daily can [cultivate good habits] that last a lifetime. | 每天一起阅读可以培养终身受益的良好习惯。 | develop good habits; foster good habits
+c | boost a child's self-esteem | 提升孩子的自尊 | Praising effort rather than innate ability can [boost a child's self-esteem]. | 表扬努力而非天赋可以提升孩子的自尊。 | enhance a child's self-esteem; raise a child's self-esteem
+c | shape a child's character | 塑造孩子的性格 | Both family and school play a role in [shaping a child's character]. | 家庭和学校都在塑造孩子的性格方面发挥作用。 | mould a child's character; form a child's character
+c | foster a sense of responsibility | 培养责任感 | Assigning household chores can [foster a sense of responsibility] in children. | 分配家务可以培养孩子的责任感。 | cultivate a sense of responsibility; develop a sense of responsibility
+c | be detrimental to | 对…有害 | Excessive screen time can [be detrimental to] children's physical and mental health. | 过多的屏幕时间可能对儿童的身心健康有害。 | be harmful to; have a detrimental effect on
+c | place undue emphasis on | 过分强调 | Many schools [place undue emphasis on] exam results at the expense of creativity. | 许多学校过分强调考试成绩，牺牲了创造力。 | overemphasize; put excessive emphasis on
+c | develop resilience | 培养韧性 | Allowing children to face challenges helps them [develop resilience]. | 让孩子面对挑战有助于他们培养韧性。 | build resilience; cultivate resilience
+c | have a lasting impact on | 对…产生持久影响 | The way parents communicate can [have a lasting impact on] a child's social skills. | 父母的沟通方式会对孩子的社交技能产生持久影响。 | have a lasting effect on; leave a lasting impression on
+c | set a good example for | 为…树立榜样 | Parents who read regularly [set a good example for] their children. | 经常阅读的父母为孩子树立了榜样。 | set a positive example for; serve as a role model for
+c | spend quality time with | 与…共度优质时光 | Busy parents should try to [spend quality time with] their children every day. | 忙碌的父母应该尽量每天与孩子共度优质时光。 | devote quality time to; spend meaningful time with
+c | foster open communication | 促进开放沟通 | Families that [foster open communication] are better equipped to handle teenage problems. | 促进开放沟通的家庭更能应对青少年问题。 | encourage open communication; promote open dialogue
+c | address behavioural problems | 解决行为问题 | Schools need effective strategies to [address behavioural problems] early. | 学校需要有效的策略来及早解决行为问题。 | tackle behavioural problems; deal with behavioural problems
+c | provide emotional support | 提供情感支持 | Parents should [provide emotional support] when children face setbacks. | 当孩子遇到挫折时，父母应该提供情感支持。 | offer emotional support; give emotional support
+c | encourage curiosity | 鼓励好奇心 | Good parenting involves [encouraging curiosity] rather than demanding obedience. | 良好的育儿方式包括鼓励好奇心，而不是要求服从。 | nurture curiosity; stimulate curiosity
+c | impose strict rules on | 对…实施严格规定 | Some parents [impose strict rules on] their children, which can lead to rebellion. | 有些父母对孩子实施严格规定，这可能导致叛逆。 | enforce strict rules on; set strict rules for
+c | promote healthy development | 促进健康发展 | A balanced diet and regular exercise [promote healthy development] in children. | 均衡饮食和定期锻炼促进儿童健康发展。 | support healthy development; foster healthy development
+i | Overprotective parenting prevents children from learning to handle failure, making them less resilient when they face real challenges later. | 过度保护型育儿使孩子无法学会应对失败，导致他们日后面对真正挑战时韧性不足。
+i | Excessive screen time reduces face-to-face interaction, which can delay language development and weaken social skills in young children. | 过多的屏幕时间减少了面对面交流，这可能延迟幼儿的语言发展并削弱社交技能。
+i | Parents who set clear boundaries combined with warmth raise children who are both self-disciplined and confident. | 既设定明确界限又给予温暖的父母培养出的孩子既自律又自信。
+i | Assigning household chores helps children develop responsibility and practical skills that benefit them in adulthood. | 分配家务有助于孩子培养责任感和实用技能，这些在成年后受益匪浅。
+i | High parental expectations can motivate children, but when excessive they cause anxiety and fear of failure. | 父母的高期望可以激励孩子，但过高则会导致焦虑和对失败的恐惧。
+i | Early exposure to books and storytelling builds vocabulary and fosters a lifelong love of reading. | 早期接触书籍和讲故事可以积累词汇量，培养终身阅读的热爱。
+i | Children who are encouraged to make small decisions from an early age develop better problem-solving skills. | 从小被鼓励做小决定的孩子会发展出更好的解决问题的能力。
+i | Spanking or harsh punishment may produce short-term obedience but damages the parent-child relationship and increases aggression. | 体罚或严厉惩罚可能产生短期服从，但会损害亲子关系并增加攻击性。
+i | Working parents can compensate for limited time by establishing consistent routines and prioritizing quality interactions. | 在职父母可以通过建立一致的日常规律和优先进行高质量互动来弥补时间有限的不足。
+i | Schools that involve parents in learning activities see improved student motivation and behaviour. | 让父母参与学习活动的学校会发现学生的积极性和行为有所改善。
+i | Allowing children to experience mild risks, such as climbing trees, helps them learn to assess danger and build confidence. | 允许孩子经历轻微风险，如爬树，有助于他们学会评估危险并建立信心。
+i | Praising effort rather than innate talent encourages children to embrace challenges and persist in the face of difficulty. | 表扬努力而非天赋，能鼓励孩子拥抱挑战并在困难面前坚持下去。

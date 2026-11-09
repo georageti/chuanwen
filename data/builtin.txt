@@ -1,0 +1,359 @@
+# 川文内置素材
+# 格式：
+#   @topic 标识 | English | 中文 | 图案字
+#   p | 作文题 | 中文
+#   c | 搭配 | 中文 | 例句（[方括号] 里是挖空答案，可以有几处）| 例句中文 | 近义说法（用 ; 隔开，可省略）
+#   s | 句型 | 中文 | 例句 | 例句中文 | 说明（可省略）
+#   l | 衔接 | 中文 | 例句 | 例句中文 | 近义说法
+#   i | 论点（英文） | 中文
+# sb / sth / one's 是占位，挖空时不算在答案里。
+
+@topic general | General | 通用 | 通
+s | It is not X but Y that ... | 不是 X 而是 Y …… | [It is not] wealth [but] health [that] determines how satisfied people feel in old age. | 决定人们晚年满意度的不是财富，而是健康。 | 强调句，适合纠正一个常见看法
+s | Far from being X, ... | 远非 X，…… | [Far from being] a waste of time, video games can sharpen problem-solving skills. | 电子游戏远非浪费时间，它能锻炼解决问题的能力。
+s | There is a growing consensus that ... | 越来越多的人认同…… | [There is a growing consensus that] climate change requires coordinated global action. | 越来越多的人认同，气候变化需要全球协同行动。
+s | While it is true that X, Y | 诚然 X，但 Y | [While it is true that] online courses are convenient, they cannot fully replace face-to-face teaching. | 诚然网课很方便，但它无法完全取代面对面教学。 | 让步，先承认再转折
+s | The more X, the more Y | 越 X，就越 Y | [The more] time children spend outdoors, [the more] confident they become. | 孩子在户外待的时间越多，就越自信。
+s | Not only does X, but Y also ... | X 不仅……，Y 也…… | [Not only does] public transport reduce congestion, [but] it [also] cuts carbon emissions. | 公共交通不仅能缓解拥堵，还能减少碳排放。 | 倒装，not only 放句首时助动词提前
+s | X plays a pivotal role in Y | X 在 Y 中起关键作用 | Teachers [play a pivotal role in] shaping students' values. | 教师在塑造学生价值观方面起着关键作用。
+s | It would be naive to assume that ... | 以为……就太天真了 | [It would be naive to assume that] technology alone can solve social inequality. | 以为光靠技术就能解决社会不平等，未免太天真。
+s | X is often cited as a prime example of Y | X 常被视为 Y 的典型例子 | Singapore [is often cited as a prime example of] efficient urban planning. | 新加坡常被视为高效城市规划的典型。
+s | Given that X, it is hardly surprising that Y | 鉴于 X，Y 也就不足为奇了 | [Given that] housing prices have doubled, [it is hardly surprising that] young people delay marriage. | 鉴于房价翻了一倍，年轻人推迟结婚也就不足为奇。
+s | Whether X or Y, ... | 无论 X 还是 Y，…… | [Whether] in cities [or] in the countryside, access to clean water is a basic right. | 无论在城市还是乡村，获得清洁用水都是一项基本权利。
+s | X, which in turn leads to Y | X，进而导致 Y | Poor diets cause obesity, [which in turn leads to] a higher risk of heart disease. | 不良饮食导致肥胖，进而增加患心脏病的风险。 | 写因果链
+s | Only when X can Y | 只有当 X 时，才能 Y | [Only when] the public is well informed [can] democracy function properly. | 只有公众充分知情，民主才能正常运转。 | 倒装
+s | It is high time that sb did sth | 早该……了 | [It is high time that] governments [took] plastic pollution seriously. | 政府早该认真对待塑料污染了。 | that 从句用过去式
+s | X is a double-edged sword | X 是一把双刃剑 | Social media [is a double-edged sword] for teenagers. | 社交媒体对青少年来说是一把双刃剑。
+s | What matters most is not X but Y | 最重要的不是 X 而是 Y | [What matters most is not] how many hours students study [but] how effectively they use them. | 最重要的不是学生学多少小时，而是用得多有效。
+s | Admittedly, X. Nevertheless, Y | 不可否认 X。尽管如此，Y | [Admittedly], electric cars are still expensive. [Nevertheless], their running costs are far lower. | 不可否认，电动车仍然很贵。尽管如此，它的使用成本低得多。
+s | X, if anything, Y | 如果说有什么变化的话，X 反而 Y | Remote work has, [if anything], made people more productive. | 远程办公如果说有什么影响，反倒让人效率更高了。
+s | There is no denying that ... | 不可否认…… | [There is no denying that] the internet has transformed the way we learn. | 不可否认，互联网改变了我们的学习方式。
+s | Rather than X, Y should ... | 与其 X，Y 应该…… | [Rather than] banning smartphones, schools [should] teach students to use them wisely. | 与其禁止智能手机，学校更应教学生合理使用。
+s | It goes without saying that ... | 不用说…… | [It goes without saying that] a healthy economy depends on a skilled workforce. | 不用说，健康的经济依赖于熟练的劳动力。
+s | X comes at the expense of Y | X 以牺牲 Y 为代价 | Rapid growth often [comes at the expense of] the environment. | 快速增长往往以牺牲环境为代价。
+s | So X that Y | 如此 X 以至于 Y | The benefits are [so] significant [that] they far outweigh the costs. | 好处如此之大，远远超过了成本。
+s | Should X happen, Y | 万一 X，Y | [Should] the policy fail, millions of families would be affected. | 万一政策失败，数百万家庭将受到影响。 | 省略 if 的倒装条件句
+l | By the same token | 同理 | Cities need more parks. [By the same token], they need safer cycling lanes. | 城市需要更多公园。同理，也需要更安全的自行车道。 | likewise; similarly
+l | That said | 话虽如此 | Tourism brings money to local communities. [That said], it can also damage fragile ecosystems. | 旅游给当地社区带来收入。话虽如此，它也可能破坏脆弱的生态系统。 | having said that; even so
+l | On the flip side | 另一方面（不利的一面） | Working from home saves commuting time. [On the flip side], it can blur the line between work and life. | 在家办公省了通勤时间。另一方面，它会模糊工作与生活的界限。 | on the other hand; conversely
+l | In a similar vein | 同样地 | [In a similar vein], universities should reward teaching as much as research. | 同样地，大学应当像奖励科研一样奖励教学。 | along the same lines
+l | It follows that | 由此可见 | Most crime is linked to poverty. [It follows that] reducing poverty will reduce crime. | 多数犯罪与贫困有关。由此可见，减少贫困就能减少犯罪。 | consequently; therefore
+l | To put it another way | 换句话说 | [To put it another way], cheap goods often carry hidden environmental costs. | 换句话说，廉价商品往往暗藏环境成本。 | in other words
+l | First and foremost | 首先，最重要的是 | [First and foremost], education must prepare students for real life. | 首先，教育必须让学生为现实生活做好准备。 | above all; most importantly
+l | Be that as it may | 尽管如此 | Exams are stressful. [Be that as it may], they remain a fair way to assess students. | 考试压力很大。尽管如此，它仍是评估学生的公平方式。 | nonetheless; even so
+l | In light of this | 鉴于此 | [In light of this], stricter regulations seem inevitable. | 鉴于此，更严格的监管似乎不可避免。 | given this; in view of this
+l | Not to mention | 更不用说 | Fast food is high in salt, [not to mention] the amount of sugar it contains. | 快餐盐分很高，更不用说含糖量了。 | let alone; to say nothing of
+l | All things considered | 综合考虑 | [All things considered], the advantages of city life outweigh its drawbacks. | 综合考虑，城市生活利大于弊。 | on balance; overall
+l | As a case in point | 举个恰当的例子 | Renewable energy can be profitable. [As a case in point], Denmark exports wind power to its neighbours. | 可再生能源可以盈利。一个恰当的例子是，丹麦向邻国出口风电。 | for instance; to illustrate
+l | Conversely | 反过来说 | Strong families support children. [Conversely], neglect can harm their development. | 健全的家庭支持孩子成长；反过来，疏于照顾则会损害孩子的发展。 | on the contrary; in contrast
+l | In the long run | 从长远来看 | [In the long run], investing in education pays for itself. | 从长远来看，教育投入会自我回本。 | in the long term; ultimately
+l | To a large extent | 在很大程度上 | Success depends [to a large extent] on hard work. | 成功在很大程度上取决于努力。 | largely; to a great degree
+l | Equally important is | 同样重要的是 | [Equally important is] the need to train teachers properly. | 同样重要的是，要好好培训教师。 | just as important is
+l | Hence | 因此 | Prices rose sharply; [hence] the drop in demand. | 价格大涨，因此需求下降。 | thus; therefore
+l | Whereas | 而（对比） | Older people prefer newspapers, [whereas] young people get news online. | 老年人偏爱报纸，而年轻人在网上看新闻。 | while
+l | Ultimately | 归根结底 | [Ultimately], it is up to individuals to look after their own health. | 归根结底，照顾自己的健康是个人的责任。 | in the end; at the end of the day
+l | With this in mind | 考虑到这一点 | [With this in mind], schools should offer more practical courses. | 考虑到这一点，学校应开设更多实践课程。 | bearing this in mind
+l | Contrary to popular belief | 与普遍看法相反 | [Contrary to popular belief], most immigrants pay more in taxes than they receive in benefits. | 与普遍看法相反，大多数移民缴纳的税多于领取的福利。 | despite common assumptions
+l | In essence | 本质上 | [In essence], the debate is about freedom versus security. | 本质上，这场争论关乎自由与安全之间的取舍。 | essentially; fundamentally
+l | Moreover | 此外 | Cycling keeps people fit. [Moreover], it costs almost nothing. | 骑车让人保持健康。此外，它几乎不花钱。 | furthermore; in addition
+l | As a result | 结果 | Factories closed, and [as a result] unemployment soared. | 工厂关闭，结果失业率飙升。 | consequently; thus
+
+@topic technology | Technology | 科技与生活 | 科
+p | Some people believe that technology has made our lives more complicated. To what extent do you agree or disagree? | 有人认为科技让生活更复杂了。你在多大程度上同意？
+p | Technology has made it easier for people to work from home. Do the advantages outweigh the disadvantages? | 科技让居家办公更容易了。利大于弊吗？
+c | bridge the digital divide | 弥合数字鸿沟 | Governments should invest in rural broadband to [bridge the digital divide]. | 政府应投资农村宽带，以弥合数字鸿沟。 | close the digital gap
+c | be glued to one's screen | 盯着屏幕不放 | Many teenagers [are glued to their screens] for hours every day. | 许多青少年每天盯着屏幕好几个小时。
+c | an unprecedented pace | 前所未有的速度 | Technology is evolving at [an unprecedented pace]. | 科技正以前所未有的速度发展。 | a breakneck speed
+c | erode privacy | 侵蚀隐私 | Constant data collection is gradually [eroding] our [privacy]. | 持续的数据收集正在逐渐侵蚀我们的隐私。 | undermine privacy
+c | streamline daily tasks | 简化日常事务 | Smart devices help [streamline daily tasks] such as shopping and banking. | 智能设备帮助简化购物、银行业务等日常事务。 | simplify routine chores
+c | foster dependence on sth | 助长对……的依赖 | Over-reliance on GPS may [foster dependence on] technology. | 过度依赖导航可能助长对技术的依赖。
+c | blur the boundary between work and life | 模糊工作与生活的界限 | Smartphones [blur the boundary between work and life]. | 智能手机模糊了工作与生活的界限。 | blur the line between work and leisure
+c | cutting-edge technology | 尖端技术 | Hospitals are using [cutting-edge technology] to detect cancer early. | 医院正用尖端技术及早发现癌症。 | state-of-the-art technology
+i | Technology saves time on routine tasks, freeing people to focus on creative and meaningful work. | 科技节省日常事务的时间，让人专注于更有创造性、更有意义的工作。
+i | Constant connectivity creates pressure to be always available, which harms mental health. | 时刻在线带来“随时待命”的压力，损害心理健康。
+i | The benefits of technology are unevenly distributed, widening the gap between rich and poor. | 科技红利分配不均，拉大贫富差距。
+
+@topic education | Education | 教育 | 教
+p | Some people think universities should focus on providing academic skills, while others believe they should prepare students for employment. Discuss both views. | 有人认为大学应注重学术能力，也有人认为应为就业做准备。讨论两种观点。
+p | Should children be taught to compete or to cooperate at school? | 学校应该教孩子竞争还是合作？
+c | rote learning | 死记硬背 | Exam-oriented systems tend to reward [rote learning] over understanding. | 应试体系往往奖励死记硬背，而不是理解。 | memorisation by heart
+c | nurture critical thinking | 培养批判性思维 | Good teachers [nurture critical thinking] rather than simply transmit facts. | 好老师培养批判性思维，而不只是传授事实。 | cultivate independent thinking
+c | equip sb with practical skills | 让某人掌握实用技能 | Vocational courses [equip] students [with practical skills] employers need. | 职业课程让学生掌握雇主需要的实用技能。
+c | a well-rounded education | 全面的教育 | Art and sport are essential to [a well-rounded education]. | 艺术和体育对全面的教育必不可少。 | a holistic education
+c | academic performance | 学业表现 | Sleep has a direct impact on [academic performance]. | 睡眠直接影响学业表现。 | academic achievement
+c | tuition fees | 学费 | Rising [tuition fees] discourage poorer students from applying. | 不断上涨的学费让贫困学生望而却步。
+c | lifelong learning | 终身学习 | In a fast-changing economy, [lifelong learning] is no longer optional. | 在快速变化的经济中，终身学习已不再是可选项。
+c | widen access to higher education | 扩大高等教育机会 | Scholarships [widen access to higher education]. | 奖学金扩大了接受高等教育的机会。 | broaden access to university
+i | Cooperation at school mirrors the modern workplace, where most achievements come from teams. | 学校里的合作映照现代职场，大多数成就都来自团队。
+i | An education focused only on jobs risks producing workers who cannot adapt when industries change. | 只为就业的教育可能培养出行业一变就无法适应的劳动者。
+i | Free university education is an investment that a society recovers through higher taxes and innovation. | 免费大学教育是一项投资，社会会通过更高税收和创新收回成本。
+
+@topic environment | Environment | 环境 | 环
+p | Some people say that environmental problems are too big for individuals to solve. To what extent do you agree? | 有人说环境问题太大，个人无力解决。你在多大程度上同意？
+p | What are the causes of air pollution in cities, and what measures can be taken? | 城市空气污染的原因是什么？可以采取哪些措施？
+c | curb carbon emissions | 控制碳排放 | Taxing fuel is one of the most effective ways to [curb carbon emissions]. | 征收燃油税是控制碳排放最有效的方法之一。 | cut greenhouse gas emissions
+c | renewable energy | 可再生能源 | The country now generates half of its electricity from [renewable energy]. | 这个国家如今一半电力来自可再生能源。 | clean energy
+c | pose a threat to sth | 对……构成威胁 | Plastic waste [poses a] serious [threat to] marine life. | 塑料垃圾对海洋生物构成严重威胁。 | endanger
+c | irreversible damage | 不可逆的损害 | Deforestation can cause [irreversible damage] to ecosystems. | 毁林可能对生态系统造成不可逆的损害。
+c | raise environmental awareness | 提高环保意识 | Schools play a key role in [raising environmental awareness]. | 学校在提高环保意识方面作用关键。
+c | a throwaway culture | 一次性消费文化 | Fast fashion has fuelled [a throwaway culture]. | 快时尚助长了一次性消费文化。 | a disposable mindset
+c | take collective action | 采取集体行动 | Only by [taking collective action] can we slow global warming. | 只有采取集体行动，我们才能减缓全球变暖。
+c | strike a balance between X and Y | 在 X 和 Y 之间取得平衡 | Policymakers must [strike a balance between] growth [and] conservation. | 决策者必须在增长与保护之间取得平衡。
+i | Individual choices matter, but systemic change through laws and industry has a far greater impact. | 个人选择很重要，但通过法律和产业带来的系统性改变影响大得多。
+i | Environmental damage today shifts the cost onto future generations who have no say. | 今天的环境破坏把代价转嫁给了没有发言权的后代。
+i | Green industries create jobs, so protecting the environment need not harm the economy. | 绿色产业创造就业，因此保护环境不一定损害经济。
+
+@topic urbanization | Urbanization | 城市化 | 城
+p | More and more people are moving from the countryside to cities. Is this a positive or negative development? | 越来越多的人从农村迁往城市。这是积极还是消极的发展？
+p | Some people think that governments should invest more in rural areas to reduce migration to cities. Do you agree? | 有人认为政府应加大农村投入以减少向城市迁移。你同意吗？
+c | traffic congestion | 交通拥堵 | [Traffic congestion] costs the city billions in lost working hours. | 交通拥堵让城市损失了数十亿工时。 | gridlock
+c | urban sprawl | 城市无序扩张 | [Urban sprawl] eats into farmland and forests. | 城市无序扩张侵占农田和森林。
+c | soaring housing prices | 飞涨的房价 | [Soaring housing prices] force young families out of the city centre. | 飞涨的房价迫使年轻家庭搬离市中心。 | skyrocketing property prices
+c | strain public services | 让公共服务不堪重负 | Rapid population growth [strains public services] such as hospitals and schools. | 人口快速增长让医院、学校等公共服务不堪重负。 | overload infrastructure
+c | a sense of community | 社区归属感 | High-rise living can weaken [a sense of community]. | 高楼生活可能削弱社区归属感。 | community spirit
+c | seek better opportunities | 寻求更好的机会 | Young people flock to cities to [seek better opportunities]. | 年轻人涌入城市寻求更好的机会。
+c | revitalise rural areas | 振兴乡村 | Tax incentives can help [revitalise rural areas]. | 税收优惠有助于振兴乡村。 | regenerate the countryside
+c | green spaces | 绿地 | [Green spaces] improve both air quality and mental health. | 绿地既改善空气质量，又有益心理健康。
+i | Cities concentrate talent and capital, which drives innovation and economic growth. | 城市聚集人才和资本，推动创新与经济增长。
+i | Unplanned urban growth leads to slums, pollution and social isolation. | 缺乏规划的城市扩张导致贫民窟、污染和社会孤立。
+i | Remote work and better rural internet could reverse the flow of people into big cities. | 远程办公和更好的农村网络可能扭转人口流向大城市的趋势。
+
+@topic globalization | Globalization & Culture | 全球化与文化 | 球
+p | Some people think that globalisation is causing the loss of local cultures. To what extent do you agree? | 有人认为全球化导致本土文化消失。你在多大程度上同意？
+p | Is it important to preserve traditional buildings, or should they be replaced by modern ones? | 保护传统建筑重要吗，还是应该用现代建筑取代？
+c | cultural homogenisation | 文化同质化 | Global brands contribute to [cultural homogenisation]. | 全球品牌加剧了文化同质化。 | cultural uniformity
+c | preserve cultural heritage | 保护文化遗产 | Governments should fund museums to [preserve cultural heritage]. | 政府应资助博物馆以保护文化遗产。 | safeguard traditions
+c | cross-cultural communication | 跨文化交流 | Studying abroad improves [cross-cultural communication] skills. | 留学提升跨文化交流能力。 | intercultural exchange
+c | lose one's distinctive identity | 失去独特性 | Small towns risk [losing their distinctive identity]. | 小镇面临失去独特性的风险。
+c | a global village | 地球村 | The internet has turned the world into [a global village]. | 互联网让世界变成了地球村。
+c | broaden one's horizons | 开阔眼界 | Travel [broadens our horizons]. | 旅行开阔眼界。 | widen one's perspective
+c | multinational corporations | 跨国公司 | [Multinational corporations] often dominate local markets. | 跨国公司常常主导本地市场。 | global companies
+c | embrace diversity | 拥抱多元 | Successful societies [embrace diversity] rather than fear it. | 成功的社会拥抱多元，而不是惧怕它。
+i | Globalisation spreads ideas as well as products, allowing cultures to enrich one another. | 全球化传播产品，也传播思想，让不同文化相互丰富。
+i | When every city looks the same, travel and local life both lose their meaning. | 当每座城市都长得一样，旅行和本地生活都失去了意义。
+i | Traditions survive not by being frozen but by adapting to modern life. | 传统不是靠冻结而是靠适应现代生活延续下去的。
+
+@topic health | Health | 健康 | 健
+p | In many countries, people are becoming less healthy. What are the causes and solutions? | 很多国家的人越来越不健康。原因和对策是什么？
+p | Prevention is better than cure. Should governments spend more on preventing illness than treating it? | 预防胜于治疗。政府应把更多钱用于预防疾病而非治疗吗？
+c | a sedentary lifestyle | 久坐不动的生活方式 | Office work has led to [a sedentary lifestyle] for millions. | 办公室工作让数百万人过上了久坐不动的生活。 | physical inactivity
+c | processed food | 加工食品 | Diets high in [processed food] are linked to obesity. | 加工食品过多的饮食与肥胖有关。 | junk food
+c | preventive healthcare | 预防性医疗 | Investing in [preventive healthcare] reduces long-term costs. | 投资预防性医疗能降低长期成本。 | preventive medicine
+c | life expectancy | 预期寿命 | [Life expectancy] has risen by ten years since 1970. | 自 1970 年以来，预期寿命提高了十年。
+c | mental well-being | 心理健康 | Regular exercise boosts [mental well-being]. | 规律运动有益心理健康。 | mental health
+c | place a burden on sth | 给……带来负担 | An ageing population [places a] heavy [burden on] the health system. | 人口老龄化给医疗体系带来沉重负担。 | put pressure on
+c | tackle obesity | 应对肥胖问题 | A sugar tax is one way to [tackle obesity]. | 征收糖税是应对肥胖问题的一种方式。 | combat obesity
+c | adopt healthy habits | 养成健康习惯 | Children who [adopt healthy habits] early tend to keep them. | 早早养成健康习惯的孩子往往会坚持下去。
+i | Preventing disease through education and screening is cheaper than treating it later. | 通过教育和筛查预防疾病，比事后治疗便宜。
+i | Health is not only a personal choice; poverty and urban design limit what people can do. | 健康不只是个人选择，贫困和城市设计限制了人们的选择。
+i | Long working hours leave little time for exercise or cooking healthy meals. | 长时间工作让人几乎没时间运动或做健康的饭菜。
+
+@topic work | Work & Careers | 工作与职业 | 职
+p | Some people prefer to stay in the same job for life, while others change jobs frequently. Discuss both views. | 有人喜欢一辈子做一份工作，有人经常换工作。讨论两种观点。
+p | Is job satisfaction more important than salary? | 工作满意度比薪水更重要吗？
+c | job satisfaction | 工作满意度 | [Job satisfaction] matters more to many young workers than pay. | 对许多年轻员工来说，工作满意度比薪水更重要。 | fulfilment at work
+c | a work-life balance | 工作与生活的平衡 | Flexible hours help employees achieve [a work-life balance]. | 弹性工时帮助员工实现工作与生活的平衡。
+c | climb the career ladder | 步步高升 | Many people sacrifice family time to [climb the career ladder]. | 很多人牺牲家庭时间来往上爬。 | advance one's career
+c | job security | 工作稳定 | Older workers value [job security] above all. | 年长员工最看重工作稳定。
+c | burn out | 精疲力竭 | Nurses who work double shifts often [burn out]. | 连上两班的护士常常精疲力竭。 | suffer from exhaustion
+c | acquire transferable skills | 获得可迁移技能 | Changing jobs helps people [acquire transferable skills]. | 换工作帮助人们获得可迁移的技能。
+c | a sense of purpose | 使命感 | Volunteering gives retirees [a sense of purpose]. | 志愿服务给退休人员带来使命感。 | a sense of meaning
+c | job-hopping | 频繁跳槽 | Employers are wary of candidates with a history of [job-hopping]. | 雇主对有频繁跳槽经历的求职者心存警惕。
+i | Changing jobs exposes people to new skills and networks, which raises their long-term earnings. | 换工作让人接触新技能和人脉，提高长期收入。
+i | Money motivates only up to a point; beyond that, meaning and recognition matter more. | 金钱的激励作用有限，超过某个程度，意义和认可更重要。
+i | Automation is changing jobs so quickly that lifelong careers in one role are becoming rare. | 自动化让工作变化太快，一辈子做一个岗位越来越少见。
+
+@topic media | Media & Advertising | 媒体与广告 | 媒
+p | Advertising encourages people to buy things they do not need. To what extent do you agree? | 广告鼓励人们买不需要的东西。你在多大程度上同意？
+p | Many people now get their news from social media. Is this a positive or negative development? | 许多人现在从社交媒体获取新闻。这是积极还是消极的发展？
+c | misleading advertisements | 误导性广告 | Children are especially vulnerable to [misleading advertisements]. | 儿童特别容易受到误导性广告的影响。 | deceptive marketing
+c | spread misinformation | 传播虚假信息 | Social platforms can [spread misinformation] faster than it can be corrected. | 社交平台传播虚假信息的速度比纠正还快。 | circulate fake news
+c | shape public opinion | 塑造舆论 | Newspapers have long [shaped public opinion]. | 报纸长期塑造着舆论。 | influence public perception
+c | consumer behaviour | 消费者行为 | Targeted ads are designed to change [consumer behaviour]. | 定向广告旨在改变消费者行为。
+c | an echo chamber | 信息茧房 | Algorithms trap users in [an echo chamber] of similar views. | 算法把用户困在观点相似的信息茧房里。 | a filter bubble
+c | create artificial needs | 制造虚假需求 | Much advertising aims to [create artificial needs]. | 很多广告旨在制造虚假需求。
+c | press freedom | 新闻自由 | [Press freedom] is a cornerstone of democracy. | 新闻自由是民主的基石。 | freedom of the press
+c | go viral | 迅速走红 | A single video can [go viral] overnight. | 一段视频可能一夜之间走红。
+i | Advertising funds free services such as search engines, news and social media. | 广告为搜索引擎、新闻、社交媒体等免费服务提供资金。
+i | Algorithms reward outrage, so the most emotional stories spread furthest. | 算法奖励愤怒情绪，所以最煽情的内容传播最远。
+i | Media literacy should be taught in schools so that young people can judge sources. | 学校应教授媒介素养，让年轻人能判断信息来源。
+
+@topic government | Government & Society | 政府与社会 | 政
+p | Some people think governments should spend money on public services rather than the arts. To what extent do you agree? | 有人认为政府应把钱花在公共服务而非艺术上。你在多大程度上同意？
+p | Should the government be responsible for providing housing for everyone? | 政府应该负责为每个人提供住房吗？
+c | allocate public funds | 分配公共资金 | Governments must [allocate public funds] wisely. | 政府必须明智地分配公共资金。 | distribute the budget
+c | the welfare state | 福利国家 | [The welfare state] protects citizens from poverty. | 福利国家保护公民免于贫困。
+c | a top priority | 头等大事 | Healthcare should be [a top priority] for any government. | 医疗应是任何政府的头等大事。 | a pressing priority
+c | social inequality | 社会不平等 | Unequal access to education deepens [social inequality]. | 教育机会不均加深社会不平等。 | the wealth gap
+c | implement policies | 实施政策 | It is easier to announce reforms than to [implement policies]. | 宣布改革容易，实施政策难。 | put policies into practice
+c | civic responsibility | 公民责任 | Voting is a basic [civic responsibility]. | 投票是基本的公民责任。 | civic duty
+c | a safety net | 保障网 | Unemployment benefits act as [a safety net]. | 失业救济起到保障网的作用。
+c | from the taxpayer's perspective | 从纳税人的角度看 | [From the taxpayer's perspective], every project must show value for money. | 从纳税人的角度看，每个项目都必须物有所值。
+i | Some services, like healthcare and roads, will never be provided fairly by the market alone. | 医疗、道路等服务，单靠市场永远无法公平提供。
+i | Too much state support may weaken individual responsibility and initiative. | 政府扶持过多可能削弱个人责任感和进取心。
+i | Funding the arts benefits society by attracting tourists and strengthening national identity. | 资助艺术能吸引游客、增强国家认同，从而惠及社会。
+
+@topic crime | Crime & Law | 犯罪与法律 | 法
+p | Some people think the best way to reduce crime is to give longer prison sentences. Others believe there are better ways. Discuss both views. | 有人认为减少犯罪的最佳办法是延长刑期，也有人认为有更好的办法。讨论两种观点。
+p | Why do young people commit crimes, and what can be done about it? | 年轻人为什么犯罪？可以做些什么？
+c | a deterrent to crime | 对犯罪的威慑 | Harsh punishments are not always [a deterrent to crime]. | 严厉的惩罚并不总能威慑犯罪。 | deter criminals
+c | reoffend | 再犯 | Prisoners who receive training are less likely to [reoffend]. | 接受培训的囚犯再犯的可能性更低。 | relapse into crime
+c | rehabilitate offenders | 帮助罪犯改过自新 | Prisons should aim to [rehabilitate offenders], not just punish them. | 监狱应致力于让罪犯改过自新，而不仅仅是惩罚。
+c | the root causes of crime | 犯罪的根源 | Poverty and lack of education are [the root causes of crime]. | 贫困和缺乏教育是犯罪的根源。 | underlying causes
+c | law enforcement | 执法 | Stronger [law enforcement] reduces street crime. | 加强执法能减少街头犯罪。
+c | juvenile delinquency | 青少年犯罪 | Youth clubs help prevent [juvenile delinquency]. | 青少年俱乐部有助于预防青少年犯罪。 | youth crime
+c | fall into the wrong crowd | 交上坏朋友 | Teenagers without support often [fall into the wrong crowd]. | 缺乏支持的青少年容易交上坏朋友。 | get in with a bad crowd
+c | community service | 社区服务（刑罚） | Minor offenders could do [community service] instead of going to prison. | 轻微犯罪者可以做社区服务，而不是坐牢。
+i | Long sentences remove offenders from society but rarely address why they committed the crime. | 长刑期把罪犯与社会隔开，却很少解决他们犯罪的原因。
+i | Education and job training in prison reduce reoffending and save public money. | 狱中的教育和职业培训能减少再犯，节省公共开支。
+i | The certainty of being caught deters crime more than the severity of punishment. | 被抓的确定性比惩罚的严厉程度更能威慑犯罪。
+
+@topic family | Family & Generations | 家庭与代际 | 家
+p | In some countries, more and more people live alone. Is this a positive or negative development? | 一些国家独居的人越来越多。这是积极还是消极的发展？
+p | Parents today spend less time with their children than in the past. What are the effects on children? | 如今父母陪伴孩子的时间比过去少。这对孩子有什么影响？
+c | the generation gap | 代沟 | Technology has widened [the generation gap]. | 科技拉大了代沟。
+c | quality time | 陪伴时间 | Busy parents struggle to spend [quality time] with their children. | 忙碌的父母难以抽出时间好好陪孩子。
+c | a nuclear family | 核心家庭 | [A nuclear family] has replaced the extended family in most cities. | 在多数城市，核心家庭已取代大家庭。 | an extended family
+c | instil values in sb | 向某人灌输价值观 | Parents [instil values in] children through example. | 父母通过以身作则向孩子灌输价值观。 | pass on values
+c | dual-income households | 双职工家庭 | [Dual-income households] rely heavily on childcare. | 双职工家庭严重依赖托育服务。
+c | strengthen family bonds | 加强家庭纽带 | Regular family meals [strengthen family bonds]. | 定期的家庭聚餐能加强家庭纽带。 | bring families closer
+c | parental guidance | 父母的引导 | Teenagers still need [parental guidance] online. | 青少年上网仍需要父母引导。 | parental supervision
+c | an ageing population | 人口老龄化 | [An ageing population] means fewer workers support more retirees. | 人口老龄化意味着更少的劳动者供养更多的退休者。
+i | Living alone gives people independence, but it can also lead to loneliness in old age. | 独居给人独立，但也可能导致晚年孤独。
+i | Children learn social skills and values mainly by watching how their parents behave. | 孩子主要通过观察父母的言行学习社交能力和价值观。
+i | Grandparents who help with childcare keep families connected across generations. | 帮忙带孩子的祖辈让一家几代人保持联系。
+
+@topic transport | Transport | 交通 | 交
+p | Some people believe that the best way to reduce traffic is to make public transport free. To what extent do you agree? | 有人认为缓解交通的最佳办法是公共交通免费。你在多大程度上同意？
+p | Should cities ban private cars from their centres? | 城市应该禁止私家车进入市中心吗？
+c | public transport | 公共交通 | Investing in [public transport] reduces both traffic and pollution. | 投资公共交通能减少交通拥堵和污染。 | mass transit
+c | ease congestion | 缓解拥堵 | A congestion charge helped [ease congestion] in London. | 拥堵费帮助伦敦缓解了拥堵。 | relieve traffic jams
+c | rush hour | 高峰期 | Trains are packed during [rush hour]. | 高峰期的火车挤得满满的。 | peak hours
+c | car-free zones | 无车区 | [Car-free zones] make city centres safer for pedestrians. | 无车区让市中心对行人更安全。 | pedestrian zones
+c | a heavy reliance on cars | 严重依赖汽车 | Suburbs are built around [a heavy reliance on cars]. | 郊区是围绕严重依赖汽车而建的。
+c | daily commute | 日常通勤 | A long [daily commute] eats into family time. | 漫长的日常通勤挤占家庭时间。
+c | infrastructure investment | 基础设施投资 | [Infrastructure investment] creates jobs and boosts growth. | 基础设施投资创造就业、促进增长。
+c | fuel consumption | 油耗 | Hybrid cars cut [fuel consumption] by half. | 混动汽车将油耗减半。
+i | Free public transport would persuade drivers to leave their cars at home. | 免费公共交通会让司机把车留在家里。
+i | Without fast, reliable services, cheap fares alone will not change people's habits. | 没有快速可靠的服务，光靠低票价改变不了人们的习惯。
+i | Cities designed for cars are noisier, more polluted and less friendly to pedestrians. | 为汽车设计的城市更吵、污染更重、对行人更不友好。
+
+@topic tourism | Tourism | 旅游 | 游
+p | International tourism has brought enormous benefits to many places. At the same time, it has caused problems. Discuss. | 国际旅游给许多地方带来巨大好处，同时也引发问题。请讨论。
+p | Should tourists pay more than local residents to visit museums and historical sites? | 游客参观博物馆和历史遗迹应该比本地人多付钱吗？
+c | mass tourism | 大众旅游 | [Mass tourism] has overwhelmed small historic towns. | 大众旅游让小型历史古镇不堪重负。 | over-tourism
+c | boost the local economy | 带动当地经济 | Festivals attract visitors and [boost the local economy]. | 节庆吸引游客，带动当地经济。 | stimulate local business
+c | a tourist trap | 宰客的景点 | The market has become [a tourist trap] with inflated prices. | 这个市场成了价格虚高的宰客景点。
+c | ecotourism | 生态旅游 | [Ecotourism] can fund conservation projects. | 生态旅游可以为保护项目提供资金。 | sustainable tourism
+c | cultural exchange | 文化交流 | Tourism encourages [cultural exchange] between nations. | 旅游促进国家之间的文化交流。
+c | off the beaten track | 人迹罕至的地方 | Many travellers now prefer places [off the beaten track]. | 现在很多旅行者更喜欢人迹罕至的地方。
+c | the influx of tourists | 游客涌入 | [The influx of tourists] has driven up local rents. | 游客涌入推高了当地租金。 | a flood of visitors
+c | commercialise local traditions | 让本地传统商业化 | Tourism can [commercialise local traditions] until they lose their meaning. | 旅游可能让本地传统商业化，直到失去原本的意义。
+i | Tourism provides jobs in regions where few other industries exist. | 在几乎没有其他产业的地区，旅游业提供了就业。
+i | Too many visitors can damage the very places and traditions they come to see. | 游客太多，反而会破坏他们前来观赏的地方和传统。
+i | Tourist taxes can fund the upkeep of heritage sites without burdening residents. | 旅游税可以资助遗址维护，又不加重居民负担。
+
+@topic arts | Arts | 艺术 | 艺
+p | Some people think that art is an essential subject for children at school, while others think it is a waste of time. Discuss both views. | 有人认为艺术是孩子在学校的必修课，也有人认为是浪费时间。讨论两种观点。
+p | Should governments fund artists and art galleries? | 政府应该资助艺术家和美术馆吗？
+c | express oneself | 表达自我 | Art gives children a safe way to [express themselves]. | 艺术给孩子提供了一种安全的自我表达方式。
+c | creative thinking | 创造性思维 | Music lessons develop [creative thinking]. | 音乐课培养创造性思维。 | creativity
+c | an integral part of sth | ……不可或缺的一部分 | The arts are [an integral part of] a nation's identity. | 艺术是一个国家身份认同中不可或缺的一部分。 | an essential element of
+c | aesthetic appreciation | 审美能力 | Visiting galleries builds [aesthetic appreciation]. | 参观美术馆能培养审美能力。
+c | public funding for the arts | 艺术公共资助 | [Public funding for the arts] keeps ticket prices low. | 艺术公共资助让票价保持低廉。 | state subsidies for culture
+c | enrich people's lives | 丰富人们的生活 | Theatre and music [enrich people's lives]. | 戏剧和音乐丰富人们的生活。
+c | a form of escapism | 一种逃避现实的方式 | Films offer [a form of escapism] from daily stress. | 电影提供一种逃避日常压力的方式。
+c | commercial success | 商业成功 | Great art does not always achieve [commercial success]. | 伟大的艺术不一定获得商业成功。
+i | Art teaches children to tolerate uncertainty and find more than one right answer. | 艺术教孩子容忍不确定性，找到不止一个正确答案。
+i | Without public support, only commercially popular art would survive. | 没有公共资助，只有商业上受欢迎的艺术才能存活。
+i | Museums and theatres attract tourists, so funding them pays back economically. | 博物馆和剧院吸引游客，资助它们在经济上有回报。
+
+@topic sport | Sport | 体育 | 体
+p | Professional athletes earn far more than people in other important professions. Is this fair? | 职业运动员比其他重要职业的人赚得多得多。这公平吗？
+p | Should hosting international sporting events like the Olympics be encouraged? | 应该鼓励举办奥运会这类国际体育赛事吗？
+c | team spirit | 团队精神 | Team sports build [team spirit] and discipline. | 团体运动培养团队精神和纪律性。 | teamwork
+c | a role model | 榜样 | Athletes are [a role model] for millions of children. | 运动员是数百万孩子的榜样。
+c | astronomical salaries | 天价薪水 | Top footballers earn [astronomical salaries]. | 顶级足球运动员拿着天价薪水。 | sky-high pay
+c | host major sporting events | 举办大型体育赛事 | Countries compete to [host major sporting events]. | 各国争相举办大型体育赛事。
+c | promote physical fitness | 促进身体健康 | Schools should [promote physical fitness] from an early age. | 学校应从小促进学生的身体健康。 | encourage exercise
+c | national pride | 民族自豪感 | Olympic victories inspire [national pride]. | 奥运夺冠激发民族自豪感。
+c | a short career span | 职业生涯短暂 | Athletes have [a short career span]. | 运动员的职业生涯很短暂。
+c | market forces | 市场力量 | Salaries in sport are set by [market forces]. | 体育界的薪水由市场力量决定。 | supply and demand
+i | Athletes' high pay reflects the huge audiences and revenue they generate. | 运动员的高薪反映了他们带来的庞大观众和收入。
+i | Major events leave behind expensive stadiums that are rarely used afterwards. | 大型赛事留下昂贵的体育场，之后很少被使用。
+i | Sport teaches young people to handle failure and work towards long-term goals. | 体育教年轻人应对失败，朝长期目标努力。
+
+@topic economy | Economy & Consumerism | 经济与消费 | 经
+p | People today buy more than they need. What are the causes and effects of this? | 如今人们买的比需要的多。原因和影响是什么？
+p | Some people think economic growth is the best way to improve people's lives. Do you agree? | 有人认为经济增长是改善生活的最佳途径。你同意吗？
+c | economic growth | 经济增长 | [Economic growth] does not automatically reduce inequality. | 经济增长并不会自动减少不平等。
+c | conspicuous consumption | 炫耀性消费 | Social media encourages [conspicuous consumption]. | 社交媒体助长炫耀性消费。
+c | the cost of living | 生活成本 | [The cost of living] has outpaced wage growth. | 生活成本的增长超过了工资增长。 | living expenses
+c | disposable income | 可支配收入 | Rising rents reduce [disposable income]. | 不断上涨的房租减少了可支配收入。
+c | impulse buying | 冲动消费 | One-click payment encourages [impulse buying]. | 一键支付助长冲动消费。 | impulse purchases
+c | live beyond one's means | 入不敷出 | Easy credit tempts people to [live beyond their means]. | 容易获得的信贷诱使人们入不敷出。 | overspend
+c | a materialistic society | 物质主义社会 | In [a materialistic society], status is measured by possessions. | 在物质主义社会，地位用财物来衡量。
+c | stimulate demand | 刺激需求 | Tax cuts are meant to [stimulate demand]. | 减税意在刺激需求。 | boost consumption
+i | Consumer spending drives the economy, creating jobs and tax revenue. | 消费支出驱动经济，创造就业和税收。
+i | Beyond a certain income, buying more things adds little to happiness. | 收入超过一定水平后，买更多东西对幸福感帮助不大。
+i | Growth measured only by GDP ignores pollution, inequality and well-being. | 只用 GDP 衡量的增长忽视了污染、不平等和幸福感。
+
+@topic ai | Artificial Intelligence | 人工智能 | 智
+p | Some people fear that artificial intelligence will replace human workers. To what extent do you agree? | 有人担心人工智能会取代人类劳动者。你在多大程度上同意？
+p | Should students be allowed to use AI tools for their homework? | 应该允许学生用 AI 工具写作业吗？
+c | automate repetitive tasks | 让重复性工作自动化 | AI can [automate repetitive tasks] such as data entry. | AI 能让数据录入等重复性工作自动化。
+c | render sth obsolete | 使……过时 | Self-driving vehicles may [render] taxi drivers [obsolete]. | 自动驾驶可能让出租车司机这一职业过时。 | make sth redundant
+c | ethical concerns | 伦理担忧 | Facial recognition raises serious [ethical concerns]. | 人脸识别引发严重的伦理担忧。 | ethical implications
+c | augment human abilities | 增强人的能力 | AI should [augment human abilities], not replace them. | AI 应当增强人的能力，而不是取代人。 | enhance human capabilities
+c | algorithmic bias | 算法偏见 | [Algorithmic bias] can lead to unfair hiring decisions. | 算法偏见可能导致不公平的招聘决定。
+c | job displacement | 岗位被取代 | Governments must prepare for [job displacement] caused by automation. | 政府必须为自动化导致的岗位流失做好准备。 | job losses
+c | academic integrity | 学术诚信 | Chatbots pose a challenge to [academic integrity]. | 聊天机器人对学术诚信构成挑战。
+c | reskill the workforce | 让劳动者重新学习技能 | Companies need to [reskill the workforce] for new roles. | 企业需要让员工重新学习技能，以胜任新岗位。 | retrain workers
+i | Like past technologies, AI will destroy some jobs but create new ones that we cannot yet imagine. | 和过去的技术一样，AI 会消灭一些工作，也会创造我们尚想象不到的新工作。
+i | If students let AI do their thinking, they may never develop their own reasoning skills. | 如果学生让 AI 替他们思考，可能永远培养不出自己的推理能力。
+i | Decisions made by AI must remain transparent and accountable to humans. | AI 做出的决定必须保持透明，并对人负责。
+
+@topic animals | Animals & Nature | 动物与自然 | 兽
+p | Some people think that zoos are cruel and should be closed. Others believe they are useful. Discuss both views. | 有人认为动物园很残忍应该关闭，也有人认为有用。讨论两种观点。
+p | Many species are becoming extinct. Should we spend money to protect them? | 许多物种正在灭绝。我们应该花钱保护它们吗？
+c | endangered species | 濒危物种 | Breeding programmes help save [endangered species]. | 繁育计划有助于拯救濒危物种。 | threatened species
+c | natural habitat | 自然栖息地 | Animals behave differently outside their [natural habitat]. | 动物离开自然栖息地后行为会有所不同。
+c | animal welfare | 动物福利 | Stricter laws are needed to protect [animal welfare]. | 需要更严格的法律保护动物福利。 | animal rights
+c | on the verge of extinction | 濒临灭绝 | The tiger was once [on the verge of extinction]. | 老虎一度濒临灭绝。 | on the brink of extinction
+c | biodiversity loss | 生物多样性丧失 | [Biodiversity loss] threatens food security. | 生物多样性丧失威胁粮食安全。
+c | captive breeding | 圈养繁殖 | [Captive breeding] has brought several species back from the brink. | 圈养繁殖让好几个物种起死回生。
+c | conservation efforts | 保护工作 | [Conservation efforts] depend on public funding. | 保护工作依赖公共资金。
+c | the food chain | 食物链 | Losing one species can disrupt [the food chain]. | 失去一个物种就可能扰乱食物链。
+i | Zoos fund research and breeding programmes that wild populations depend on. | 动物园资助科研和繁育项目，野外种群依赖这些项目。
+i | Keeping intelligent animals in small enclosures causes them stress and suffering. | 把聪明的动物关在狭小围栏里会让它们紧张痛苦。
+i | Protecting species protects ecosystems that humans rely on for food and clean water. | 保护物种就是保护人类赖以获取食物和清洁水的生态系统。
+
+@topic ageing | Ageing Society | 老龄化 | 老
+p | In many countries, the proportion of older people is increasing. Is this a positive or negative development? | 很多国家老年人比例在上升。这是积极还是消极的发展？
+p | Should people be forced to retire at a certain age? | 应该强制人们到某个年龄退休吗？
+c | the retirement age | 退休年龄 | Many governments plan to raise [the retirement age]. | 许多政府计划提高退休年龄。
+c | pension schemes | 养老金计划 | [Pension schemes] are under pressure as people live longer. | 随着寿命延长，养老金计划承受压力。 | retirement funds
+c | elderly care | 养老照护 | Demand for [elderly care] will double by 2050. | 到 2050 年，养老照护需求将翻倍。 | care for the elderly
+c | a wealth of experience | 丰富的经验 | Older employees bring [a wealth of experience]. | 年长员工带来丰富的经验。
+c | a shrinking workforce | 劳动力萎缩 | [A shrinking workforce] slows economic growth. | 劳动力萎缩拖慢经济增长。
+c | lead an active life | 过积极的生活 | Retirees who [lead an active life] stay healthier. | 过积极生活的退休者更健康。 | stay active
+c | social isolation | 社会孤立 | [Social isolation] is a major health risk for the elderly. | 社会孤立是老年人的重大健康风险。 | loneliness
+c | intergenerational | 代际的 | [Intergenerational] housing projects benefit both young and old. | 代际共居项目对老少都有益。
+i | Older workers have experience that companies lose when they are forced to retire. | 年长员工有经验，强制退休会让企业失去这些经验。
+i | An ageing population increases healthcare and pension costs paid by fewer workers. | 人口老龄化增加了医疗和养老开支，而负担的劳动者更少了。
+i | Retirement should depend on health and ability rather than a fixed age. | 退休应取决于健康和能力，而不是固定年龄。
+
+@topic science | Science & Space | 科学与太空 | 星
+p | Some people think space exploration is a waste of money. To what extent do you agree? | 有人认为太空探索是浪费钱。你在多大程度上同意？
+p | Should governments fund scientific research that has no obvious practical use? | 政府应资助没有明显实用价值的科学研究吗？
+c | space exploration | 太空探索 | [Space exploration] has produced technologies we use every day. | 太空探索产生了我们日常使用的许多技术。
+c | scientific breakthroughs | 科学突破 | Basic research leads to unexpected [scientific breakthroughs]. | 基础研究带来意想不到的科学突破。 | major discoveries
+c | push the boundaries of knowledge | 拓展知识的边界 | Scientists [push the boundaries of knowledge]. | 科学家拓展知识的边界。 | expand the frontiers of knowledge
+c | divert resources from sth | 从……挪走资源 | Space programmes [divert resources from] urgent problems on Earth. | 太空计划从地球上的紧迫问题挪走了资源。
+c | practical applications | 实际应用 | Many discoveries had no [practical applications] at first. | 许多发现起初并没有实际应用。
+c | inspire future generations | 激励后代 | Moon landings [inspired future generations] of engineers. | 登月激励了一代代工程师。
+c | a fraction of the budget | 预算的一小部分 | Space research costs only [a fraction of the] national [budget]. | 太空研究只占国家预算的一小部分。
+c | long-term benefits | 长期收益 | Research funding brings [long-term benefits]. | 研究经费带来长期收益。
+i | Technologies developed for space, such as GPS and water filters, now improve everyday life. | 为太空开发的技术，如 GPS 和净水器，如今改善着日常生活。
+i | Money spent on rockets could solve more urgent problems like hunger and disease. | 花在火箭上的钱可以解决饥饿、疾病等更紧迫的问题。
+i | Curiosity-driven research often produces the most important discoveries, though no one can predict which. | 好奇心驱动的研究往往产生最重要的发现，只是没人能预测是哪一个。
