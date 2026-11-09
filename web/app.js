@@ -57,7 +57,7 @@ const pad = (n, w = 2) => String(n).padStart(w, "0");
 
 // 设置（启动时从服务器读一次，改设置后更新）
 let CFG = { study: { max_tries: 3, auto_speak: true }, drill: { min_words: 20 }, translate: { length: "mix", show_hints: true },
-  voice: { name: "en-US-AriaNeural", rate: -5 }, ui: { font: "normal", motion: true, serif: true } };
+  voice: { name: "en-US-AriaNeural", rate: -5 }, ui: { font: "normal", motion: true, serif: true, input: "sans" } };
 async function loadCfg() {
   try { CFG = await api("/api/settings"); } catch { /* 用默认值 */ }
   applyUi();
@@ -67,6 +67,7 @@ function applyUi() {
   d.font = CFG.ui.font || "normal";
   d.motion = CFG.ui.motion === false ? "off" : "on";
   d.serif = CFG.ui.serif === false ? "off" : "on";
+  d.input = CFG.ui.input || "sans";
   pickVoice();
 }
 
@@ -1332,6 +1333,7 @@ async function settings() {
         ${row("字号", chipRow("ui.font", [["normal", "标准"], ["large", "大"]], cfg.ui.font))}
         ${row("动画", toggleRow("ui.motion", cfg.ui.motion !== false, "页面切换和弹窗的淡入动画"))}
         ${row("例句字体", toggleRow("ui.serif", cfg.ui.serif !== false, "例句用衬线体（关掉改用无衬线）"))}
+        ${row("输入字体", chipRow("ui.input", [["sans", "系统字体（清楚）"], ["serif", "衬线"], ["mono", "等宽"]], cfg.ui.input || "sans"), "写答案、译文、作文时输入框里的字体")}
       </section>
 
       <section><span class="label">数据 · 存在这台电脑上</span>

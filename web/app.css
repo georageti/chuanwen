@@ -415,3 +415,33 @@ html[data-serif="off"] { --serif: "Barlow", var(--zh); }
 .set-row .field { max-width: 360px; }
 .danger { border-color: rgba(255, 138, 122, .5) !important; color: var(--bad) !important; }
 @media (max-width: 720px) { .set-row { grid-template-columns: 1fr; gap: 6px; } }
+
+/* ---------- 输入框：清楚的字体、深色实底、高对比 ---------- */
+:root {
+  --input-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --input-bg: #0e0e20;
+  --input-ink: #ffffff;
+  --input-line: rgba(242, 242, 242, .26);
+  --input-ph: rgba(242, 242, 242, .52);
+}
+html[data-input="serif"] { --input-font: "EB Garamond", "Songti SC", "SimSun", serif; }
+html[data-input="mono"] { --input-font: "DM Mono", ui-monospace, "SF Mono", Menlo, "PingFang SC", monospace; }
+.field, .search, .answer-box, .card .unote {
+  font-family: var(--input-font); color: var(--input-ink); background: var(--input-bg);
+  border: 1px solid var(--input-line); caret-color: var(--blue-hi); -webkit-font-smoothing: antialiased;
+}
+.answer-box, textarea.field { font-size: 17px; line-height: 1.7; letter-spacing: .005em; padding: 14px 16px; }
+html[data-input="serif"] .answer-box { font-size: 19px; }
+html[data-input="mono"] .answer-box { font-size: 15px; }
+.search { font-size: 14px; }
+.field::placeholder, .search::placeholder, .answer-box::placeholder, .card .unote::placeholder { color: var(--input-ph); opacity: 1; }
+.field:focus, .search:focus, .answer-box:focus, .card .unote:focus {
+  border-color: var(--blue-hi); box-shadow: 0 0 0 3px rgba(93, 93, 255, .32); outline: none;
+}
+.answer-box[readonly] { color: rgba(255, 255, 255, .86); border-style: dashed; }
+select.field { color: var(--input-ink); }
+select.field option { background: var(--panel); color: var(--ink); }
+/* 回忆的填空框：正体白字，和句子同一套衬线 */
+.cloze input { font-style: normal; color: var(--input-ink); background: rgba(255, 255, 255, .06); border-radius: 2px 2px 0 0; caret-color: var(--blue-hi); }
+.cloze input::placeholder { color: var(--input-ph); }
+.cloze input:focus { background: rgba(0, 0, 242, .28); }

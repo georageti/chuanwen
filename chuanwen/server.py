@@ -118,6 +118,7 @@ def clean_settings(patch: dict) -> None:
     _pick(vo, "name", set(tts.VOICES) | {"browser"})
     ui = patch.get("ui", {})
     _pick(ui, "font", {"normal", "large"})
+    _pick(ui, "input", {"sans", "serif", "mono"})
     for k in ("motion", "serif"):
         if k in ui:
             ui[k] = bool(ui[k])

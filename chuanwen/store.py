@@ -58,7 +58,7 @@ DEFAULT_CONFIG = {
     "drill": {"suggestions": 12, "min_words": 20},
     "translate": {"length": "mix", "batch": 6, "show_hints": True},  # length：mix / short / medium / long
     "voice": {"name": "en-US-AriaNeural", "rate": -5},  # 朗读：微软语音名（browser = 用浏览器自带语音）；语速 -50..+50（%）
-    "ui": {"font": "normal", "motion": True, "serif": True},  # 字号 normal / large；动画；例句用衬线体
+    "ui": {"font": "normal", "motion": True, "serif": True, "input": "sans"},  # 字号；动画；例句用衬线体；输入字体 sans / serif / mono
 }
 
 SCHEMA = """
