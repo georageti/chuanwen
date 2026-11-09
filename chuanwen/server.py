@@ -405,6 +405,49 @@ def api_pick(body: dict = Body(...)):
     return {"candidate": cand, "ai": reason is None, "reason": reason}
 
 
+# ---------- 语料库范围 ----------
+# 练习开始前可以选：全部 / 内置 / 自建（自己从文章拆的、手动加的、AI 扩充加的）/ 收藏
+
+CORPORA = {"all": "全部", "builtin": "内置", "mine": "自建", "starred": "收藏"}
+
+
+def in_corpus(m: dict, corpus: str | None) -> bool:
+    if corpus == "mine":
+        return m["source"] != "builtin"
+    if corpus == "builtin":
+        return m["source"] == "builtin"
+    if corpus == "starred":
+        return bool(m["starred"])
+    return True
+
+
+def scoped(rows: list[dict], corpus: str | None) -> list[dict]:
+    return [m for m in rows if in_corpus(m, corpus)]
+
+
+def corpus_of(v) -> str:
+    return v if v in CORPORA else "all"
+
+
+@app.get("/api/practice/scope")
+def api_practice_scope():
+    """选择页用：每个语料库、每个话题各有多少素材（以及到期多少）"""
+    rows = store.list_materials()
+    day = srs.today()
+    out = {"corpora": {}, "topics": [], "untagged": {}}
+    for c in CORPORA:
+        part = scoped(rows, c)
+        out["corpora"][c] = {"n": len(part), "due": sum(1 for m in part if m["state"] and m["state"]["due"] <= day),
+                             "new": sum(1 for m in part if not m["state"])}
+        out["untagged"][c] = sum(1 for m in part if not m["topics"])
+    for t in store.list_topics():
+        rec = {"slug": t["slug"], "zh": t["zh"], "en": t["en"], "glyph": t["glyph"]}
+        for c in CORPORA:
+            rec[c] = sum(1 for m in rows if t["slug"] in m["topics"] and in_corpus(m, c))
+        out["topics"].append(rec)
+    return out
+
+
 # ---------- 回忆练习 ----------
 
 def make_card(m: dict) -> dict:
@@ -429,10 +472,11 @@ def make_card(m: dict) -> dict:
 def api_recall_plan(body: dict = Body(default={})):
     """定这一轮练哪些：到期的先来，再加今天还没用完的新素材额度。scope：auto / review / new"""
     topic, kind, scope = body.get("topic") or None, body.get("kind") or None, body.get("scope", "auto")
+    corpus = corpus_of(body.get("corpus"))
     cfg = store.load_config()["study"]
     size = int(body.get("size") or cfg["session_size"])
-    due = store.due_materials(topic, kind)
-    fresh = store.new_materials(topic, kind)
+    due = scoped(store.due_materials(topic, kind), corpus)
+    fresh = scoped(store.new_materials(topic, kind), corpus)
     if not kind:
         kinds = set(cfg.get("kinds") or store.KINDS)
         due = [m for m in due if m["kind"] in kinds]
@@ -478,8 +522,9 @@ def api_recall_answer(body: dict = Body(...)):
 REWRITE_KINDS = ("collocation", "pattern", "linker")
 
 
-def rewrite_pool(topic: str | None) -> list[dict]:
-    rows = [m for m in store.list_materials(topic) if m["kind"] in REWRITE_KINDS]
+def rewrite_pool(topic: str | None, corpus: str = "all", kind: str | None = None) -> list[dict]:
+    kinds = {kind} if kind in REWRITE_KINDS else set(REWRITE_KINDS)
+    rows = [m for m in scoped(store.list_materials(topic), corpus) if m["kind"] in kinds]
     day = srs.today()
 
     def rank(m):  # 学过且快到期的最该练；其次收藏的、自己收集的
@@ -503,9 +548,10 @@ def api_rewrite_next(body: dict = Body(default={})):
             err("没有这条素材", 404)
         pool = [m]
     else:
-        pool = [m for m in rewrite_pool(body.get("topic") or None) if m["id"] not in exclude]
+        corpus = corpus_of(body.get("corpus"))
+        pool = [m for m in rewrite_pool(body.get("topic") or None, corpus, body.get("kind") or None) if m["id"] not in exclude]
         if not pool:
-            err("这个范围里没有可以改写的素材（搭配、句型、衔接）")
+            err(f"这个范围里没有可以改写的素材（{CORPORA[corpus]}语料库 · 搭配、句型、衔接）")
         head = pool[:12]
         random.shuffle(head)
         pool = head
@@ -550,7 +596,7 @@ def api_rewrite_check(body: dict = Body(...)):
 
 # ---------- 话题演练 ----------
 
-def suggestions_for(topic: str, total: int | None = None) -> list[dict]:
+def suggestions_for(topic: str, total: int | None = None, corpus: str = "all") -> list[dict]:
     total = total or store.load_config()["drill"]["suggestions"]
     n_col = max(1, round(total * 5 / 12))
     n_idea = max(1, round(total * 3 / 12))
@@ -559,8 +605,11 @@ def suggestions_for(topic: str, total: int | None = None) -> list[dict]:
     def pick(rows, n):
         rows = sorted(rows, key=lambda m: (m["state"] is None, not m["starred"], m["source"] == "builtin", random.random()))
         return rows[:n]
-    mine = store.list_materials(topic)
-    general = store.list_materials("general") if topic != "general" else []
+    mine = scoped(store.list_materials(topic), corpus)
+    if corpus in ("mine", "starred"):  # 自建 / 收藏的素材很多没标话题，也一起算上
+        mine += [m for m in scoped(store.list_materials(), corpus) if not m["topics"]]
+    general_all = store.list_materials("general") if topic != "general" else []
+    general = scoped(general_all, corpus) or general_all
     by = lambda rows, k: [m for m in rows if m["kind"] == k]  # noqa: E731
     out = pick(by(mine, "collocation"), n_col) + pick(by(mine, "idea"), n_idea)
     pats = by(mine, "pattern") or by(general, "pattern")
@@ -569,7 +618,7 @@ def suggestions_for(topic: str, total: int | None = None) -> list[dict]:
 
 
 @app.get("/api/drill/start")
-def api_drill_start(topic: str, fresh: bool = False):
+def api_drill_start(topic: str, fresh: bool = False, corpus: str = "all"):
     t = store.get_topic(topic)
     if not t:
         err("没有这个话题", 404)
@@ -586,7 +635,7 @@ def api_drill_start(topic: str, fresh: bool = False):
         prompts = [{"en": f"Discuss the most important issues related to {t['en'].lower()} today, and give your own opinion.",
                     "zh": f"讨论当今与“{t['zh']}”相关的最重要问题，并给出你的观点。"}]
     prompt = prompts[-1] if fresh else random.choice(prompts)
-    return {"topic": t, "prompt": prompt, "prompts": prompts, "suggestions": suggestions_for(topic),
+    return {"topic": t, "prompt": prompt, "prompts": prompts, "suggestions": suggestions_for(topic, corpus=corpus_of(corpus)),
             "minWords": store.load_config()["drill"]["min_words"], "aiReady": ai_reason() is None, "aiReason": ai_reason()}
 
 
@@ -652,10 +701,14 @@ def api_delete_drill(did: int):
 LENGTHS = {"mix": {"short", "medium", "long"}, "short": {"short"}, "medium": {"medium"}, "long": {"long"}}
 
 
-def trans_candidates(topic: str) -> list[dict]:
+def trans_candidates(topic: str | None, corpus: str = "all") -> list[dict]:
     """出题时交给 AI 的库内素材：学过的、到期的、收藏的、自己收集的优先"""
-    rows = [m for m in store.list_materials(topic) if m["kind"] in ("collocation", "pattern", "linker")]
-    general = [m for m in store.list_materials("general") if m["kind"] in ("pattern", "linker")] if topic != "general" else []
+    rows = [m for m in scoped(store.list_materials(topic), corpus) if m["kind"] in ("collocation", "pattern", "linker")]
+    if corpus in ("mine", "starred"):  # 只用这个语料库，不补通用句型
+        day = srs.today()
+        rows.sort(key=lambda m: (0 if m["state"] and m["state"]["due"] <= day else 1 if m["state"] else 2, random.random()))
+        return rows[:14]
+    general = [m for m in scoped(store.list_materials("general"), corpus) if m["kind"] in ("pattern", "linker")] if topic != "general" else []
     day = srs.today()
 
     def rank(m):
@@ -666,15 +719,17 @@ def trans_candidates(topic: str) -> list[dict]:
 
 def trans_out(item: dict, show_hints: bool) -> dict:
     targets = [m for m in (store.get_material(i) for i in item["targets"]) if m]
-    return {"id": item["id"], "topic": item["topic"], "topicZh": (store.get_topic(item["topic"]) or {}).get("zh", ""),
+    slug = item["topic"].split("@")[0]
+    topic_zh = "混合话题" if slug == "*" else (store.get_topic(slug) or {}).get("zh", "")
+    return {"id": item["id"], "topic": slug, "topicZh": topic_zh,
             "length": item["length"], "zh": item["zh"], "source": item["source"],
             "hints": item["hints"] if show_hints else [],
             "targets": [{"id": m["id"], "form": m["form"], "zh": m["zh"], "kind": m["kind"]} for m in targets]}
 
 
-def material_item(topic: str | None, exclude: set[int]) -> dict | None:
+def material_item(topic: str | None, exclude: set[int], corpus: str = "all") -> dict | None:
     """没 AI 时：拿一条有中文例句的素材出题"""
-    rows = [m for m in store.list_materials(topic) if m["kind"] in store.CLOZE_KINDS
+    rows = [m for m in scoped(store.list_materials(topic), corpus) if m["kind"] in store.CLOZE_KINDS
             and any(e.get("zh") and e.get("answer") for e in m["examples"])]
     day = srs.today()
     rows.sort(key=lambda m: (0 if m["state"] and m["state"]["due"] <= day else 1 if m["state"] else 2, random.random()))
@@ -697,21 +752,33 @@ def api_translate_next(body: dict = Body(default={})):
     lengths = LENGTHS.get(length, LENGTHS["mix"])
     exclude = {int(x) for x in body.get("exclude") or [] if str(x).isdigit()}
     topic = body.get("topic") or ""
+    corpus = corpus_of(body.get("corpus"))
     if topic and not store.get_topic(topic):
         err("没有这个话题", 404)
     if ai_reason():
         exclude_m = {int(x) for x in body.get("excludeMaterials") or [] if str(x).isdigit()}
-        item = material_item(topic or None, exclude_m)
+        item = material_item(topic or None, exclude_m, corpus)
         if not item:
-            err("这个范围里没有带中文例句的素材")
+            err(f"这个范围里没有带中文例句的素材（{CORPORA[corpus]}语料库）")
         store.use_trans(item["id"])
         out = trans_out(item, True)
         out["aiReady"] = False
         return out
-    if not topic:  # 全部话题：随机挑一个（不挑“通用”）
-        topic = random.choice([t["slug"] for t in store.list_topics() if t["slug"] != "general"])
-    t = store.get_topic(topic)
-    pool = store.unused_trans(topic, lengths, exclude)
+    if corpus in ("mine", "starred"):
+        # 自建 / 收藏：题目围绕这个语料库里的素材出；没选话题就混合话题
+        cands = trans_candidates(topic or None, corpus)
+        if not cands:
+            err(f"{CORPORA[corpus]}语料库里还没有可以出题的素材（搭配、句型、衔接）。"
+                + ("去「文章」导入范文、在素材库里添加，或者用“AI 扩充”。" if corpus == "mine" else "去素材库里点星标收藏几条。"))
+        key = f"{topic or '*'}@{corpus}"
+        t = store.get_topic(topic) if topic else {"slug": key, "en": "mixed topics from the learner's own collection", "zh": "混合话题"}
+    else:
+        if not topic:  # 全部话题：随机挑一个（不挑“通用”）
+            topic = random.choice([x["slug"] for x in store.list_topics() if x["slug"] != "general"])
+        key = topic if corpus == "all" else f"{topic}@{corpus}"
+        t = store.get_topic(topic)
+        cands = None
+    pool = store.unused_trans(key, lengths, exclude)
     if not pool:
         n = tcfg["batch"]
         if length == "mix":
@@ -720,12 +787,13 @@ def api_translate_next(body: dict = Body(default={})):
         else:
             counts = {length: n}
         try:
-            made = ai.translation_items(t, trans_candidates(topic), counts, cfg)
+            made = ai.translation_items(t, cands if cands is not None else trans_candidates(topic, corpus), counts, cfg,
+                                        require_targets=cands is not None)
         except ai.AIError as e:
             err(str(e))
         for it in made:
-            store.add_trans(topic, it, "ai")
-        pool = store.unused_trans(topic, lengths, exclude)
+            store.add_trans(key, it, "ai")
+        pool = store.unused_trans(key, lengths, exclude)
         if not pool:
             err("AI 这次没出好题，再试一次")
     item = random.choice(pool) if length == "mix" else pool[0]
@@ -766,7 +834,8 @@ def api_translate_check(body: dict = Body(...)):
             store.record(u["id"], g, "translate")
     lib = store.norms_in_library()
     for e in fb["expressions"]:
-        e["topics"] = [item["topic"]] if item["topic"] in store.topic_slugs() else []
+        slug = item["topic"].split("@")[0]
+        e["topics"] = [slug] if slug in store.topic_slugs() else []
         e["saved"] = store.norm(e["kind"], e["form"]) in lib
     fb["id"] = store.add_trans_log(item, answer, fb)
     return fb

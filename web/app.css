@@ -451,3 +451,23 @@ input:not([type]), input[type="text"], input[type="search"], input[type="number"
 }
 textarea, input:not([type]), input[type="text"] { color: var(--input-ink); }
 .cloze input { font-family: var(--serif); }
+
+/* ---------- 练习开始前的选择 ---------- */
+.setup-step { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; padding: 28px 0; border-top: 1px solid var(--line); }
+.setup-step .step { font: 200 44px/1 var(--display); color: var(--blue-hi); }
+.setup-step .h3 { margin-bottom: 16px; font-size: 26px; }
+.corpus-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.corpus { text-align: left; display: grid; gap: 6px; padding: 16px; border-radius: 3px; cursor: pointer;
+  background: var(--panel); border: 1px solid transparent; color: var(--ink); }
+.corpus:hover { border-color: var(--line-2); }
+.corpus.on { background: var(--blue); border-color: var(--blue); }
+.corpus .corpus-name { font: 300 26px/1 var(--display); }
+.corpus .mono { font-size: 12px; color: var(--ink-2); }
+.corpus small { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
+.corpus.on small, .corpus.on .mono { color: rgba(242, 242, 242, .82); }
+#topic-chips .chip small { opacity: .6; margin-left: 2px; }
+#topic-chips .chip:disabled { opacity: .3; cursor: default; }
+.setup-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 14px; margin: 4px 0 22px;
+  background: rgba(242, 242, 242, .04); border: 1px solid var(--line); border-radius: 3px; }
+.setup-bar .label { text-decoration: none; }
+@media (max-width: 860px) { .corpus-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } .setup-step { grid-template-columns: 1fr; gap: 6px; } }

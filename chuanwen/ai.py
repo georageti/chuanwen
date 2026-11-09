@@ -877,7 +877,9 @@ Avoid flat textbook Chinese such as 技术进步不仅提高了生产效率，�
 good Chinese op-ed (e.g. 一味追求经济增长而忽视环境代价，无异于饮鸩止渴；短期看似红利可观，长远却得不偿失。).
 
 You are given some expressions from the learner's own library (with ids). Where it fits naturally, build an exercise so
-that one of them is the best way to translate part of it, and list its id in targets. Never force it.
+that one of them is the best way to translate part of it, and list its id in targets. Never force it, except when
+the request says every_exercise_must_use_a_library_expression: then build EVERY exercise around a different library
+expression (the learner is practising their own collection), choosing a fitting topic for each.
 
 For each exercise return:
 - length: short | medium | long
@@ -918,9 +920,11 @@ def uses_form(form: str, text: str) -> bool:
     return bool(words) and all(any(_word_match(t, w) for t in toks) for w in words)
 
 
-def translation_items(topic: dict, candidates: list[dict], counts: dict, cfg: dict) -> list[dict]:
-    """counts: {short, medium, long} → [{length, zh, ref, targets: [id], hints}]"""
+def translation_items(topic: dict, candidates: list[dict], counts: dict, cfg: dict, require_targets: bool = False) -> list[dict]:
+    """counts: {short, medium, long} → [{length, zh, ref, targets: [id], hints}]
+    require_targets：练的是学习者自建的语料库，每道题都要围绕其中一条素材来出"""
     payload = {"topic": f"{topic['en']} ({topic['zh']})",
+               "every_exercise_must_use_a_library_expression": require_targets,
                "requested": {k: int(counts.get(k, 0)) for k in ("short", "medium", "long")},
                "library_expressions": [{"id": m["id"], "type": m["kind"], "form": m["form"], "zh": m["zh"]} for m in candidates]}
     d = ask(cfg, json.dumps(payload, ensure_ascii=False), TRANS_GEN_SYSTEM, TRANS_GEN_SCHEMA, temperature=0.8, max_tokens=6000)

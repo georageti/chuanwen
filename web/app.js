@@ -256,7 +256,7 @@ async function home() {
   const quota = Math.max(0, s.dailyNew - s.learnedToday);
   const todayN = s.due + Math.min(quota, s.new);
   const lines = [
-    { label: "recall", text: `due ${s.due} · new ${Math.min(quota, s.new)} · library ${s.materials}`, href: "#/recall" },
+    { label: "recall", text: `due ${s.due} · new ${Math.min(quota, s.new)} · library ${s.materials}`, href: "#/recall?go=1" },
     { label: "rewrite", text: s.aiReady ? "用库里的搭配升级平淡的句子" : "需要先在设置里填 AI Key", href: s.aiReady ? "#/rewrite" : "#/settings" },
     { label: "drill", text: `${s.drills} 篇 · 选一个话题写一段`, href: "#/drill" },
     { label: "translate", text: `${s.translations} 题 · 看中文写英文，AI 给更地道的说法`, href: "#/translate" },
@@ -269,7 +269,7 @@ async function home() {
       <h1 class="display" style="margin-top:18px">Words That<br>Carry Weight</h1>
       <p class="lead">把好文章拆成你自己的写作素材：好搭配、句型、论点和衔接。先记住，再改写，最后在话题作文里用出来。</p>
       <div class="actions">
-        <a class="btn primary" href="#/recall">今天的复习 · ${todayN}</a>
+        <a class="btn primary" href="#/recall?go=1">今天的复习 · ${todayN}</a>
         <a class="btn ghost" href="#/docs">${ICON.plus}导入文章</a>
       </div>
       <div class="term">
@@ -741,26 +741,130 @@ async function doc(id) {
   });
 }
 
-// ---------- 练习入口 ----------
+// ---------- 练习开始前的选择：语料库、话题、方式（每种练习各记住上一次的选择） ----------
 
-const prState = { topic: "", kind: "" };
+const CORPUS_NAME = { all: "全部", builtin: "内置", mine: "自建", starred: "收藏" };
+const CORPUS_HELP = {
+  all: "内置素材加上你自己收集的",
+  builtin: "川文自带的 32 个话题素材",
+  mine: "你从文章里拆的、手动添加的、AI 扩充加入的",
+  starred: "你点了星标的素材",
+};
+const PRACTICE = {
+  recall: { title: "Recall", zh: "回忆", desc: "看中文和例句，把挖掉的搭配、句型、衔接拼出来；论点素材看中文想英文。",
+    options: [
+      { key: "mode", label: "方式", choices: [["auto", "到期的 + 今天的新素材"], ["review", "只复习到期的"], ["new", "只学新的"]] },
+      { key: "kind", label: "类型", choices: [["", "全部"], ["collocation", "搭配"], ["pattern", "句型"], ["idea", "论点"], ["linker", "衔接"]] },
+    ] },
+  rewrite: { title: "Rewrite", zh: "改写升级", desc: "给一句平淡的英文，用指定素材把它升级，AI 批改。",
+    options: [{ key: "kind", label: "练哪类素材", choices: [["", "全部"], ["collocation", "搭配"], ["pattern", "句型"], ["linker", "衔接"]] }] },
+  translate: { title: "Translate", zh: "话题翻译", desc: "看中文写英文，AI 评价准确和地道程度，给出更地道的说法和别的选择。选“自建”时题目会围绕你自己收集的素材来出。",
+    options: [{ key: "length", label: "长度", choices: [["mix", "混合"], ["short", "短句"], ["medium", "中句"], ["long", "长句"]] }] },
+  drill: { title: "Drill", zh: "话题演练", desc: "选一个话题写一段，右边列出这个语料库里的相关素材，AI 估分并标出用上了哪些。", options: [] },
+};
+const SETUP_DEFAULT = {
+  recall: { corpus: "all", topic: "", mode: "auto", kind: "" },
+  rewrite: { corpus: "all", topic: "", kind: "" },
+  translate: { corpus: "all", topic: "", length: "" },
+  drill: { corpus: "all", topic: "" },
+};
+function getSetup(mode) {
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(`cw-setup-${mode}`) || "{}"); } catch { /* 无痕模式 */ }
+  const st = { ...SETUP_DEFAULT[mode], ...saved };
+  if (mode === "translate" && !st.length) st.length = CFG.translate.length || "mix";
+  return st;
+}
+function saveSetup(mode, st) {
+  try { localStorage.setItem(`cw-setup-${mode}`, JSON.stringify(st)); } catch { /* 无痕模式 */ }
+}
+function choiceName(mode, key, v) {
+  const opt = PRACTICE[mode].options.find((o) => o.key === key);
+  return opt ? (opt.choices.find(([k]) => k === v) || [, ""])[1] : "";
+}
+// 练习页顶部：现在练的是什么，点“更改”回到选择页
+function setupBar(mode, st, extra = "") {
+  const opts = PRACTICE[mode].options.map((o) => choiceName(mode, o.key, st[o.key])).filter((x) => x && x !== "全部");
+  return `<div class="setup-bar"><span class="label">#${mode}</span>
+    <span class="tag blue">${CORPUS_NAME[st.corpus] || "全部"}语料库</span>
+    <span class="tag">${st.topic ? esc(topicZh(st.topic)) : "不限话题"}</span>
+    ${opts.map((x) => `<span class="tag">${esc(x)}</span>`).join("")}${extra}
+    <a class="label" href="#/${mode}" style="margin-left:auto">更改 →</a></div>`;
+}
+
+async function setupPage(mode) {
+  const sc = await api("/api/practice/scope");
+  await loadTopics();
+  const meta = PRACTICE[mode];
+  const st = getSetup(mode);
+  const topics = sc.topics.filter((t) => mode !== "drill" || t.slug !== "general");
+  main().innerHTML = `<div class="fade-in setup">
+    <a class="label" href="#/practice" style="text-decoration:none">← 练习</a>
+    <div class="section-head" style="margin-top:14px"><div><span class="label">#${mode} · 开始前选一下</span>
+      <h2 class="h2" style="margin-top:8px">${meta.title}</h2><p class="muted" style="margin:10px 0 0;max-width:46em">${esc(meta.desc)}</p></div></div>
+    <section class="setup-step"><span class="step">01</span><div><h3 class="h3">语料库</h3>
+      <div class="corpus-cards">${Object.keys(CORPUS_NAME).map((c) => `<button class="corpus" data-corpus="${c}">
+        <span class="corpus-name">${CORPUS_NAME[c]}</span><span class="mono">${sc.corpora[c].n} 条${mode === "recall" ? ` · 到期 ${sc.corpora[c].due}` : ""}</span>
+        <small>${CORPUS_HELP[c]}</small></button>`).join("")}</div>
+      <p class="dim" id="corpus-note" style="font-size:13px;margin:10px 0 0"></p></div></section>
+    <section class="setup-step"><span class="step">02</span><div><h3 class="h3">话题</h3>
+      <div class="chips" id="topic-chips"></div>
+      <p class="dim" id="topic-note" style="font-size:13px;margin:10px 0 0"></p></div></section>
+    ${meta.options.map((o, i) => `<section class="setup-step"><span class="step">${pad(i + 3)}</span><div><h3 class="h3">${o.label}</h3>
+      <div class="chips" data-opt="${o.key}">${o.choices.map(([k, v]) => `<button class="chip" data-v="${k}">${v}</button>`).join("")}</div></div></section>`).join("")}
+    <div class="ctrl" style="margin-top:36px"><button class="btn primary" id="go">开始 ${ICON.arrow}</button><span class="label" id="go-msg"></span></div>
+  </div>`;
+
+  const drawTopics = () => {
+    const c = st.corpus;
+    if (st.topic && !topics.some((t) => t.slug === st.topic && t[c] > 0)) st.topic = "";
+    $("#topic-chips").innerHTML = `<button class="chip ${st.topic ? "" : "on"}" data-topic="">${mode === "drill" ? "随机一个话题" : "不限话题"} <small class="mono">${sc.corpora[c].n}</small></button>`
+      + topics.map((t) => `<button class="chip ${t.slug === st.topic ? "on" : ""}" data-topic="${t.slug}" ${t[c] ? "" : "disabled"}>${esc(t.zh)} <small class="mono">${t[c]}</small></button>`).join("");
+    $("#topic-note").textContent = (c === "mine" || c === "starred") && sc.untagged[c]
+      ? `另有 ${sc.untagged[c]} 条${CORPUS_NAME[c]}素材没有标话题，选“不限话题”时会用到。` : "";
+    $$("[data-corpus]").forEach((b) => b.classList.toggle("on", b.dataset.corpus === c));
+    const empty = sc.corpora[c].n === 0;
+    $("#corpus-note").innerHTML = empty ? (c === "mine"
+      ? `自建语料库还是空的：去 <a href="#/docs">文章</a> 导入范文拆素材，或者在 <a href="#/library">素材库</a> 里添加、用“AI 扩充”。`
+      : c === "starred" ? `还没有收藏：在 <a href="#/library">素材库</a> 里点卡片上的星标。` : "") : "";
+    $("#go").disabled = empty;
+  };
+  drawTopics();
+  meta.options.forEach((o) => {
+    const box = $(`[data-opt="${o.key}"]`);
+    const sync = () => $$(".chip", box).forEach((b) => b.classList.toggle("on", b.dataset.v === String(st[o.key] ?? "")));
+    sync();
+    box.onclick = (e) => { const b = e.target.closest("[data-v]"); if (!b) return; st[o.key] = b.dataset.v; sync(); };
+  });
+  $(".corpus-cards").onclick = (e) => { const b = e.target.closest("[data-corpus]"); if (!b) return; st.corpus = b.dataset.corpus; drawTopics(); };
+  $("#topic-chips").onclick = (e) => {
+    const b = e.target.closest("[data-topic]"); if (!b || b.disabled) return;
+    st.topic = b.dataset.topic;
+    $$("#topic-chips .chip").forEach((x) => x.classList.toggle("on", x === b));
+  };
+  const go = () => {
+    saveSetup(mode, st);
+    if (mode === "drill") {
+      const pool = topics.filter((t) => t[st.corpus] > 0);
+      const slug = st.topic || (pool.length ? pool[Math.floor(Math.random() * pool.length)].slug : topics[0].slug);
+      location.hash = `#/drill/${slug}?go=1`;
+    } else location.hash = `#/${mode}?go=1`;
+  };
+  $("#go").onclick = go;
+  window.onkeydown = (e) => { if (e.key === "Enter" && !$("#go").disabled) go(); };
+}
+
+// ---------- 练习入口 ----------
 
 async function practice() {
   const s = await api("/api/stats");
   main().innerHTML = `
   <div class="fade-in">
-    <div class="section-head"><div><span class="label">#practice</span><h2 class="h2" style="margin-top:8px">Practice<sup>4</sup></h2></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <select class="field" id="ptopic" style="width:auto">${topicOptions(prState.topic)}</select>
-        <select class="field" id="pkind" style="width:auto">${kindOptions(prState.kind)}</select>
-      </div>
-    </div>
-    <p class="muted" style="margin:-16px 0 30px">上面选的话题对“回忆”“改写”“翻译”生效，类型对“回忆”生效。每天新素材 ${s.dailyNew} 条，可以在设置里改。</p>
+    <div class="section-head"><div><span class="label">#practice</span><h2 class="h2" style="margin-top:8px">Practice<sup>4</sup></h2></div></div>
+    <p class="muted" style="margin:-16px 0 30px">点一种练习，先选语料库（全部 / 内置 / 自建 / 收藏）、话题和方式再开始，上一次的选择会记住。每天新素材 ${s.dailyNew} 条，可以在设置里改。</p>
     ${modesHtml(s)}
     <div class="section" style="margin-top:72px"><span class="label">演练记录</span><div id="drills" style="margin-top:12px">${loading("")}</div></div>
   </div>`;
-  $("#ptopic").onchange = (e) => { prState.topic = e.target.value; };
-  $("#pkind").onchange = (e) => { prState.kind = e.target.value; };
   Art.paint(main());
   const list = await api("/api/drills");
   $("#drills").innerHTML = list.length ? list.map((x) => `<div class="docrow" style="grid-template-columns:70px minmax(0,1fr) auto">
@@ -785,17 +889,19 @@ function normAns(s) {
 }
 
 async function recall(_arg, params, alive) {
-  const scope = params.get("scope") || "auto";
-  const plan = await api("/api/recall/plan", { body: { topic: prState.topic, kind: prState.kind, scope } });
+  if (!params.get("go")) return setupPage("recall");
+  const st = getSetup("recall");
+  const scope = params.get("scope") || st.mode || "auto";
+  const plan = await api("/api/recall/plan", { body: { topic: st.topic, kind: st.kind, scope, corpus: st.corpus } });
   if (!alive()) return;
-  const filt = [prState.topic && topicZh(prState.topic), prState.kind && KIND[prState.kind]].filter(Boolean).join(" · ");
+  const filt = [CORPUS_NAME[st.corpus] !== "全部" && CORPUS_NAME[st.corpus], st.topic && topicZh(st.topic), st.kind && KIND[st.kind]].filter(Boolean).join(" · ");
   if (!plan.ids.length) {
     main().innerHTML = `<div class="done fade-in"><span class="label">#recall ${filt ? "· " + esc(filt) : ""}</span>
       <h2 class="h2" style="margin:14px 0">All Caught Up</h2>
       <p class="muted">${plan.new && !plan.quota ? "今天的新素材额度用完了，到期的也复习完了。" : "这个范围里没有要复习的素材。"}</p>
       <div class="ctrl" style="justify-content:center">
-        ${plan.new ? `<a class="btn primary" href="#/recall?scope=new">再学一组新素材</a>` : ""}
-        <a class="btn ghost" href="#/rewrite">去做改写</a><a class="btn line" href="#/practice">换个范围</a></div></div>`;
+        ${plan.new ? `<a class="btn primary" href="#/recall?go=1&scope=new&r=${Date.now()}">再学一组新素材</a>` : ""}
+        <a class="btn ghost" href="#/rewrite">去做改写</a><a class="btn line" href="#/recall">换个范围</a></div></div>`;
     return;
   }
   const ids = plan.ids;
@@ -815,7 +921,7 @@ async function recall(_arg, params, alive) {
     main().innerHTML = `<div class="done fade-in"><span class="label">#recall · 本轮结束</span>
       <h2 class="display" style="margin:14px 0">${firstTry}<span class="dim">/${results.length}</span></h2>
       <p class="muted">一次答对 ${firstTry} 条，其余已按掌握程度安排了复习。</p>
-      <div class="ctrl" style="justify-content:center"><a class="btn primary" href="#/recall?r=${Date.now()}">再来一轮</a><a class="btn ghost" href="#/rewrite">去做改写</a><a class="btn line" href="#/">回首页</a></div></div>`;
+      <div class="ctrl" style="justify-content:center"><a class="btn primary" href="#/recall?go=1&r=${Date.now()}">再来一轮</a><a class="btn ghost" href="#/rewrite">去做改写</a><a class="btn line" href="#/">回首页</a></div></div>`;
   };
 
   const show = async () => {
@@ -954,20 +1060,22 @@ async function rewrite(_arg, params, alive) {
     return;
   }
   const fixedId = params.get("id");
+  if (!fixedId && !params.get("go")) return setupPage("rewrite");
+  const st = getSetup("rewrite");
   main().innerHTML = `<div class="stage">${loading("AI 正在出题…")}</div>`;
   let t;
   try {
-    t = await api("/api/rewrite/next", { body: { topic: prState.topic, id: fixedId ? +fixedId : null, exclude: rwState.exclude.slice(-30) } });
+    t = await api("/api/rewrite/next", { body: { topic: st.topic, kind: st.kind, corpus: st.corpus, id: fixedId ? +fixedId : null, exclude: rwState.exclude.slice(-30) } });
   } catch (e) {
-    if (alive()) main().innerHTML = `<div class="done"><p class="muted">${esc(e.message)}</p><a class="btn line" href="#/practice">返回</a></div>`;
+    if (alive()) main().innerHTML = `<div class="done"><p class="muted">${esc(e.message)}</p><a class="btn line" href="#/rewrite">换个范围</a></div>`;
     return;
   }
   if (!alive()) return;
   rwState.exclude.push(t.material.id);
   const m = t.material;
   main().innerHTML = `<div class="stage fade-in">
-    <div class="practice-top"><span class="label">#rewrite ${prState.topic ? "· " + esc(topicZh(prState.topic)) : ""}</span>
-      <span class="label"><span class="tag k-${m.kind}">${KIND[m.kind]}</span> ${m.topics.slice(0, 2).map(topicZh).join(" · ")}</span></div>
+    ${fixedId ? `<div class="setup-bar"><span class="label">#rewrite · 指定素材</span><a class="label" href="#/rewrite" style="margin-left:auto">选范围随机出题 →</a></div>` : setupBar("rewrite", st)}
+    <div class="practice-top"><span class="label"><span class="tag k-${m.kind}">${KIND[m.kind]}</span> ${m.topics.slice(0, 2).map(topicZh).join(" · ")}</span></div>
     <span class="label">用这个${KIND[m.kind]}</span>
     <div><div class="target"><b>${esc(m.form)}</b><span>${esc(m.zh)}</span></div></div>
     <span class="label">把这句话升级</span>
@@ -976,11 +1084,11 @@ async function rewrite(_arg, params, alive) {
     <textarea class="answer-box" id="ans" placeholder="写出升级后的句子…"></textarea>
     <div class="ctrl"><button class="btn primary" id="sub">提交批改 <span class="kbd" style="color:inherit;border-color:currentColor">⌘↵</span></button>
       <button class="btn line small" id="skip">换一题</button><span class="spacer"></span>
-      ${fixedId ? `<a class="btn line small" href="#/rewrite">随机出题</a>` : ""}</div>
+</div>
     <div id="result"></div></div>`;
   $("#ans").focus();
   let checked = false;
-  const next = () => { location.hash = `#/rewrite?r=${Date.now()}`; };
+  const next = () => { location.hash = fixedId ? `#/rewrite?id=${fixedId}&r=${Date.now()}` : `#/rewrite?go=1&r=${Date.now()}`; };
   $("#skip").onclick = next;
   const submit = async () => {
     if (checked) { next(); return; }
@@ -1032,23 +1140,16 @@ function feedbackHtml(fb) {
 }
 
 async function drill(slug, params, alive) {
-  if (!slug) {
-    await loadTopics();
-    main().innerHTML = `<div class="fade-in"><div class="section-head"><div><span class="label">#drill</span><h2 class="h2" style="margin-top:8px">Pick a Topic</h2></div></div>
-      <div class="topics">${TOPICS.filter((t) => t.slug !== "general").map((t, i) => `<a class="topic" href="#/drill/${t.slug}">
-        <div class="art"><canvas data-art="glyph" data-glyph="${esc(t.glyph)}" data-seed="${i + 1}"></canvas></div>
-        <span class="label">#${pad(i + 1)} · ${esc(t.en)}</span><div class="h3">${esc(t.zh)}</div><p>${t.count} 条素材</p></a>`).join("")}</div></div>`;
-    Art.paint(main());
-    return;
-  }
+  if (!slug) return setupPage("drill");
+  const st = { ...getSetup("drill"), topic: slug };
   const fresh = params.get("fresh") === "1";
-  const d = await api(`/api/drill/start?topic=${encodeURIComponent(slug)}${fresh ? "&fresh=true" : ""}`);
+  const d = await api(`/api/drill/start?topic=${encodeURIComponent(slug)}&corpus=${st.corpus}${fresh ? "&fresh=true" : ""}`);
   if (!alive()) return;
   const draftKey = `cw-draft-${slug}`;
   let draft = "";
   try { draft = localStorage.getItem(draftKey) || ""; } catch { /* 无痕模式 */ }
   main().innerHTML = `<div class="fade-in">
-    <a class="label" href="#/drill" style="text-decoration:none">← 换话题</a>
+    ${setupBar("drill", st)}
     <div class="section-head" style="margin-top:14px"><div><span class="label">#drill · ${esc(d.topic.en)}</span><h2 class="h2" style="margin-top:8px">${esc(d.topic.zh)}</h2></div></div>
     ${d.aiReady ? "" : `<div class="notice">可以先写，但提交批改需要 AI：${esc(d.aiReason)}。<a href="#/settings">去设置</a></div>`}
     <div class="drill">
@@ -1074,7 +1175,7 @@ async function drill(slug, params, alive) {
   $("#essay").oninput = update;
   update();
   // 题库里多道题时随机换；只有一道或想要新的，就让 AI 出
-  $("#another").onclick = () => { location.hash = `#/drill/${slug}?${d.prompts.length > 1 && Math.random() < 0.6 ? "r=" + Date.now() : "fresh=1&r=" + Date.now()}`; };
+  $("#another").onclick = () => { location.hash = `#/drill/${slug}?go=1&${d.prompts.length > 1 && Math.random() < 0.6 ? "r=" + Date.now() : "fresh=1&r=" + Date.now()}`; };
   const submit = async () => {
     const text = $("#essay").value.trim();
     if ((text.match(/[A-Za-z]+/g) || []).length < d.minWords) { toast(`至少写 ${d.minWords} 个词再提交`, true); return; }
@@ -1094,7 +1195,7 @@ async function drill(slug, params, alive) {
 // ---------- 话题翻译 ----------
 
 const LEN_NAME = { mix: "混合", short: "短句", medium: "中句", long: "长句" };
-const trState = { length: "", exclude: [], excludeMaterials: [] };
+const trState = { exclude: [], excludeMaterials: [] };
 
 // 按词对比，标出改动（删掉的划线，加上的下划线）
 function wordDiff(a, b) {
@@ -1155,14 +1256,16 @@ function bindFeedback(root, fb) {
 }
 
 async function translate(_arg, params, alive) {
+  if (!params.get("go")) return setupPage("translate");
   await loadTopics();
-  const length = trState.length || CFG.translate.length || "mix";
+  const st = getSetup("translate");
+  const length = st.length || "mix";
   main().innerHTML = `<div class="stage">${loading("出题中…（AI 第一次出一批，约 15 秒）")}</div>`;
   let item;
   try {
-    item = await api("/api/translate/next", { body: { topic: prState.topic, length, exclude: trState.exclude.slice(-50), excludeMaterials: trState.excludeMaterials.slice(-50) } });
+    item = await api("/api/translate/next", { body: { topic: st.topic, length, corpus: st.corpus, exclude: trState.exclude.slice(-50), excludeMaterials: trState.excludeMaterials.slice(-50) } });
   } catch (e) {
-    if (alive()) main().innerHTML = `<div class="done"><p class="muted">${esc(e.message)}</p><a class="btn line" href="#/practice">返回</a></div>`;
+    if (alive()) main().innerHTML = `<div class="done"><p class="muted">${esc(e.message)}</p><a class="btn line" href="#/translate">换个范围</a></div>`;
     return;
   }
   if (!alive()) return;
@@ -1170,11 +1273,8 @@ async function translate(_arg, params, alive) {
   item.targets.forEach((t) => trState.excludeMaterials.push(t.id));
   const hinted = { v: false };
   main().innerHTML = `<div class="stage fade-in">
-    <div class="practice-top"><span class="label">#translate · ${esc(LEN_NAME[item.length] || "")} · ${esc(item.topicZh)}</span>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-        <select class="field" id="ttopic" style="width:auto;padding:6px 10px">${topicOptions(prState.topic, "随机话题")}</select>
-        <div class="chips len-chips">${Object.entries(LEN_NAME).map(([k, v]) => `<button class="chip ${k === length ? "on" : ""}" data-len="${k}">${v}</button>`).join("")}</div>
-      </div></div>
+    ${setupBar("translate", st)}
+    <div class="practice-top"><span class="label">这道：${esc(LEN_NAME[item.length] || "")} · ${esc(item.topicZh)}${item.targets.length ? ` · 考 ${item.targets.length} 条库内素材` : ""}</span></div>
     ${item.aiReady ? "" : `<div class="notice">还没配置 AI：题目来自素材库的例句，写完对照参考译文自己打分。配置 AI 后会出长句、地道表达的题，并给出详细批改。<a href="#/settings">去设置</a></div>`}
     <span class="label">把这段中文译成英文</span>
     <div class="zh-big ${item.length === "long" ? "long" : ""}">${esc(item.zh)}</div>
@@ -1187,10 +1287,8 @@ async function translate(_arg, params, alive) {
     <div class="section" style="margin-top:72px"><span class="label">最近的翻译</span><div id="hist" style="margin-top:12px"></div></div>
   </div>`;
   $("#ans").focus();
-  const next = () => { location.hash = `#/translate?r=${Date.now()}`; };
+  const next = () => { location.hash = `#/translate?go=1&r=${Date.now()}`; };
   $("#skip").onclick = next;
-  $("#ttopic").onchange = (e) => { prState.topic = e.target.value; next(); };
-  $$("[data-len]").forEach((b) => b.onclick = () => { trState.length = b.dataset.len; next(); });
   if ($("#hint")) $("#hint").onclick = () => { hinted.v = true; $("#hints").classList.remove("hidden"); $("#hint").remove(); };
   let done = false;
   const submit = async () => {
