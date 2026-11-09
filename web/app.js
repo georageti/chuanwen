@@ -1368,7 +1368,9 @@ async function settings() {
   const [cfg, info, voices] = await Promise.all([api("/api/settings"), api("/api/info"), api("/api/voices")]);
   CFG = cfg;
   const a = cfg.ai, st = cfg.study;
-  const prov = [["deepseek", "DeepSeek（默认，国内直连）"], ["gemini", "Gemini"], ["anthropic", "Claude"], ["openai", "其他兼容接口"], ["none", "不用 AI"]];
+  const prov = [["deepseek", "DeepSeek（默认，国内直连）"], ["gemini", "Gemini"], ["gpt", "GPT"], ["anthropic", "Claude"], ["openai", "其他兼容接口"], ["none", "不用 AI"]];
+  const keyLink = (url, site) => `<div><a class="btn line small" href="${url}" target="_blank" rel="noopener">${ICON.arrow}去 ${site} 建 Key</a>
+    <span class="dim" style="font-size:13px;margin-left:8px">登录后新建一个 Key，复制回来粘贴到上面</span></div>`;
   const row = (label, control, help = "") => `<div class="set-row"><span>${label}${help ? `<small>${help}</small>` : ""}</span><div>${control}</div></div>`;
   main().innerHTML = `<div class="fade-in">
     <div class="section-head"><div><span class="label">#settings · 改了就自动保存（AI 来源和 Key 要点“保存”）</span><h2 class="h2" style="margin-top:8px">Settings</h2></div></div>
@@ -1381,10 +1383,18 @@ async function settings() {
           <label><span class="label">接口地址</span><input class="field" name="deepseek.base" value="${esc(a.deepseek.base)}"></label></div>
         </div>
         <div data-for="gemini" class="form-grid">
-          <label><span class="label">Gemini API Key（在 aistudio.google.com 登录后点 Get API key；国内需要代理）</span><input class="field" name="gemini.key" value="${esc(a.gemini.key)}" placeholder="AIza…"></label>
+          <label><span class="label">Gemini API Key（国内需要代理）</span><input class="field" name="gemini.key" value="${esc(a.gemini.key)}" placeholder="AIza…"></label>
+          ${keyLink("https://aistudio.google.com/apikey", "Google AI Studio")}
           <div class="two"><label><span class="label">模型（默认跟着最新的 Flash 走）</span><input class="field" name="gemini.model" value="${esc(a.gemini.model)}" placeholder="gemini-flash-latest"></label>
           <label><span class="label">接口地址（一般不用改）</span><input class="field" name="gemini.base" value="${esc(a.gemini.base)}"></label></div>
-          <p class="muted" style="margin:0;font-size:13px">Gemini 网页版的订阅（Google AI Pro / Ultra）本身不带 API Key。可以在 AI Studio 免费建 Key（有免费额度）；订阅附送的 Google Cloud 额度领取后，也能抵 API 费用。</p>
+          <p class="muted" style="margin:0;font-size:13px">不能直接用 Google 账户登录，只能填 Key。Gemini 订阅（Google AI Pro / Ultra）本身不带 Key；在 AI Studio 可以免费建 Key（有免费额度），订阅附送的 Google Cloud 额度领取后也能抵 API 费用。</p>
+        </div>
+        <div data-for="gpt" class="form-grid">
+          <label><span class="label">OpenAI API Key（国内需要代理）</span><input class="field" name="gpt.key" value="${esc(a.gpt.key)}" placeholder="sk-…"></label>
+          ${keyLink("https://platform.openai.com/api-keys", "OpenAI")}
+          <div class="two"><label><span class="label">模型</span><input class="field" name="gpt.model" value="${esc(a.gpt.model)}" placeholder="gpt-5-mini"></label>
+          <label><span class="label">接口地址（一般不用改）</span><input class="field" name="gpt.base" value="${esc(a.gpt.base)}"></label></div>
+          <p class="muted" style="margin:0;font-size:13px">ChatGPT Plus 订阅不带 API 额度，API 要在 OpenAI 平台单独充值；Pro / Business 订阅可以每月领一笔 API 额度。不能直接用 ChatGPT 账户登录，只能填 Key。模型名可以改成 OpenAI 后台列出的其他型号。</p>
         </div>
         <div data-for="anthropic" class="form-grid">
           <label><span class="label">Claude API Key（国内需要代理）</span><input class="field" name="anthropic.key" value="${esc(a.anthropic.key)}" placeholder="sk-ant-…"></label>
@@ -1483,7 +1493,7 @@ async function settings() {
     showProv();
   };
   const aiPatch = () => {
-    const patch = { ai: { provider, deepseek: {}, gemini: {}, anthropic: {}, openai: {} } };
+    const patch = { ai: { provider, deepseek: {}, gemini: {}, gpt: {}, anthropic: {}, openai: {} } };
     $$("input[name]").forEach((i) => { const [p, k] = i.name.split("."); patch.ai[p][k] = i.value.trim(); });
     return patch;
   };

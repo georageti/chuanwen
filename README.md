@@ -26,16 +26,17 @@
 - 也可以双击「启动川文」，或在终端运行 `.venv/bin/python run.py`（Windows：`.venv\Scripts\python.exe run.py`）。
 - 项目文件夹挪了位置，重新双击一次「安装川文」。
 
-第一次用：到「设置」里填 DeepSeek 的 API Key（platform.deepseek.com 申请），也可以选 Gemini、Claude 或其他 OpenAI 兼容接口。不填也能用内置素材练回忆。
+第一次用：到「设置」里填 DeepSeek 的 API Key（platform.deepseek.com 申请），也可以选 Gemini、GPT、Claude 或其他 OpenAI 兼容接口。Gemini 和 GPT 都不能直接用账户登录，只能填 API Key（设置里有直达建 Key 页面的按钮）。不填也能用内置素材练回忆。
 
 | AI 来源 | 说明 |
 |---|---|
 | DeepSeek（默认） | 国内直连，便宜 |
 | Gemini | 在 [Google AI Studio](https://aistudio.google.com/) 免费建 Key（有免费额度），默认模型 `gemini-flash-latest`。Gemini 网页版的订阅（Google AI Pro / Ultra）本身不带 Key，但订阅附送的 Google Cloud 额度领取后可以抵 API 费用。国内需要代理 |
+| GPT | OpenAI 官方接口，默认模型 `gpt-5-mini`（可改成后台列出的其他型号），按新模型的参数规矩发请求。ChatGPT Plus 订阅不带 API 额度，要在 [OpenAI 平台](https://platform.openai.com/api-keys) 单独充值建 Key；Pro / Business 订阅可以每月领 API 额度。国内需要代理 |
 | Claude | 官方 `anthropic` SDK，国内需要代理 |
 | 其他 | 任何 OpenAI 兼容接口（Kimi、通义等），填接口地址和模型名 |
 
-也可以不在网页里填 Key，改用环境变量 `DEEPSEEK_API_KEY`、`GEMINI_API_KEY`、`ANTHROPIC_API_KEY`。
+也可以不在网页里填 Key，改用环境变量 `DEEPSEEK_API_KEY`、`GEMINI_API_KEY`、`OPENAI_API_KEY`、`ANTHROPIC_API_KEY`。
 
 ## 功能
 
@@ -56,7 +57,7 @@
 
 ```
 chuanwen/    后端（FastAPI）
-  ai.py        分句、挖空；AI 拆素材、改写、演练、翻译的出题和批改、素材扩充（DeepSeek / Gemini / Claude / OpenAI 兼容）
+  ai.py        分句、挖空；AI 拆素材、改写、演练、翻译的出题和批改、素材扩充（DeepSeek / Gemini / GPT / Claude / OpenAI 兼容）
   tts.py       朗读：edge-tts 微软语音和缓存，离线兜底 macOS say / Windows SAPI
   builtin.py   解析内置素材 data/builtin.txt
   store.py     SQLite、设置、复习记录、导出导入

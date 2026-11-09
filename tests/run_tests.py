@@ -223,6 +223,21 @@ def main() -> None:
     c.post("/api/settings", json={"ai": {"provider": "openai"}})
     check("切回兼容接口", c.get("/api/stats").json()["aiReady"] is True)
 
+    section("GPT")
+    c.post("/api/settings", json={"ai": {"provider": "gpt", "gpt": {"key": "sk-test-5678", "model": "fake", "base": base}}})
+    check("GPT Key 打码", c.get("/api/settings").json()["ai"]["gpt"]["key"] == "••••5678")
+    check("GPT 默认地址", store.DEFAULT_CONFIG["ai"]["gpt"]["base"] == "https://api.openai.com/v1")
+    check("GPT 连接", c.post("/api/settings/test").json()["ok"] is True)
+    b = fake_ai.BODIES[-1]
+    check("GPT 用 max_completion_tokens、不带 temperature", "max_completion_tokens" in b and "max_tokens" not in b and "temperature" not in b, list(b))
+    check("GPT 低思考强度", b.get("reasoning_effort") == "low")
+    c.post("/api/settings", json={"ai": {"gpt": {"model": "strict-model"}}})
+    check("GPT 不认参数时重试", c.post("/api/settings/test").json()["ok"] is True and "reasoning_effort" not in fake_ai.BODIES[-1])
+    c.post("/api/settings", json={"ai": {"gpt": {"key": ""}}})
+    check("没填 GPT Key 的提示", "OpenAI" in (c.get("/api/stats").json()["aiReason"] or ""))
+    c.post("/api/settings", json={"ai": {"provider": "openai"}})
+    check("其他兼容接口仍用 max_tokens", c.post("/api/settings/test").json()["ok"] and "max_tokens" in fake_ai.BODIES[-1] and "temperature" in fake_ai.BODIES[-1])
+
     section("AI 拆素材")
     text = "There is no denying that remote work reshapes cities.\n\nYoung workers increasingly leave expensive centres. Rents fall slowly."
     r = c.post("/api/docs", data={"text": text, "title": "测试文章"}).json()

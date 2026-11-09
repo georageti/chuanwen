@@ -1,8 +1,8 @@
 """AI：从文章里拆写作素材、出改写题并批改、批改话题演练。
 
 支持三种来源（和川听同一套）：
-  deepseek / gemini / openai：OpenAI 兼容的 /chat/completions 接口（DeepSeek 国内直连；Gemini 走 Google 的兼容接口；
-                               也能接 Kimi、通义等）
+  deepseek / gemini / gpt / openai：OpenAI 格式的 /chat/completions 接口（DeepSeek 国内直连；Gemini 走 Google 的兼容接口；
+                               gpt 是 OpenAI 官方，按新模型的参数规矩发；openai 是其他兼容接口，也能接 Kimi、通义等）
   anthropic：Claude，用官方 anthropic SDK，JSON Schema 结构化输出
   none：不用 AI（只能手动划选加素材、练回忆）
 AI 给出的每一处原文片段都要核对：必须按顺序出现在原句里，对不上的丢掉。
@@ -129,14 +129,15 @@ def split_sentences(text: str) -> list[str]:
 # ---------- 调 AI ----------
 
 def _call_openai_compatible(base: str, key: str, model: str, prompt: str, system: str,
-                            temperature: float = 0.4, max_tokens: int = 6000, extra: dict | None = None) -> str:
+                            temperature: float = 0.4, max_tokens: int = 6000, extra: dict | None = None,
+                            reasoning_model: bool = False) -> str:
+    """reasoning_model：OpenAI 的 GPT-5 这类思考型模型，长度用 max_completion_tokens，不接受自定义 temperature"""
     url = base.rstrip("/") + "/chat/completions"  # 接口地址填到 /v1 为止（DeepSeek 可以不带 /v1）
     body = {
         "model": model,
         "messages": [{"role": "system", "content": system}, {"role": "user", "content": prompt}],
         "response_format": {"type": "json_object"},
-        "temperature": temperature,
-        "max_tokens": max_tokens,
+        **({"max_completion_tokens": max_tokens} if reasoning_model else {"temperature": temperature, "max_tokens": max_tokens}),
         **(extra or {}),
     }
     # 有的接口不认 response_format 或额外参数：报 400 时去掉它们再试一次（JSON 靠提示词和解析容错）
@@ -199,7 +200,8 @@ def _call_anthropic(key: str, model: str, prompt: str, system: str, schema: dict
     return next((b.text for b in resp.content if b.type == "text"), "")
 
 
-PROVIDER_NAMES = {"deepseek": "DeepSeek", "gemini": "Gemini", "openai": "接口", "anthropic": "Claude"}
+PROVIDER_NAMES = {"deepseek": "DeepSeek", "gemini": "Gemini", "gpt": "OpenAI（GPT）", "openai": "接口", "anthropic": "Claude"}
+OPENAI_STYLE = ("deepseek", "gemini", "gpt", "openai")  # 都走 /chat/completions
 
 
 def unavailable_reason(cfg: dict) -> str | None:
@@ -209,7 +211,7 @@ def unavailable_reason(cfg: dict) -> str | None:
         return "设置里选的是“不用 AI”"
     if provider == "anthropic":
         return None if ai["anthropic"]["key"] else "还没有填 Claude 的 API Key"
-    if provider in ("deepseek", "gemini", "openai"):
+    if provider in OPENAI_STYLE:
         p = ai[provider]
         if not p["key"]:
             return f"还没有填 {PROVIDER_NAMES[provider]} 的 API Key"
@@ -228,10 +230,10 @@ def _call(cfg: dict, prompt: str, system: str, schema: dict, temperature: float 
         p = ai["anthropic"]
         return _call_anthropic(p["key"], p["model"] or "claude-opus-5-5", prompt, system, schema)
     p = ai[ai["provider"]]
-    # Gemini 的思考型模型会把思考也算进 max_tokens，调低思考强度，免得 JSON 写到一半被截断
-    extra = {"reasoning_effort": "low"} if ai["provider"] == "gemini" else None
+    # Gemini 和 GPT 的思考型模型会把思考也算进输出长度，调低思考强度、多给点长度，免得 JSON 写到一半被截断
+    extra = {"reasoning_effort": "low"} if ai["provider"] in ("gemini", "gpt") else None
     return _call_openai_compatible(p["base"], p["key"], p["model"], prompt, system, temperature,
-                                   max_tokens + (4000 if extra else 0), extra)
+                                   max_tokens + (4000 if extra else 0), extra, reasoning_model=ai["provider"] == "gpt")
 
 
 def _parse(text: str) -> dict:
