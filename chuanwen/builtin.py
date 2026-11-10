@@ -5,9 +5,9 @@ import re
 from functools import lru_cache
 from pathlib import Path
 
-VERSION = 2
+VERSION = 3
 DATA = Path(__file__).resolve().parent.parent / "data"
-PATHS = [DATA / "builtin.txt", DATA / "builtin_more.txt"]  # builtin_more.txt 是 AI 生成、校验过的扩充（scripts/expand_builtin.py）
+PATHS = [DATA / "builtin.txt", DATA / "builtin_more.txt", DATA / "builtin_phrases.txt"]
 KIND_OF = {"c": "collocation", "s": "pattern", "l": "linker", "i": "idea"}
 
 

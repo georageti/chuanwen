@@ -28,7 +28,7 @@ README_MAC = """川文（Mac 版）· 英语写作语料本
    用完在网页「设置」最下面点“关闭川文”。
 
 第一次用，到「设置」里填 DeepSeek 的 API Key（platform.deepseek.com 申请）。
-不填也能用：内置的 1300 多条素材可以直接练回忆；拆文章、改写批改、话题演练、AI 扩充需要 Key。
+不填也能用：内置的 1462 条语料可先挑选加入素材库，再练回忆；拆文章、改写批改、话题演练、AI 扩充需要 Key。
 请把这个文件夹放在固定的位置再安装（比如“文稿”里）；以后挪了位置，重新双击安装一次即可。
 详细说明：https://github.com/georageti/chuanwen
 """
@@ -43,7 +43,7 @@ README_WIN = """川文（Windows 版）· 英语写作语料本
    用完在网页「设置」最下面点“关闭川文”。
 
 第一次用，到「设置」里填 DeepSeek 的 API Key（platform.deepseek.com 申请）。
-不填也能用：内置的 1300 多条素材可以直接练回忆；拆文章、改写批改、话题演练、AI 扩充需要 Key。
+不填也能用：内置的 1462 条语料可先挑选加入素材库，再练回忆；拆文章、改写批改、话题演练、AI 扩充需要 Key。
 Windows 版还没有在真机上大量测试，遇到问题欢迎到 GitHub 提 issue：
 https://github.com/georageti/chuanwen
 """

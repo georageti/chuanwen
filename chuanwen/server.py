@@ -209,7 +209,7 @@ def api_expand_topic(slug: str, body: dict = Body(default={})):
     if kind in store.KINDS:
         counts = {kind: 12 if kind != "idea" else 6}
     cfg = store.load_config()
-    have = [m["form"] for m in store.list_materials(slug)]
+    have = [m["form"] for m in store.list_corpus(slug)]
     try:
         r = ai.expand(t, have, cfg, counts)
         mats, _removed = ai.review(r["materials"], cfg)
@@ -219,6 +219,8 @@ def api_expand_topic(slug: str, body: dict = Body(default={})):
     mats = [m for m in mats if store.norm(m["kind"], m["form"]) not in lib]
     if not mats:
         err("AI 这次没给出新的素材，再试一次")
+    for m in mats:
+        m["corpus_id"], _ = store.add_corpus(m, "ai")
     return {"items": mats}
 
 
@@ -272,8 +274,9 @@ def api_add_materials(body: dict = Body(...)):
     doc_id = body.get("doc_id")
     source = "doc" if doc_id else ("ai" if body.get("source") == "ai" else "manual")
     added, ids = 0, []
-    for m in body.get("items", []):
-        mid, new = store.add_material(clean_material(m), source, doc_id)
+    items = [clean_material(m) for m in body.get("items", [])]
+    for m in items:
+        mid, new = store.add_material(m, source, doc_id)
         ids.append(mid)
         added += new
     return {"added": added, "ids": ids, "stats": store.stats()}
@@ -298,8 +301,39 @@ def api_recognize(body: dict = Body(...)):
         err("AI 没从这段文字里认出可用的素材，换一段试试，或者手动填写")
     lib = store.norms_in_library()
     for it in items:
+        it["corpus_id"], _ = store.add_corpus(it, "ai")
         it["saved"] = store.norm(it["kind"], it["form"]) in lib
     return {"items": items}
+
+
+# ---------- 独立语料库：候选保留，明确选择才进入练习 ----------
+
+@app.get("/api/corpus")
+def api_corpus(topic: str | None = None, kind: str | None = None, q: str | None = None,
+               source: str | None = None, status: str | None = None):
+    return store.list_corpus(topic, kind, q, source, status)
+
+
+@app.post("/api/corpus")
+def api_add_corpus(body: dict = Body(...)):
+    items = [clean_material(m) for m in body.get("items", [])]
+    added, ids = 0, []
+    for m in items:
+        cid, new = store.add_corpus(m, "manual")
+        ids.append(cid)
+        added += new
+    return {"added": added, "ids": ids}
+
+
+@app.post("/api/corpus/select")
+def api_select_corpus(body: dict = Body(...)):
+    ids = body.get("ids")
+    if not isinstance(ids, list) or not ids or any(type(i) is not int or i < 1 for i in ids):
+        err("请先选择要加入素材库的语料")
+    try:
+        return store.select_corpus(ids)
+    except ValueError as e:
+        err(str(e), 404)
 
 
 @app.patch("/api/materials/{mid}")
@@ -477,12 +511,9 @@ def api_practice_scope():
 # ---------- 没有新素材时让 AI 生成 ----------
 
 def auto_generate(topic: str | None, kind: str | None = None, corpus: str = "all", force: bool = False) -> dict:
-    """生成一批素材加进自建语料库（来源记为 AI）。返回 {added, topic, error}。
-    只在“全部”和“自建”语料库里生成（内置和收藏不会因此变多）；设置里关掉了就不生成。"""
+    """手动生成到独立语料库；旧版练习调用不再静默生成、加入素材。"""
     cfg = store.load_config()
-    if corpus not in ("all", "mine"):
-        return {"added": 0, "topic": topic, "error": None}
-    if not force and not cfg["study"].get("auto_generate", True):
+    if not force:
         return {"added": 0, "topic": topic, "error": None}
     reason = ai_reason()
     if reason:
@@ -502,14 +533,14 @@ def auto_generate(topic: str | None, kind: str | None = None, corpus: str = "all
     added = 0
     for attempt in range(2):  # 和库里重复的会被丢掉；加进来的不到六成就再补一次
         try:
-            r = ai.expand(t, [m["form"] for m in store.list_materials(slug)], cfg, counts)
+            r = ai.expand(t, [m["form"] for m in store.list_corpus(slug)], cfg, counts)
             mats, _ = ai.review(r["materials"], cfg)
         except ai.AIError as e:
             if added:
                 break
             return {"added": 0, "topic": slug, "error": str(e)}
         for m in mats:
-            _, new = store.add_material(clean_material(m), "ai")
+            _, new = store.add_corpus(clean_material(m), "ai")
             added += new
         if added >= n * 0.6:
             break
@@ -640,7 +671,7 @@ def api_rewrite_next(body: dict = Body(default={})):
             generated = auto_generate(body.get("topic") or None, kind, corpus)["added"]
             pool = [m for m in rewrite_pool(body.get("topic") or None, corpus, body.get("kind") or None) if m["id"] not in exclude]
         if not pool:
-            err(f"这个范围里没有可以改写的素材（{CORPORA[corpus]}语料库 · 搭配、句型、衔接）")
+            err(f"这个范围里没有可以改写的素材（{CORPORA[corpus]} · 词组搭配、句型、衔接）。请先到「语料库」选择语料加入素材库。")
         head = pool[:12]
         random.shuffle(head)
         pool = head
@@ -856,7 +887,7 @@ def api_translate_next(body: dict = Body(default={})):
         exclude_m = {int(x) for x in body.get("excludeMaterials") or [] if str(x).isdigit()}
         item = material_item(topic or None, exclude_m, corpus)
         if not item:
-            err(f"这个范围里没有带中文例句的素材（{CORPORA[corpus]}语料库）")
+            err(f"这个范围里没有带中文例句的素材（{CORPORA[corpus]}）。请先到「语料库」选择语料加入素材库。")
         store.use_trans(item["id"])
         out = trans_out(item, True)
         out["aiReady"] = False
@@ -870,7 +901,7 @@ def api_translate_next(body: dict = Body(default={})):
             cands = trans_candidates(topic or None, corpus)
         if not cands:
             err(f"{CORPORA[corpus]}语料库里还没有可以出题的素材（搭配、句型、衔接）。"
-                + ("去「文章」导入范文、在素材库里添加，或者用“AI 扩充”。" if corpus == "mine" else "去素材库里点星标收藏几条。"))
+                + ("请先到「语料库」选择语料加入素材库。" if corpus == "mine" else "去素材库里点星标收藏几条。"))
         key = f"{topic or '*'}@{corpus}"
         t = store.get_topic(topic) if topic else {"slug": key, "en": "mixed topics from the learner's own collection", "zh": "混合话题"}
     else:

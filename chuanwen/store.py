@@ -31,7 +31,7 @@ CONFIG_PATH = HOME / "config.json"
 AUDIO_DIR = HOME / "audio"  # 朗读缓存
 
 KINDS = {
-    "collocation": "搭配",
+    "collocation": "词组搭配",
     "pattern": "句型",
     "idea": "论点素材",
     "linker": "衔接",
@@ -56,7 +56,7 @@ DEFAULT_CONFIG = {
         "kinds": ["collocation", "pattern", "linker", "idea"],  # 回忆练哪几类
         "max_tries": 3,             # 回忆：错几次显示答案
         "auto_speak": True,         # 回忆：答完自动朗读
-        "auto_generate": True,      # 没有新素材时让 AI 生成一批（加进自建语料库）
+        "auto_generate": False,     # 兼容旧设置；练习不再自动添加素材，生成在语料库里手动发起
         "generate_count": 10,       # 每次生成多少条
     },
     "drill": {"suggestions": 12, "min_words": 20},
@@ -72,6 +72,9 @@ CREATE TABLE IF NOT EXISTS materials(
   id INTEGER PRIMARY KEY, norm TEXT UNIQUE, kind TEXT, form TEXT, zh TEXT, examples TEXT, topics TEXT,
   register TEXT, alts TEXT, note TEXT, source TEXT, doc_id INT, starred INT DEFAULT 0, user_note TEXT DEFAULT '',
   added REAL, state TEXT);
+CREATE TABLE IF NOT EXISTS corpus(
+  id INTEGER PRIMARY KEY, norm TEXT UNIQUE, kind TEXT, form TEXT, zh TEXT, examples TEXT, topics TEXT,
+  register TEXT, alts TEXT, note TEXT, source TEXT, doc_id INT, added REAL);
 CREATE TABLE IF NOT EXISTS removed(norm TEXT PRIMARY KEY);
 CREATE TABLE IF NOT EXISTS topics(
   slug TEXT PRIMARY KEY, en TEXT, zh TEXT, glyph TEXT, prompts TEXT, builtin INT DEFAULT 0, ord INT DEFAULT 0);
@@ -95,13 +98,19 @@ _conn: sqlite3.Connection | None = None
 
 def db() -> sqlite3.Connection:
     global _conn
-    if _conn is None:
-        HOME.mkdir(parents=True, exist_ok=True)
-        _conn = sqlite3.connect(DB_PATH, check_same_thread=False)
-        _conn.row_factory = sqlite3.Row
-        _conn.executescript(SCHEMA)
-        _seed(_conn)
-    return _conn
+    with _lock:
+        if _conn is None:
+            HOME.mkdir(parents=True, exist_ok=True)
+            conn = sqlite3.connect(DB_PATH, check_same_thread=False)
+            conn.row_factory = sqlite3.Row
+            conn.executescript(SCHEMA)
+            try:
+                _seed(conn)
+            except Exception:
+                conn.close()
+                raise
+            _conn = conn
+        return _conn
 
 
 def tx(sql: str, args: tuple = ()) -> sqlite3.Cursor:
@@ -128,14 +137,24 @@ def kv_set(k: str, v) -> None:
 # ---------- 内置素材 ----------
 
 def _seed(conn: sqlite3.Connection) -> None:
-    """第一次运行、或内置素材有新版本时，把内置话题和素材放进库里。用户删掉的内置素材不会再加回来。"""
-    row = conn.execute("SELECT v FROM kv WHERE k='builtin_version'").fetchone()
+    """内置内容只进入候选语料库；旧素材的 ID、进度、收藏和批注原样保留。"""
+    row = conn.execute("SELECT v FROM kv WHERE k='corpus_version'").fetchone()
     have = json.loads(row[0]) if row else 0
     if have >= builtin.VERSION:
         return
     data = builtin.load()
     _renorm(conn)
-    removed = {r[0] for r in conn.execute("SELECT norm FROM removed")}
+    # 一次迁移收录已有自建素材和文章候选，避免升级后找不到未选的文章语料。
+    if not conn.execute("SELECT 1 FROM kv WHERE k='corpus_migrated'").fetchone():
+        for row in conn.execute("SELECT * FROM materials").fetchall():
+            m = _row(dict(row))
+            _put_corpus(conn, m, m["source"], m["doc_id"], m["added"])
+        for row in conn.execute("SELECT id, meta FROM docs").fetchall():
+            for sent in json.loads(row["meta"] or "{}").get("sents", []):
+                for m in sent.get("items", []):
+                    if m.get("kind") in KINDS and m.get("form"):
+                        _put_corpus(conn, m, "doc", row["id"])
+        conn.execute("INSERT INTO kv VALUES('corpus_migrated', 'true')")
     for i, t in enumerate(data["topics"]):
         conn.execute("INSERT OR REPLACE INTO topics(slug, en, zh, glyph, prompts, builtin, ord) VALUES(?,?,?,?,?,1,?)",
                      (t["slug"], t["en"], t["zh"], t["glyph"], json.dumps(t["prompts"], ensure_ascii=False), i))
@@ -147,16 +166,8 @@ def _seed(conn: sqlite3.Connection) -> None:
         slug = m["topics"][0]
         seen[slug] = seen.get(slug, 0) + 1
         i = seen[slug] * 100 + order[slug]
-        n = norm(m["kind"], m["form"])
-        if n in removed:
-            continue
-        conn.execute(
-            "INSERT OR IGNORE INTO materials(norm, kind, form, zh, examples, topics, register, alts, note, source, added) "
-            "VALUES(?,?,?,?,?,?,?,?,?,?,?)",
-            (n, m["kind"], m["form"], m["zh"], json.dumps(m["examples"], ensure_ascii=False),
-             json.dumps(m["topics"]), m.get("register", ""), json.dumps(m.get("alts", []), ensure_ascii=False),
-             m.get("note", ""), "builtin", now - 1_000_000 + i))  # 内置的排在用户自己加的后面
-    conn.execute("INSERT OR REPLACE INTO kv VALUES('builtin_version', ?)", (json.dumps(builtin.VERSION),))
+        _put_corpus(conn, m, "builtin", added=now - 1_000_000 + i)
+    conn.execute("INSERT OR REPLACE INTO kv VALUES('corpus_version', ?)", (json.dumps(builtin.VERSION),))
     conn.commit()
 
 
@@ -313,8 +324,85 @@ def norms_in_library() -> set[str]:
     return {r["norm"] for r in q("SELECT norm FROM materials")}
 
 
+def _put_corpus(conn, m: dict, source: str, doc_id=None, added=None) -> tuple[int, bool]:
+    """在调用方事务中收录语料；重复表达合并例句，不触碰学习素材。"""
+    n = norm(m["kind"], m["form"])
+    row = conn.execute("SELECT * FROM corpus WHERE norm=?", (n,)).fetchone()
+    if row:
+        old = _row(dict(row))
+        examples = list(old["examples"])
+        seen = {e["en"].strip().casefold() for e in examples}
+        for ex in m.get("examples", []):
+            key = ex.get("en", "").strip().casefold()
+            if key and key not in seen:
+                examples.append(ex)
+                seen.add(key)
+        topics = list(dict.fromkeys(old["topics"] + m.get("topics", [])))
+        conn.execute("UPDATE corpus SET examples=?, topics=?, zh=? WHERE id=?",
+                     (json.dumps(examples, ensure_ascii=False), json.dumps(topics),
+                      old["zh"] or m.get("zh", ""), old["id"]))
+        return old["id"], False
+    cur = conn.execute(
+        "INSERT INTO corpus(norm, kind, form, zh, examples, topics, register, alts, note, source, doc_id, added) "
+        "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+        (n, m["kind"], m["form"].strip(), m.get("zh", ""), json.dumps(m.get("examples", []), ensure_ascii=False),
+         json.dumps(m.get("topics", [])), m.get("register", ""), json.dumps(m.get("alts", []), ensure_ascii=False),
+         m.get("note", ""), source, doc_id, added if added is not None else time.time()))
+    return cur.lastrowid, True
+
+
+def add_corpus(m: dict, source: str, doc_id=None) -> tuple[int, bool]:
+    with _lock:
+        conn = db()
+        with conn:
+            return _put_corpus(conn, m, source, doc_id)
+
+
+def list_corpus(topic=None, kind=None, query=None, source=None, status=None) -> list[dict]:
+    rows = [_row(r) for r in q(
+        "SELECT c.*, m.id material_id FROM corpus c LEFT JOIN materials m ON c.norm=m.norm "
+        "ORDER BY c.source='builtin', CASE WHEN c.source='builtin' THEN c.added ELSE -c.added END, c.id")]
+    needle = (query or "").strip().casefold()
+    out = []
+    for r in rows:
+        r["saved"] = r["material_id"] is not None
+        if topic and topic not in r["topics"] or kind and kind != r["kind"]:
+            continue
+        if source == "mine" and r["source"] == "builtin" or source not in (None, "", "all", "mine") and r["source"] != source:
+            continue
+        if status == "saved" and not r["saved"] or status == "pending" and r["saved"]:
+            continue
+        if needle and needle not in " ".join([r["form"], r["zh"] or "", r["note"] or "", *r["alts"],
+                                              *(e.get("en", "") + " " + e.get("zh", "") for e in r["examples"])]).casefold():
+            continue
+        out.append(r)
+    return out
+
+
+def select_corpus(ids: list[int]) -> dict:
+    """按 ID 加入素材库；先核对整批，重复提交不重置任何学习信息。"""
+    with _lock:
+        wanted = list(dict.fromkeys(ids))
+        rows = {r["id"]: r for r in list_corpus() if r["id"] in set(wanted)}
+        if len(rows) != len(wanted):
+            raise ValueError("部分语料已不存在，请刷新后重选")
+        added, mids = 0, []
+        for cid in wanted:
+            m = rows[cid]
+            mid, new = add_material(m, m["source"], m["doc_id"])
+            added += new
+            mids.append(mid)
+        return {"added": added, "existing": len(wanted) - added, "ids": mids}
+
+
 def add_material(m: dict, source: str, doc_id: int | None = None) -> tuple[int, bool]:
     """加一条素材；已有同类同形的就把新例句并进去。返回 (id, 是否新加)"""
+    with _lock:
+        add_corpus(m, source, doc_id)
+        return _add_material(m, source, doc_id)
+
+
+def _add_material(m: dict, source: str, doc_id: int | None = None) -> tuple[int, bool]:
     n = norm(m["kind"], m["form"])
     rows = q("SELECT * FROM materials WHERE norm=?", (n,))
     if rows:
@@ -324,6 +412,7 @@ def add_material(m: dict, source: str, doc_id: int | None = None) -> tuple[int, 
         for e in m.get("examples", []):
             if e.get("en") and e["en"] not in have:
                 exs.append(e)
+                have.add(e["en"])
         topics = list(dict.fromkeys(old["topics"] + m.get("topics", [])))
         tx("UPDATE materials SET examples=?, topics=? WHERE id=?",
            (json.dumps(exs, ensure_ascii=False), json.dumps(topics), old["id"]))
@@ -371,11 +460,20 @@ def delete_material(mid: int) -> None:
 def add_doc(title: str, filename: str, text: str, meta: dict) -> int:
     cur = tx("INSERT INTO docs(title, filename, chars, created, text, meta) VALUES(?,?,?,?,?,?)",
              (title, filename, len(text), time.time(), text, json.dumps(meta, ensure_ascii=False)))
+    save_doc_corpus(cur.lastrowid, meta)
     return cur.lastrowid
 
 
 def update_doc_meta(doc_id: int, meta: dict) -> None:
     tx("UPDATE docs SET meta=? WHERE id=?", (json.dumps(meta, ensure_ascii=False), doc_id))
+    save_doc_corpus(doc_id, meta)
+
+
+def save_doc_corpus(doc_id: int, meta: dict) -> None:
+    for sent in meta.get("sents", []):
+        for m in sent.get("items", []):
+            if m.get("kind") in KINDS and m.get("form"):
+                add_corpus(m, "doc", doc_id)
 
 
 def list_docs() -> list[dict]:
@@ -464,6 +562,7 @@ def stats() -> dict:
     by_kind = {k: sum(1 for r in rows if r["kind"] == k) for k in KINDS}
     return {
         "materials": len(rows),
+        "corpus": q("SELECT COUNT(*) n FROM corpus")[0]["n"],
         "mine": sum(1 for r in rows if r["source"] != "builtin"),
         "byKind": by_kind,
         "new": len(rows) - len(learned),
@@ -575,12 +674,9 @@ def list_trans_log(limit: int = 30) -> list[dict]:
 
 def restore_builtin() -> int:
     """把删掉的内置素材加回来"""
-    n = q("SELECT COUNT(*) n FROM removed")[0]["n"]
-    tx("DELETE FROM removed")
-    kv_set("builtin_version", 0)
-    with _lock:
-        _seed(db())
-    return n
+    removed = {r["norm"] for r in q("SELECT norm FROM removed")}
+    ids = [r["id"] for r in list_corpus(source="builtin") if r["norm"] in removed]
+    return select_corpus(ids)["added"]
 
 
 def clear_ai_cache() -> int:
@@ -611,6 +707,8 @@ def export_backup() -> dict:
                                        "starred", "user_note", "added", "state")})
     topics = [{k: t[k] for k in ("slug", "en", "zh", "glyph", "prompts")} for t in list_topics() if not t["builtin"]]
     return {"format": BACKUP_FORMAT, "exportedAt": time.strftime("%Y-%m-%dT%H:%M:%S"), "materials": mats,
+            "corpus": [{k: m[k] for k in ("kind", "form", "zh", "examples", "topics", "register", "alts", "note", "source")}
+                       for m in list_corpus(source="mine")],
             "topics": topics, "removed": [r["norm"] for r in q("SELECT norm FROM removed")],
             "log": q("SELECT day, mid, mode, grade, at FROM log"), "drills": q("SELECT topic, prompt, text, feedback, created FROM drills")}
 
@@ -625,6 +723,11 @@ def import_backup(data: dict) -> dict:
             tx("INSERT INTO topics(slug, en, zh, glyph, prompts, builtin, ord) VALUES(?,?,?,?,?,0,?)",
                (t["slug"], t.get("en", ""), t.get("zh", ""), t.get("glyph", "文"),
                 json.dumps(t.get("prompts", []), ensure_ascii=False), int(time.time())))
+    corpus_added = 0
+    for m in data.get("corpus", []):
+        if isinstance(m, dict) and m.get("kind") in KINDS and m.get("form"):
+            _, new = add_corpus(m, m.get("source") or "import")
+            corpus_added += new
     added = updated = 0
     for m in data.get("materials", []):
         if not m.get("kind") or not m.get("form"):
@@ -646,4 +749,4 @@ def import_backup(data: dict) -> dict:
             tx("UPDATE materials SET user_note=? WHERE id=?", (m["user_note"], mid))
     for n in data.get("removed", []):
         tx("INSERT OR IGNORE INTO removed VALUES(?)", (n,))
-    return {"added": added, "updated": updated}
+    return {"added": added, "updated": updated, "corpusAdded": corpus_added}

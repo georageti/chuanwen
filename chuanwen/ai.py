@@ -321,10 +321,14 @@ From an English text, pick out material the learner can REUSE in their own essay
 
 For every numbered sentence return:
 - zh: a natural, faithful Simplified Chinese translation of the sentence.
-- items: reusable material in this sentence (often 0-3; be selective, quality over quantity):
-  * collocation: natural word partnerships worth stealing — verb+noun (curb emissions), adjective+noun
-    (a pressing concern), adverb+adjective (deeply entrenched), verb+preposition, noun+of+noun.
-    Skip trivial ones (make money, very good), proper nouns and topic-specific jargon.
+- items: reusable material in this sentence; include ALL useful common noun phrases as well as other expressions,
+  usually 2-6 in a content-rich sentence. Do not force a fixed quota or invent phrases absent from the text.
+  * collocation: BOTH everyday topic vocabulary / noun phrases (vocational education, public transport,
+    food prices, social mobility, renewable energy, work experience) AND verb+noun, adjective+noun,
+    adverb+adjective, verb+preposition, noun+of+noun combinations.
+    Short, common noun phrases are core writing vocabulary: keep them even if they are not advanced or idiomatic.
+    Extract a useful noun phrase separately even when it sits inside a longer verb phrase; retain its full meaning.
+    Skip empty combinations (very good), proper names and highly specialised jargon, not useful topic concepts.
   * pattern: a reusable sentence frame (cleft, inversion, concession, comparison, "the more ... the more").
   * linker: a discourse marker more advanced than and / but / so / because / also.
   * idea: an argument, example, cause, effect or statistic that could support an essay on some topic.
@@ -710,12 +714,14 @@ strong essay would actually use. No rare, archaic, or overly literary expression
 two sides". Never repeat anything from the "already have" list, even with small changes.
 
 Return JSON with these arrays (give exactly the requested number of each; an array may be requested as 0):
-- collocations: high-value word partnerships that lift an essay's lexical score. Prefer strong verb+noun
-  (curb consumption, tackle obesity, exacerbate inequality), precise adjective+noun (a detrimental effect, a pressing
-  concern), adverb+adjective and verb+preposition. Plain noun+noun labels (food prices, food industry) may be at most
-  one in five, and only if genuinely essay-worthy. No two items may be near-duplicates of each other.
-  No basic B1 verbs or phrasal verbs that every learner knows (lead to, give up, take steps to, be addicted to); each
-  item should either use the topic's vocabulary or be an advanced (C1) expression. Each: form (dictionary form; base verb; sb / sth / one's for open slots; 2-6
+- collocations: a balanced mix of common noun phrases / topic vocabulary AND reusable verb and adjective combinations.
+  At least HALF the requested collocations should be precise noun phrases or concept labels, unless the supplied
+  topic genuinely has too few remaining distinct concepts. Examples across topics: vocational education, higher
+  education, public transport, food prices, social mobility, job security, renewable energy, cultural heritage.
+  These short, common expressions are valuable in their own right; do not inflate them into longer verb phrases
+  or reject them for being below C1. Cover different subtopics, not just the examples listed here.
+  The remaining items can include verb+noun, adjective+noun, adverb+adjective and verb+preposition combinations.
+  No empty phrases or near-duplicates. Each: form (dictionary form; base verb; sb / sth / one's for open slots; 2-6
   words), zh (Simplified Chinese, max 12 characters), example (one natural essay-style sentence, 10-24 words, that
   uses the collocation once, with ONLY the collocation's own words wrapped in [square brackets]; slot fillers stay
   outside the brackets, e.g. "Over-reliance on GPS may [foster dependence on] technology."), example_zh, alts (0-2
@@ -831,6 +837,8 @@ REVIEW_SYSTEM = """You are a meticulous editor checking a writing-material bank 
 For each numbered item decide:
 - keep: false if the item is wrong, unnatural, too basic for the learner's target level (lead to, give up, very important), a
   near-duplicate of another item in the list, or its example sentence is unnatural. Otherwise true.
+  Common noun phrases / concept labels such as vocational education, food prices and public transport MUST be kept
+  when accurate and useful: being short, familiar or below C1 is not a reason to remove topic vocabulary.
 - zh: the correct, natural Simplified Chinese meaning (fix it if needed; keep it short).
 - alts: only alternatives that really mean the same and could replace the item in its example sentence. Remove any
   related-but-different term (food safety is NOT an alternative for food security). Empty list is fine.
@@ -1097,12 +1105,15 @@ a Chinese description of an expression they want.
 
 Return the reusable writing material in it:
 - If it is a single English expression, return exactly that one item (fix its form if needed).
-- If it is a sentence or passage, return the expressions worth reusing in essays (usually 1-6), plus at most one idea
+- If it is a sentence or passage, return the expressions worth reusing in essays, including common noun phrases
+  and concept labels (vocational education, public transport, job security, food prices). Give broad coverage
+  across the whole passage; do not impose a small fixed item cap or prefer difficult phrases only. Also return at most one idea
   (an argument stated in general terms) if the text contains a good one.
 - If it is Chinese, return the best English expression(s) for what they describe.
 
 For each item:
 - type: collocation | pattern | linker | idea
+- collocation includes useful noun phrases and everyday topic vocabulary as well as verb combinations.
 - form: dictionary form (base verb; sb / sth / one's for open slots; X / Y in patterns). For an idea: one general English
   sentence, max 25 words.
 - zh: short Simplified Chinese meaning (max 16 characters; idea max 40)

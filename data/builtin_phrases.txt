@@ -1,0 +1,207 @@
+# 常用名词词组：覆盖所有具体话题，原创教学例句。只进入语料库，选中后加入素材库。
+@topic education | Education | 教育 | 教
+c | vocational education | 职业教育 | [Vocational education] combines classroom learning with practical training in a specific field. | 职业教育将课堂学习与特定领域的实践训练相结合。
+c | higher education | 高等教育 | The cost of [higher education] can influence a student's choice of university. | 高等教育的费用会影响学生对大学的选择。
+c | compulsory education | 义务教育 | [Compulsory education] gives children a foundation for further learning and work. | 义务教育为儿童进一步学习和工作打下基础。
+c | learning outcomes | 学习成果 | Teachers can use short activities to check students' [learning outcomes]. | 教师可以通过简短的活动检查学生的学习成果。
+c | student loans | 学生贷款 | Some graduates spend years paying back their [student loans]. | 一些毕业生需要花多年时间偿还学生贷款。
+c | teacher training | 教师培训 | Regular [teacher training] helps schools respond to changing classroom needs. | 定期开展教师培训有助于学校应对不断变化的课堂需求。
+
+@topic technology | Technology | 科技与生活 | 科
+c | information technology | 信息技术 | Small businesses use [information technology] to manage orders and customer records. | 小企业利用信息技术管理订单和客户记录。
+c | internet access | 互联网接入 | Reliable [internet access] allows rural students to attend online lessons. | 稳定的互联网接入让农村学生能够参加在线课程。
+c | electronic devices | 电子设备 | Schools need clear rules about using [electronic devices] during lessons. | 学校需要明确规定课堂上使用电子设备的规则。
+c | technical support | 技术支持 | Older users may need [technical support] when essential services move online. | 当基本服务转到线上时，老年用户可能需要技术支持。
+c | assistive technology | 辅助技术 | [Assistive technology] can help people with disabilities study and work independently. | 辅助技术能帮助残障人士独立学习和工作。
+
+@topic environment | Environment | 环境 | 环
+c | air quality | 空气质量 | Cleaner buses can improve [air quality] along busy urban roads. | 更清洁的公交车有助于改善繁忙城市道路沿线的空气质量。
+c | waste management | 废弃物管理 | Effective [waste management] requires reliable collection services and suitable treatment facilities. | 有效的废弃物管理需要可靠的收集服务和适当的处理设施。
+c | natural resources | 自然资源 | Long-term planning can prevent unnecessary pressure on limited [natural resources]. | 长期规划可以避免对有限的自然资源造成不必要的压力。
+c | marine pollution | 海洋污染 | Reducing plastic waste is one way to address [marine pollution]. | 减少塑料垃圾是应对海洋污染的一种方式。
+c | environmental protection | 环境保护 | Local residents should have a voice in decisions about [environmental protection]. | 当地居民应该能够参与有关环境保护的决策。
+c | water scarcity | 水资源短缺 | Better irrigation can help farming communities respond to [water scarcity]. | 改进灌溉方式有助于农业社区应对水资源短缺。
+
+@topic urbanization | Urbanization | 城市化 | 城
+c | population density | 人口密度 | High [population density] can make frequent bus services more practical. | 较高的人口密度能使频繁的公交服务更易于实行。
+c | public spaces | 公共空间 | Well-designed [public spaces] give residents places to meet without spending money. | 设计合理的公共空间让居民无需花钱也有地方聚会。
+c | rural communities | 农村社区 | Reliable transport helps [rural communities] stay connected to nearby towns. | 可靠的交通帮助农村社区与附近城镇保持联系。
+c | urban infrastructure | 城市基础设施 | Rapid population growth puts pressure on existing [urban infrastructure]. | 人口快速增长给现有城市基础设施带来压力。
+c | local amenities | 当地生活设施 | Families often consider [local amenities] when deciding where to live. | 家庭在决定居住地点时通常会考虑当地的生活设施。
+
+@topic globalization | Globalization & Culture | 全球化与文化 | 球
+c | international trade | 国际贸易 | [International trade] gives consumers access to goods produced in other countries. | 国际贸易使消费者可以买到其他国家生产的商品。
+c | global supply chains | 全球供应链 | Disruptions to [global supply chains] can delay the delivery of essential goods. | 全球供应链中断可能延误基本物资的交付。
+c | multinational companies | 跨国公司 | [Multinational companies] often recruit employees from several different countries. | 跨国公司通常从多个国家招聘员工。
+c | national identity | 国家认同 | Language and shared history can contribute to a sense of [national identity]. | 语言和共同历史可以增强国家认同感。
+
+@topic health | Health | 健康 | 健
+c | public health | 公共卫生 | Safe drinking water is essential for [public health] in every community. | 安全饮用水对每个社区的公共卫生都至关重要。
+c | mental health | 心理健康 | Schools should make it easier for students to discuss [mental health]. | 学校应让学生更容易讨论心理健康问题。
+c | primary care | 基层医疗 | Accessible [primary care] helps patients receive treatment before conditions become serious. | 便捷的基层医疗帮助患者在病情加重前接受治疗。
+c | preventive medicine | 预防医学 | [Preventive medicine] aims to reduce illness before people need extensive treatment. | 预防医学旨在减少疾病，使人们不必等到需要大量治疗。
+c | health insurance | 医疗保险 | The cost of [health insurance] can affect a family's monthly budget. | 医疗保险的费用会影响家庭每月的预算。
+
+@topic work | Work & Careers | 工作与职业 | 职
+c | work experience | 工作经验 | Internships give students [work experience] before they apply for full-time jobs. | 实习使学生在申请全职工作前获得工作经验。
+c | working conditions | 工作条件 | Employers should review [working conditions] when staff report persistent fatigue. | 当员工反映长期疲劳时，雇主应检查工作条件。
+c | labour market | 劳动力市场 | Technological change can alter the skills demanded by the [labour market]. | 技术变革会改变劳动力市场对技能的需求。
+c | employee benefits | 员工福利 | Flexible leave is one of the [employee benefits] applicants may consider. | 弹性休假是求职者可能考虑的员工福利之一。
+
+@topic media | Media & Advertising | 媒体与广告 | 媒
+c | news coverage | 新闻报道 | Balanced [news coverage] presents the relevant evidence and different perspectives. | 均衡的新闻报道会呈现相关证据和不同观点。
+c | advertising revenue | 广告收入 | Many free news websites depend on [advertising revenue] to pay their staff. | 许多免费新闻网站依靠广告收入支付员工薪酬。
+c | media literacy | 媒介素养 | [Media literacy] helps readers distinguish verified reporting from unsupported claims. | 媒介素养帮助读者区分经过核实的报道和缺乏依据的说法。
+c | target audience | 目标受众 | Advertisers choose language and images that appeal to their [target audience]. | 广告商选择能吸引目标受众的语言和图像。
+c | product placement | 产品植入 | Viewers may not always recognise [product placement] in entertainment programmes. | 观众并不总能识别娱乐节目中的产品植入。
+
+@topic government | Government & Society | 政府与社会 | 政
+c | public services | 公共服务 | Taxes help fund [public services] such as schools and waste collection. | 税收帮助资助学校和垃圾收集等公共服务。
+c | social welfare | 社会福利 | Effective [social welfare] can support families during periods of unemployment. | 有效的社会福利可以在失业期间为家庭提供支持。
+c | public spending | 公共支出 | Voters should be able to see how [public spending] is allocated. | 选民应该能够了解公共支出是如何分配的。
+c | local authorities | 地方当局 | [Local authorities] are often responsible for maintaining parks and public roads. | 地方当局通常负责维护公园和公共道路。
+c | policy decisions | 政策决策 | Reliable evidence should inform [policy decisions] about education and transport. | 有关教育和交通的政策决策应以可靠证据为依据。
+c | civic participation | 公民参与 | Public meetings create opportunities for [civic participation] in local decisions. | 公开会议为公民参与地方决策创造机会。
+
+@topic crime | Crime & Law | 犯罪与法律 | 法
+c | criminal justice | 刑事司法 | A fair [criminal justice] system must protect the rights of defendants. | 公平的刑事司法体系必须保护被告的权利。
+c | crime prevention | 犯罪预防 | Better street lighting can be part of a wider [crime prevention] strategy. | 改善街道照明可以成为更广泛的犯罪预防策略的一部分。
+c | prison sentences | 监禁刑期 | Courts consider the seriousness of an offence when determining [prison sentences]. | 法院在确定监禁刑期时会考虑违法行为的严重程度。
+c | legal aid | 法律援助 | [Legal aid] helps people obtain advice when they cannot afford a lawyer. | 法律援助帮助无力支付律师费用的人获得咨询。
+c | juvenile offenders | 青少年违法者 | Education programmes can help [juvenile offenders] prepare for life outside detention. | 教育项目可以帮助青少年违法者为离开拘押场所后的生活做好准备。
+
+@topic family | Family & Generations | 家庭与代际 | 家
+c | family relationships | 家庭关系 | Shared meals can create time for conversation and strengthen [family relationships]. | 一起用餐能创造交谈时间，并增进家庭关系。
+c | household responsibilities | 家庭事务责任 | Couples should discuss how to share [household responsibilities] fairly. | 伴侣应讨论如何公平分担家庭事务责任。
+c | parental leave | 育儿假 | Paid [parental leave] gives new parents time to care for their children. | 带薪育儿假让新手父母有时间照顾孩子。
+c | single-parent families | 单亲家庭 | Affordable childcare can make employment more accessible to [single-parent families]. | 价格合理的托育服务能让单亲家庭更容易就业。
+c | family support | 家庭支持 | Strong [family support] can help young people manage stressful transitions. | 有力的家庭支持能帮助年轻人应对充满压力的过渡时期。
+c | extended family | 大家庭 | Members of the [extended family] may share childcare and other responsibilities. | 大家庭的成员可能分担照顾孩子等责任。
+
+@topic transport | Transport | 交通 | 交
+c | road safety | 道路安全 | Lower speed limits near schools can improve [road safety] for children. | 学校附近降低限速可以提高儿童的道路安全。
+c | cycling lanes | 自行车道 | Protected [cycling lanes] help separate cyclists from heavy road traffic. | 有防护设施的自行车道有助于将骑车者与繁忙车流隔开。
+c | transport infrastructure | 交通基础设施 | Maintaining [transport infrastructure] is as important as building new routes. | 维护交通基础设施与修建新线路同样重要。
+c | commuting time | 通勤时间 | Living closer to work can reduce a person's daily [commuting time]. | 住得离工作地点更近可以缩短一个人每天的通勤时间。
+c | pedestrian zones | 步行区 | City centres with [pedestrian zones] offer more space for walking and shopping. | 设有步行区的市中心为步行和购物提供更多空间。
+
+@topic tourism | Tourism | 旅游 | 游
+c | tourist attractions | 旅游景点 | Popular [tourist attractions] need careful management during busy holiday periods. | 热门旅游景点在繁忙的假日期间需要妥善管理。
+c | local economy | 当地经济 | Visitors can support the [local economy] by buying goods from independent shops. | 游客可以通过购买独立商店的商品来支持当地经济。
+c | cultural tourism | 文化旅游 | [Cultural tourism] gives visitors opportunities to learn about local traditions. | 文化旅游让游客有机会了解当地传统。
+c | peak season | 旅游旺季 | Accommodation prices often rise during the [peak season] in popular destinations. | 热门目的地的住宿价格通常会在旅游旺季上涨。
+c | visitor numbers | 游客数量 | Museums may limit [visitor numbers] to protect fragile buildings and exhibits. | 博物馆可能会限制游客数量，以保护脆弱的建筑和展品。
+c | travel restrictions | 旅行限制 | Sudden [travel restrictions] can disrupt holiday plans and business trips. | 突然出台的旅行限制可能打乱度假计划和商务出行。
+
+@topic arts | Arts | 艺术 | 艺
+c | performing arts | 表演艺术 | Schools can introduce the [performing arts] through music and drama clubs. | 学校可以通过音乐社团和戏剧社团向学生介绍表演艺术。
+c | creative expression | 创意表达 | Art lessons give children space for [creative expression] beyond written assignments. | 美术课为儿童提供了书面作业之外的创意表达空间。
+c | arts funding | 艺术资助 | Stable [arts funding] helps small organisations plan events for local audiences. | 稳定的艺术资助帮助小型机构为当地观众策划活动。
+c | public art | 公共艺术 | Residents should be consulted before [public art] is installed in shared spaces. | 在共享空间设置公共艺术作品前，应征求居民意见。
+
+@topic sport | Sport | 体育 | 体
+c | physical activity | 身体活动 | Regular [physical activity] can be built into journeys to school or work. | 经常性的身体活动可以融入上学或上班的路程。
+c | team sports | 团队运动 | [Team sports] give young people opportunities to practise cooperation and communication. | 团队运动让年轻人有机会练习合作和沟通。
+c | professional athletes | 职业运动员 | [Professional athletes] often need support when moving into a different career. | 职业运动员在转向其他职业时通常需要支持。
+c | physical education | 体育教育 | Inclusive [physical education] encourages students with different abilities to participate. | 包容性的体育教育鼓励能力不同的学生参与。
+c | sports sponsorship | 体育赞助 | [Sports sponsorship] can help clubs pay for equipment and training facilities. | 体育赞助可以帮助俱乐部支付设备和训练设施的费用。
+
+@topic economy | Economy & Consumerism | 经济与消费 | 经
+c | living costs | 生活成本 | Rising [living costs] leave many households with less money to save. | 生活成本上涨使许多家庭能够储蓄的钱变少。
+c | small businesses | 小企业 | [Small businesses] often depend on regular customers in their local area. | 小企业通常依赖当地的固定顾客。
+c | household debt | 家庭债务 | High levels of [household debt] can make sudden income losses harder to manage. | 高额家庭债务会使突然失去收入更难应对。
+
+@topic ai | Artificial Intelligence | 人工智能 | 智
+c | machine learning | 机器学习 | [Machine learning] systems identify patterns in data to support specific tasks. | 机器学习系统识别数据中的模式，以支持特定任务。
+c | training data | 训练数据 | The quality of [training data] can affect the reliability of a system. | 训练数据的质量会影响系统的可靠性。
+c | human oversight | 人类监督 | Important automated decisions should remain subject to meaningful [human oversight]. | 重要的自动化决策应继续受到切实的人类监督。
+c | facial recognition | 人脸识别 | The use of [facial recognition] in public places raises questions about privacy. | 在公共场所使用人脸识别引发了有关隐私的问题。
+c | automated systems | 自动化系统 | Staff need training to recognise when [automated systems] produce unreliable results. | 员工需要接受培训，以识别自动化系统何时产生不可靠的结果。
+
+@topic animals | Animals & Nature | 动物与自然 | 兽
+c | natural habitats | 自然栖息地 | Expanding roads can divide the [natural habitats] that wildlife depends on. | 扩建道路可能割裂野生动物赖以生存的自然栖息地。
+c | wildlife conservation | 野生动物保护 | Local knowledge can make [wildlife conservation] projects more effective. | 当地知识可以使野生动物保护项目更有效。
+
+@topic ageing | Ageing Society | 老龄化 | 老
+c | ageing population | 老龄化人口 | An [ageing population] creates new demands for accessible housing and transport. | 老龄化人口对无障碍住房和交通提出了新的需求。
+c | retirement age | 退休年龄 | Debates about the [retirement age] should consider different working conditions. | 关于退休年龄的讨论应考虑不同的工作条件。
+c | pension system | 养老金制度 | A sustainable [pension system] needs to support both current and future retirees. | 可持续的养老金制度需要支持现在和未来的退休者。
+c | care workers | 护理人员 | Experienced [care workers] provide practical help and emotional support to residents. | 经验丰富的护理人员为住户提供实际帮助和情感支持。
+
+@topic science | Science & Space | 科学与太空 | 星
+c | scientific research | 科学研究 | Public funding can support [scientific research] with uncertain short-term returns. | 公共资金可以支持短期回报不确定的科学研究。
+c | research funding | 科研经费 | Stable [research funding] helps teams carry out projects over several years. | 稳定的科研经费有助于团队开展持续多年的项目。
+c | scientific evidence | 科学证据 | Decisions about new technologies should be informed by reliable [scientific evidence]. | 关于新技术的决策应以可靠的科学证据为依据。
+c | basic research | 基础研究 | [Basic research] can lead to applications that were not originally anticipated. | 基础研究可能带来最初未曾预料到的应用。
+c | space debris | 太空垃圾 | Growing amounts of [space debris] can threaten satellites in orbit. | 不断增加的太空垃圾可能威胁在轨卫星。
+
+@topic housing | Housing & Architecture | 住房与建筑 | 住
+c | housing shortage | 住房短缺 | A [housing shortage] can force families to accept unsuitable living conditions. | 住房短缺可能迫使家庭接受不合适的居住条件。
+c | rental market | 租赁市场 | Changes in the [rental market] affect students and young workers alike. | 租赁市场的变化会同时影响学生和年轻劳动者。
+c | building regulations | 建筑法规 | Clear [building regulations] help protect residents from unsafe construction. | 明确的建筑法规有助于保护居民免受不安全建筑的危害。
+c | residential areas | 住宅区 | Quiet [residential areas] still need convenient access to shops and schools. | 安静的住宅区仍然需要方便到达商店和学校。
+c | living space | 居住空间 | Families need enough [living space] for rest, study and everyday activities. | 家庭需要足够的居住空间来休息、学习和进行日常活动。
+
+@topic food | Food & Diet | 饮食 | 食
+c | food prices | 食品价格 | Rising [food prices] can make a varied diet harder to afford. | 食品价格上涨会使多样化饮食更难负担。
+c | food safety | 食品安全 | Regular inspections help restaurants maintain appropriate standards of [food safety]. | 定期检查帮助餐馆保持适当的食品安全标准。
+
+@topic gender | Gender Equality | 性别平等 | 等
+c | gender equality | 性别平等 | Fair recruitment practices are an important part of workplace [gender equality]. | 公平的招聘做法是职场性别平等的重要组成部分。
+c | equal pay | 同工同酬 | Transparent salary policies can help organisations work towards [equal pay]. | 透明的薪酬政策有助于机构实现同工同酬。
+c | gender stereotypes | 性别刻板印象 | Textbooks should avoid reinforcing [gender stereotypes] about work and family roles. | 教科书应避免强化关于工作和家庭角色的性别刻板印象。
+c | unpaid care work | 无偿照护劳动 | [Unpaid care work] can limit the time available for paid employment. | 无偿照护劳动会限制可用于有偿工作的时间。
+c | workplace discrimination | 职场歧视 | Clear complaint procedures help employees report [workplace discrimination]. | 明确的投诉程序有助于员工举报职场歧视。
+c | female representation | 女性代表性 | Greater [female representation] can bring more perspectives into public decision-making. | 更高的女性代表性可以为公共决策带来更多视角。
+
+@topic language | Language Learning | 语言学习 | 语
+c | language proficiency | 语言熟练程度 | Regular conversation practice can improve a learner's [language proficiency]. | 经常进行会话练习可以提高学习者的语言熟练程度。
+c | second language | 第二语言 | Learning a [second language] takes regular practice in meaningful situations. | 学习第二语言需要在有意义的情境中经常练习。
+c | language barriers | 语言障碍 | Translation services can reduce [language barriers] when residents seek public services. | 翻译服务可以减少居民获取公共服务时遇到的语言障碍。
+c | bilingual education | 双语教育 | [Bilingual education] allows students to learn through two different languages. | 双语教育让学生能够通过两种不同语言学习。
+c | oral communication | 口头交流 | Group discussions give learners useful practice in [oral communication]. | 小组讨论让学习者获得有用的口头交流练习。
+
+@topic charity | Charity & Volunteering | 慈善与志愿 | 善
+c | charitable donations | 慈善捐款 | Transparent reports show supporters how their [charitable donations] are used. | 透明的报告向支持者展示慈善捐款的用途。
+c | non-profit organisations | 非营利组织 | [Non-profit organisations] often work with local groups to deliver essential support. | 非营利组织通常与当地团体合作，提供必要支持。
+c | fundraising events | 筹款活动 | Community groups organise [fundraising events] to support local services. | 社区团体组织筹款活动，以支持当地服务。
+c | community support | 社区支持 | Strong [community support] helps vulnerable residents cope with unexpected difficulties. | 有力的社区支持帮助弱势居民应对意外困难。
+
+@topic energy | Energy | 能源 | 能
+c | fossil fuels | 化石燃料 | Many countries are seeking alternatives to [fossil fuels] for electricity generation. | 许多国家正在寻找化石燃料的替代品来发电。
+c | solar power | 太阳能发电 | Rooftop panels allow some households to generate electricity through [solar power]. | 屋顶太阳能板让一些家庭可以利用太阳能发电。
+c | energy consumption | 能源消耗 | Smart meters can help households understand their daily [energy consumption]. | 智能电表可以帮助家庭了解每日的能源消耗。
+c | power supply | 电力供应 | Hospitals need a reliable [power supply] to keep essential equipment running. | 医院需要可靠的电力供应，以保持关键设备运转。
+c | energy storage | 储能 | Improved [energy storage] can make intermittent electricity sources easier to use. | 改进储能技术可以使间歇性电源更容易利用。
+
+@topic poverty | Poverty & Development | 贫困与发展 | 贫
+c | poverty line | 贫困线 | Families near the [poverty line] are vulnerable to unexpected expenses. | 处于贫困线附近的家庭容易受到意外支出的影响。
+c | basic needs | 基本需求 | Public support should help households meet their [basic needs] during a crisis. | 公共支持应帮助家庭在危机期间满足基本需求。
+c | rural development | 农村发展 | Investment in roads and schools can support [rural development]. | 对道路和学校的投资可以支持农村发展。
+
+@topic internet | Internet & Privacy | 网络与隐私 | 网
+c | personal information | 个人信息 | Websites should collect only the [personal information] needed for their services. | 网站应只收集其服务所需的个人信息。
+c | online fraud | 网络诈骗 | Clear warnings can help users recognise common forms of [online fraud]. | 明确的警示可以帮助用户识别常见的网络诈骗形式。
+c | content moderation | 内容审核 | Consistent [content moderation] requires clear rules and a fair appeals process. | 一致的内容审核需要明确的规则和公平的申诉程序。
+c | online anonymity | 网络匿名性 | [Online anonymity] can protect vulnerable users while also complicating accountability. | 网络匿名性可以保护弱势用户，同时也可能使追责更复杂。
+
+@topic leisure | Leisure & Lifestyle | 休闲生活 | 闲
+c | leisure activities | 休闲活动 | Affordable [leisure activities] give residents ways to relax outside the home. | 价格合理的休闲活动让居民能够在家外放松。
+c | free time | 空闲时间 | Long journeys to work can leave people with less [free time]. | 漫长的通勤会减少人们的空闲时间。
+c | quality of life | 生活质量 | Access to parks can improve residents' [quality of life]. | 能够方便地使用公园可以改善居民的生活质量。
+c | social interaction | 社交互动 | Shared hobbies create opportunities for regular [social interaction]. | 共同的爱好创造了经常进行社交互动的机会。
+c | personal interests | 个人兴趣 | Schools can give students time to explore their [personal interests]. | 学校可以给学生时间探索自己的个人兴趣。
+
+@topic history | History & Tradition | 历史与传统 | 史
+c | historical records | 历史记录 | Researchers compare [historical records] to understand how communities changed over time. | 研究人员比较历史记录，以了解社区如何随时间变化。
+c | traditional crafts | 传统工艺 | Workshops can introduce younger generations to [traditional crafts]. | 工坊可以向年轻一代介绍传统工艺。
+c | historic buildings | 历史建筑 | Restoring [historic buildings] requires careful work and long-term maintenance. | 修复历史建筑需要细致的工作和长期维护。
+c | oral history | 口述历史 | [Oral history] preserves experiences that may be missing from official records. | 口述历史保存了官方记录中可能缺失的经历。
+c | historical context | 历史背景 | Understanding the [historical context] helps readers interpret events more carefully. | 了解历史背景有助于读者更审慎地解释事件。
+
+@topic children | Childhood & Parenting | 儿童成长 | 童
+c | early childhood | 幼儿时期 | Support during [early childhood] can lay the foundation for later learning. | 幼儿时期获得的支持可以为今后的学习打下基础。
+c | child development | 儿童发展 | Play is an important part of healthy [child development]. | 游戏是健康儿童发展的重要组成部分。
+c | parenting styles | 教养方式 | Different [parenting styles] can shape how children respond to rules. | 不同的教养方式会影响儿童对规则的反应。
+c | peer pressure | 同伴压力 | Young people may need support when dealing with [peer pressure]. | 年轻人在应对同伴压力时可能需要支持。
+c | childcare services | 托育服务 | Reliable [childcare services] help parents balance employment and family responsibilities. | 可靠的托育服务帮助父母兼顾工作和家庭责任。
